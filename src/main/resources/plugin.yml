@@ -5,3 +5,8 @@ api-version: 1.19
 authors: [ Jenovesan ]
 description: Fun minecraft gamemode
 website: https://github.com/Jenovesan
+commands:
+  guild:
+    aliases: g
+    description: Used to execute guild commands
+    usage: /g help
