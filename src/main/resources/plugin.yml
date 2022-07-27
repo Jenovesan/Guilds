@@ -1,0 +1,7 @@
+name: GuildWars
+version: '${project.version}'
+main: com.guildwars.guildwars.GuildWars
+api-version: 1.19
+authors: [ Jenovesan ]
+description: Fun minecraft gamemode
+website: https://github.com/Jenovesan
