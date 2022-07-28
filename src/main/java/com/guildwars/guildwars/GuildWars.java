@@ -1,10 +1,10 @@
 package com.guildwars.guildwars;
 
+import com.guildwars.guildwars.guilds.GuildsManager;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
+import com.guildwars.guildwars.guilds.files.FileManager;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Objects;
 
 public final class GuildWars extends JavaPlugin {
 
@@ -16,11 +16,14 @@ public final class GuildWars extends JavaPlugin {
     }
 
     public void loadGuilds() {
+        //Load Guilds data
+        FileManager.setupFiles();
+
+        //Load Guilds
+        GuildsManager.loadGuilds();
+
         //Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
-
-        //Load Guilds data
-        com.guildwars.guildwars.guilds.files.messages.setup();
     }
 
     @Override

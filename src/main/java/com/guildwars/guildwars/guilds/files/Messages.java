@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class messages {
+public class Messages {
 
     private static File file;
     private static FileConfiguration messagesFile;
@@ -39,6 +39,12 @@ public class messages {
             //create
             commandsSection.addDefault("create.description", "&2Creates your own guild");
             commandsSection.addDefault("create.usage", "&2/g create <name> <description>");
+            //help
+            commandsSection.addDefault("help.title", "&2&nGuild Commands");
+            commandsSection.addDefault("help.color", "&a");
+            //who & show
+            commandsSection.addDefault("who.description", "&2Returns that guild's info");
+            commandsSection.addDefault("who.usage", "&2/g who,show <name>");
     }
 
     public static FileConfiguration get() {

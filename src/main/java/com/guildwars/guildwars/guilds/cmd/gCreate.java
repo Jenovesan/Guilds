@@ -1,22 +1,26 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.files.messages;
+import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.GuildsManager;
+import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.entity.Player;
 
 public class gCreate extends gCommand {
 
     @Override
     public String getDescription() {
-        return messages.get().getString("commands.create.description");
+        return Messages.getMsg("commands.create.description");
     }
 
     @Override
     public String getUsage() {
-        return messages.get().getString("commands.create.usage");
+        return Messages.getMsg("commands.create.usage");
     }
 
     @Override
     public void perform(Player player, String[] args) {
-        player.sendMessage("worked");
+        Guild guild = new Guild(player, args[0], args[1]);
+        GuildsManager.saveGuild(guild);
+        GuildsManager.getGuilds().add(guild);
     }
 }

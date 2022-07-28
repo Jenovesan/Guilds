@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.files.messages;
+import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,8 @@ public class GuildsCommandManager implements CommandExecutor {
 
     public Map<String, gCommand> gCommands = Map.of(
         "create", new gCreate(),
-        "disband", new gDisband()
+        "disband", new gDisband(),
+        "who", new gWho()
     );
 
     Set<String> gCommandNames = gCommands.keySet();
@@ -25,14 +26,14 @@ public class GuildsCommandManager implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length < 1 || args[0].equalsIgnoreCase("help")) {
-                helpCommand.perform();
+                helpCommand.perform(sender, gCommands.values());
                 return true;
             }
 
             String gCommandName = args[0].toLowerCase();
 
             if (!gCommandNames.contains(gCommandName)) {
-                sender.sendMessage(messages.getMsg("commands.command does not exist"));
+                sender.sendMessage(Messages.getMsg("commands.command does not exist"));
                 return true;
             }
 
