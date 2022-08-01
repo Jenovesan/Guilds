@@ -1,6 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.guilds.gPlayers;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +18,11 @@ public class GuildsCommandManager implements CommandExecutor {
     public Map<String, gCommand> gCommands = Map.of(
         "create", new gCreate(),
         "disband", new gDisband(),
-        "who", new gWho()
+        "who", new gWho(),
+        "invite", new gInvite(),
+        "join", new gJoin(),
+        "deinvite", new gDeInvite(),
+        "leave", new gLeave()
     );
 
     Set<String> gCommandNames = gCommands.keySet();
@@ -36,8 +43,17 @@ public class GuildsCommandManager implements CommandExecutor {
                 sender.sendMessage(Messages.getMsg("commands.command does not exist"));
                 return true;
             }
+            gCommand guildCommand = getgCommands().get(gCommandName);
+            String[] modifiedArgs = Arrays.copyOfRange(args, 1, args.length);
 
-            getgCommands().get(gCommandName).perform(player, args);
+            if (modifiedArgs.length < guildCommand.getMinArgs()) {
+                sender.sendMessage(Messages.getMsg("commands.too few arguments given"));
+                return true;
+            }
+
+            gPlayer gPlayer = gPlayers.get(player);
+
+            guildCommand.perform(gPlayer, modifiedArgs);
             return true;
         }
 

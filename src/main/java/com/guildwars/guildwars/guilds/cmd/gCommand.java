@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import org.bukkit.entity.Player;
+import com.guildwars.guildwars.guilds.gPlayer;
 
 public abstract class gCommand {
 
@@ -8,5 +8,7 @@ public abstract class gCommand {
 
     public abstract String getUsage();
 
-    public abstract void perform(Player player, String args[]);
+    public abstract int getMinArgs();
+
+    public abstract void perform(gPlayer gPlayer, String args[]);
 }

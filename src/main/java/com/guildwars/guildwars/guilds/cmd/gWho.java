@@ -2,8 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gUtil;
-import org.bukkit.entity.Player;
+import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gWho extends gCommand{
     @Override
@@ -17,12 +16,17 @@ public class gWho extends gCommand{
     }
 
     @Override
-    public void perform(Player player, String[] args) {
-        Guild guild = gUtil.getPlayerGuild(player.getUniqueId());
+    public int getMinArgs() {
+        return 0;
+    }
+
+    @Override
+    public void perform(gPlayer gPlayer, String[] args) {
+        Guild guild = gPlayer.getGuild();
         if (guild != null) {
-            player.sendMessage(guild.name + guild.description);
+            gPlayer.sendMessage(guild.getName() + guild.getDescription());
         } else {
-            player.sendMessage("Player is not in a guild");
+            gPlayer.sendMessage("Player is not in a guild");
         }
     }
 }

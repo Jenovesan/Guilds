@@ -4,5 +4,6 @@ public class FileManager {
     public static void setupFiles() {
         Messages.setup();
         Data.setup();
+        Config.setup();
     }
 }
