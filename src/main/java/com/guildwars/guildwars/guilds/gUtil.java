@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.utils.util;
 
 import java.util.UUID;
 
@@ -22,8 +23,7 @@ public class gUtil {
         if (guildRank.level >= permMinRank.level) {
             return true;
         } else { // Guild rank too low
-            String permMinRankName = permMinRank.name();
-            gPlayer.sendFailMsg(Messages.getMsg("commands.guild rank too low").replace("<rank>", permMinRankName.substring(0, 1).toUpperCase() + permMinRankName.substring(1).toLowerCase()));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.guild rank too low").replace("<rank>", util.formatEnum(permMinRank)));
             return false;
         }
     }

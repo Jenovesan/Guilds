@@ -92,10 +92,10 @@ public class gPlayer {
         this.setGuildRank(GuildRank.NONE);
     }
 
-    public boolean hasPermission(GuildPermission permission) {
-        GuildRank guildRank = this.getGuildRank();
-        GuildRank permMinRank = this.getGuild().getPermissions().get(permission);
-        return guildRank.level >= permMinRank.level;
-    }
+//    public boolean hasPermission(GuildPermission permission) {
+//        GuildRank guildRank = this.getGuildRank();
+//        GuildRank permMinRank = this.getGuild().getPermissions().get(permission);
+//        return guildRank.level >= permMinRank.level;
+//    }
 
 }

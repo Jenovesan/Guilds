@@ -238,5 +238,15 @@ public class Guild {
         GuildRank rank2 = this.getPlayers().get(uuid2);
         return rank1.level > rank2.level;
     }
+
+    public GuildRank getGuildRank(OfflinePlayer player) {
+        UUID uuid = player.getUniqueId();
+        return this.getPlayers().get(uuid);
+    }
+
+    public void changeGuildRank(OfflinePlayer player, GuildRank newRank) {
+        UUID uuid = player.getUniqueId();
+        this.getPlayers().replace(uuid, newRank);
+    }
 }
 

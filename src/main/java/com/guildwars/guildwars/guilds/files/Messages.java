@@ -98,6 +98,15 @@ public class Messages {
             commandsSection.addDefault("kick.guild rank not higher", "&cYour guild rank must be higher than the person you are kicking");
             commandsSection.addDefault("kick.kickee kicked msg", "&cYou have been kicked from &4<name>");
             commandsSection.addDefault("kick.successfully kicked", "&aYou kicked &2<name>&a from your guild");
+            // promote
+            commandsSection.addDefault("promote.description", "&2Promotes a player in your guild");
+            commandsSection.addDefault("promote.usage", "&2/g promote <name>");
+            commandsSection.addDefault("promote.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("promote.promotee not found", "&4<input> &cis not in your guild");
+            commandsSection.addDefault("promote.rank not high enough", "&cYour rank is not high enough to promote &4<name>");
+            commandsSection.addDefault("promote.promotee promoted msg", "&aYou were promoted to &2<rank>");
+            commandsSection.addDefault("promote.successfully promoted", "&aYou promoted &2<name> &ato &2<rank>");
+            commandsSection.addDefault("promote.tried to make leader", "&cYou must use &4/g leader <name> &cto make someone your guild's leader");
 
         // Guilds
         messagesFile.createSection("guilds");
@@ -105,7 +114,7 @@ public class Messages {
             assert guildsSection != null;
             // announcements
             guildsSection.addDefault("announcements.disband", "&c&lYour Guild has been &4&ldisbanded!");
-            guildsSection.addDefault("announcements.player join", "&2&l<name> &a&ljoined your guild!");
+            guildsSection.addDefault("announcements.player join", "&2&l<name> &a&lhas joined your guild!");
             guildsSection.addDefault("announcements.guild was full", "&4&l<name> &c&ltried to join your guild, but your guild was full!");
             guildsSection.addDefault("announcements.player leave", "&4&l<name> &c&lleft your guild!");
             guildsSection.addDefault("announcements.player kicked", "&4&l<kicker> &c&lhas kicked &4&l<kickee> &c&lfrom your guild!");

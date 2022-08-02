@@ -22,4 +22,8 @@ public class util {
         }
         return false;
     }
+
+    public static String formatEnum(Enum<?> enumToFormat) {
+        return enumToFormat.name().substring(0, 1).toUpperCase() + enumToFormat.name().substring(1).toLowerCase();
+    }
 }
