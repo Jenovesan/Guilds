@@ -59,7 +59,7 @@ public class gInvite extends gCommand{
         inviterGuild.invite(invitee);
 
         // Inform invitee
-        pUtil.sendNotifyMsg(invitee, Messages.getMsg("commands.invite.invitee invite msg").replace("<guild>", invitee.getName()));
+        pUtil.sendNotifyMsg(invitee, Messages.getMsg("commands.invite.invitee invite msg").replace("<guild>", inviterGuild.getName()));
 
         // Inform inviter
         inviter.sendSuccessMsg(Messages.getMsg("commands.invite.successfully invited").replace("<name>", invitee.getName()));

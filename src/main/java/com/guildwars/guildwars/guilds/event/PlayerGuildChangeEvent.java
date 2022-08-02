@@ -34,7 +34,8 @@ public class PlayerGuildChangeEvent extends Event {
         CREATION,
         DISBAND,
         JOIN,
-        LEAVE
+        LEAVE,
+        KICKED
     }
 
 

@@ -153,6 +153,23 @@ public class Guild {
         this.sendAnnouncement(Messages.getMsg("guilds.announcements.player leave").replace("<name>", player.getName()));
     }
 
+    public void kickPlayer(String kickerName, OfflinePlayer kickee) {
+
+        // Remove player from Guild
+        this.getPlayers().remove(kickee.getUniqueId());
+
+        // Update gPlayer if kickee is online
+        Player kickeePlayer = kickee.getPlayer();
+        if (kickeePlayer != null) {
+            gPlayer gPlayer = gPlayers.get(kickeePlayer);
+            gPlayer.leftGuild();
+        }
+
+        // Send Guild Announcement
+        this.sendAnnouncement(Messages.getMsg("guilds.announcements.player kicked").replace("<kicker>", kickerName).replace("<kickee>", Objects.requireNonNullElse(kickee.getName(), "")));
+    }
+
+
     public static enum Rank {
         NONE(0),
         RECRUIT(1),
@@ -227,6 +244,22 @@ public class Guild {
         for (Player onlinePlayer : this.getOnlinePlayers()) {
             pUtil.sendNotifyMsg(onlinePlayer, msg);
         }
+    }
+
+    public OfflinePlayer getOfflinePlayer (String name) {
+        for (UUID uuid : this.getPlayers().keySet()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+            if (offlinePlayer.getName() != null && offlinePlayer.getName().equalsIgnoreCase(name)) {
+                return offlinePlayer;
+            }
+        }
+        return null;
+    }
+
+    public boolean hasHigherRank(UUID uuid1, UUID uuid2) {
+        Rank rank1 = this.getPlayers().get(uuid1);
+        Rank rank2 = this.getPlayers().get(uuid2);
+        return rank1.level > rank2.level;
     }
 }
 

@@ -90,6 +90,14 @@ public class Messages {
             commandsSection.addDefault("leave.not in guild", "&cYou are not in a guild");
             commandsSection.addDefault("leave.is leader", "&cYou must disband your guild");
             commandsSection.addDefault("leave.successfully left", "&aYou left &2<name>");
+            // kick
+            commandsSection.addDefault("kick.description", "&2Kick a player from your guild");
+            commandsSection.addDefault("kick.usage", "&2/g kick <name>");
+            commandsSection.addDefault("kick.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("kick.kickee not found", "&4<input> &cis not in your guild");
+            commandsSection.addDefault("kick.guild rank not higher", "&cYour guild rank must be higher than the person you are kicking");
+            commandsSection.addDefault("kick.kickee kicked msg", "&cYou have been kicked from &4<name>");
+            commandsSection.addDefault("kick.successfully kicked", "&aYou kicked &2<name>&a from your guild");
 
         // Guilds
         messagesFile.createSection("guilds");
@@ -100,7 +108,7 @@ public class Messages {
             guildsSection.addDefault("announcements.player join", "&2&l<name> &a&ljoined your guild!");
             guildsSection.addDefault("announcements.guild was full", "&4&l<name> &c&ltried to join your guild, but your guild was full!");
             guildsSection.addDefault("announcements.player leave", "&4&l<name> &c&lleft your guild!");
-
+            guildsSection.addDefault("announcements.player kicked", "&4&l<kicker> &c&lhas kicked &4&l<kickee> &c&lfrom your guild!");
 
     }
 
