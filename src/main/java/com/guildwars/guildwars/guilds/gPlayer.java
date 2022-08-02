@@ -61,7 +61,7 @@ public class gPlayer {
             this.guildRank = guild.getPlayers().get(uuid);
         } else {
             this.guildId = -1;
-            this.guildRank = GuildRank.NONE;
+            this.guildRank = null;
         }
         this.name = player.getName();
     }
@@ -89,7 +89,7 @@ public class gPlayer {
     public void leftGuild() {
         this.setGuild(null);
         this.setGuildId(-1);
-        this.setGuildRank(GuildRank.NONE);
+        this.setGuildRank(null);
     }
 
 //    public boolean hasPermission(GuildPermission permission) {

@@ -107,6 +107,15 @@ public class Messages {
             commandsSection.addDefault("promote.promotee promoted msg", "&aYou were promoted to &2<rank>");
             commandsSection.addDefault("promote.successfully promoted", "&aYou promoted &2<name> &ato &2<rank>");
             commandsSection.addDefault("promote.tried to make leader", "&cYou must use &4/g leader <name> &cto make someone your guild's leader");
+            // demote
+            commandsSection.addDefault("demote.description", "&Demotes a player in your guild");
+            commandsSection.addDefault("demote.usage", "&2/g demote <name>");
+            commandsSection.addDefault("demote.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("demote.demotee not found", "&4<input> &cis not in your guild");
+            commandsSection.addDefault("demote.rank not high enough", "&cYour rank is not high enough to demote &4<name>");
+            commandsSection.addDefault("demote.demotee demoted msg", "&cYou were demoted to &4<rank>");
+            commandsSection.addDefault("demote.successfully demoted", "&aYou demoted &2<name> &ato &2<rank>");
+            commandsSection.addDefault("demote.cannot demote any further", "&4<name> &ccannot be demoted any further");
 
         // Guilds
         messagesFile.createSection("guilds");

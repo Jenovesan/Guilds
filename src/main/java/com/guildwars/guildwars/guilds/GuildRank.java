@@ -3,7 +3,6 @@ package com.guildwars.guildwars.guilds;
 import java.util.HashMap;
 
 public enum GuildRank {
-    NONE(0),
     RECRUIT(1),
     MEMBER(2),
     MOD(3),

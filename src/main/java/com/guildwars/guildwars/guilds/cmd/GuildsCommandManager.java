@@ -24,7 +24,8 @@ public class GuildsCommandManager implements CommandExecutor {
         "deinvite", new gDeInvite(),
         "leave", new gLeave(),
         "kick", new gKick(),
-        "promote", new gPromote()
+        "promote", new gPromote(),
+        "demote", new gDemote()
     );
 
     Set<String> gCommandNames = gCommands.keySet();
