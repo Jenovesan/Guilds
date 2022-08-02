@@ -5,7 +5,11 @@ import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.guilds.gPlayers;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.HashSet;
 
 public class gDisband extends gCommand{
     @Override
@@ -33,10 +37,20 @@ public class gDisband extends gCommand{
         }
 
         // Disband Guild
-        gPlayer.getGuild().disband();
+        Guild guild = gPlayer.getGuild();
 
-        // Call event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(gPlayer.getPlayer(), null, PlayerGuildChangeEvent.Reason.DISBAND));
+        // Used to update gPlayers & inform guild members later
+        HashSet<Player> onlineGuildMembers = guild.getOnlinePlayers();
+
+        guild.disband();
+
+        // Update gPlayers & call event
+        for (Player onlineGuildMember : onlineGuildMembers) {
+            // Update gPlayer
+            gPlayers.get(onlineGuildMember).leftGuild();
+            // Call event
+            Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(onlineGuildMember, null, PlayerGuildChangeEvent.Reason.DISBAND));
+        }
 
         // Inform
         gPlayer.sendSuccessMsg(Messages.getMsg("commands.disband.successfully disbanded"));
