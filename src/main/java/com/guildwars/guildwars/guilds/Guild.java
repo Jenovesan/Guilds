@@ -187,11 +187,6 @@ public class Guild {
 
     public void disband() {
 
-        // Update Guild members
-        for (Player onlinePlayer : this.getOnlinePlayers()) {
-            gPlayers.get(onlinePlayer).leftGuild();
-        }
-
         // Remove Guild from Guilds
         Guilds.removeGuild(this);
 

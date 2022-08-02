@@ -29,7 +29,7 @@ public class gPlayers implements Listener {
     }
 
     private static void removeGPlayer(Player player) {
-        getGPlayers().remove(player, getNewGPlayer(player));
+        getGPlayers().remove(player);
     }
 
     public static gPlayer get(Player player) {
@@ -45,6 +45,7 @@ public class gPlayers implements Listener {
     @EventHandler
     public void addGPlayerOnLogin(PlayerJoinEvent event) {
         addGPlayer(event.getPlayer());
+        event.getPlayer().sendMessage(String.valueOf(getGPlayers()));
     }
 
     @EventHandler
