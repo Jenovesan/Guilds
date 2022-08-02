@@ -1,9 +1,11 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.guilds.gUtil;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -45,8 +47,7 @@ public class gKick extends gCommand{
             return;
         }
 
-        if (!kicker.hasPermission(Guild.Permission.INVITE)) {
-            kicker.sendFailMsg(Messages.getMsg("commands.guild rank too low"));
+        if (!gUtil.checkPermission(kicker, GuildPermission.INVITE)) {
             return;
         }
 

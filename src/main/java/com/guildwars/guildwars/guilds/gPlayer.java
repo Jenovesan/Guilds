@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.entity.Player;
 
@@ -11,7 +12,7 @@ public class gPlayer {
     private final UUID uuid;
     private Guild guild;
     private int guildId;
-    private Guild.Rank guildRank;
+    private GuildRank guildRank;
     private final String name;
 
     public Player getPlayer() {
@@ -30,7 +31,7 @@ public class gPlayer {
         return this.guildId;
     }
 
-    public Guild.Rank getGuildRank() {
+    public GuildRank getGuildRank() {
         return this.guildRank;
     }
 
@@ -46,7 +47,7 @@ public class gPlayer {
         this.guildId = id;
     }
 
-    public void setGuildRank(Guild.Rank rank) {
+    public void setGuildRank(GuildRank rank) {
         this.guildRank = rank;
     }
 
@@ -60,7 +61,7 @@ public class gPlayer {
             this.guildRank = guild.getPlayers().get(uuid);
         } else {
             this.guildId = -1;
-            this.guildRank = Guild.Rank.NONE;
+            this.guildRank = GuildRank.NONE;
         }
         this.name = player.getName();
     }
@@ -88,12 +89,12 @@ public class gPlayer {
     public void leftGuild() {
         this.setGuild(null);
         this.setGuildId(-1);
-        this.setGuildRank(Guild.Rank.NONE);
+        this.setGuildRank(GuildRank.NONE);
     }
 
-    public boolean hasPermission(Guild.Permission permission) {
-        Guild.Rank guildRank = this.getGuildRank();
-        Guild.Rank permMinRank = this.getGuild().getPermissions().get(permission);
+    public boolean hasPermission(GuildPermission permission) {
+        GuildRank guildRank = this.getGuildRank();
+        GuildRank permMinRank = this.getGuild().getPermissions().get(permission);
         return guildRank.level >= permMinRank.level;
     }
 

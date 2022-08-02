@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
@@ -16,8 +17,8 @@ public class Guild {
     private final int id;
     private String name;
     private String description;
-    private HashMap<UUID, Rank> players = new HashMap<>();
-    private HashMap<Permission, Rank> permissions = new HashMap<>();
+    private HashMap<UUID, GuildRank> players = new HashMap<>();
+    private HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
     private HashSet<OfflinePlayer> invites = new HashSet<>();
 
     public int getId() {
@@ -32,11 +33,11 @@ public class Guild {
         return description;
     }
 
-    public HashMap<UUID, Rank> getPlayers() {
+    public HashMap<UUID, GuildRank> getPlayers() {
         return players;
     }
 
-    public HashMap<Permission, Rank> getPermissions() {
+    public HashMap<GuildPermission, GuildRank> getPermissions() {
         return permissions;
     }
 
@@ -55,7 +56,7 @@ public class Guild {
     }
 
     // Loading an existing guild on startup
-    public Guild(Integer id, String name, String description, HashMap<UUID, Rank> players,HashMap<Permission, Rank> permissions) {
+    public Guild(Integer id, String name, String description, HashMap<UUID, GuildRank> players,HashMap<GuildPermission, GuildRank> permissions) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -66,7 +67,7 @@ public class Guild {
 
     public void loadDefaults() {
         // Permissions
-        this.permissions.put(Permission.INVITE, Rank.valueOf(Config.get().getString("default permissions.invite")));
+        this.permissions.put(GuildPermission.INVITE, GuildRank.valueOf(Config.get().getString("default permissions.invite")));
     }
 
     public void setName(String newName) {
@@ -77,7 +78,7 @@ public class Guild {
         this.description = desc;
     }
 
-    public void setRank(Object playerInfo, Rank rank) {
+    public void setRank(Object playerInfo, GuildRank rank) {
         if (playerInfo instanceof Player) {
             this.players.replace(((Player) playerInfo).getUniqueId(), rank);
         }
@@ -87,9 +88,9 @@ public class Guild {
     }
 
     public void setLeader(UUID uuid) {
-        boolean hasLeader = this.getPlayers().containsValue(Rank.LEADER);
+        boolean hasLeader = this.getPlayers().containsValue(GuildRank.LEADER);
         if (!hasLeader) {
-            this.getPlayers().put(uuid, Rank.LEADER);
+            this.getPlayers().put(uuid, GuildRank.LEADER);
         }
         // Add else clause
     }
@@ -133,7 +134,7 @@ public class Guild {
         this.sendAnnouncement(Messages.getMsg("guilds.announcements.player join").replace("<name>", player.getName()));
 
         // Update Guild's player list
-        this.getPlayers().put(player.getUniqueId(), Rank.valueOf(Config.get().getString("join guild at rank")));
+        this.getPlayers().put(player.getUniqueId(), GuildRank.valueOf(Config.get().getString("join guild at rank")));
 
         // Update gPlayer
         gPlayer gPlayer = gPlayers.get(player);
@@ -169,26 +170,7 @@ public class Guild {
         this.sendAnnouncement(Messages.getMsg("guilds.announcements.player kicked").replace("<kicker>", kickerName).replace("<kickee>", Objects.requireNonNullElse(kickee.getName(), "")));
     }
 
-
-    public static enum Rank {
-        NONE(0),
-        RECRUIT(1),
-        MEMBER(2),
-        MOD(3),
-        COLEADER(4),
-        LEADER(5);
-
-        public final int level;
-        Rank (int level) {
-            this.level = level;
-        }
-    }
-
-    public static enum Permission {
-        INVITE
-    }
-
-    public Guild.Rank getRank(UUID uuid) {
+    public GuildRank getRank(UUID uuid) {
         return this.getPlayers().get(uuid);
     }
 
@@ -257,8 +239,8 @@ public class Guild {
     }
 
     public boolean hasHigherRank(UUID uuid1, UUID uuid2) {
-        Rank rank1 = this.getPlayers().get(uuid1);
-        Rank rank2 = this.getPlayers().get(uuid2);
+        GuildRank rank1 = this.getPlayers().get(uuid1);
+        GuildRank rank2 = this.getPlayers().get(uuid2);
         return rank1.level > rank2.level;
     }
 }

@@ -1,9 +1,11 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
+import com.guildwars.guildwars.guilds.gUtil;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,8 +40,7 @@ public class gInvite extends gCommand{
             return;
         }
 
-        if (!inviter.hasPermission(Guild.Permission.INVITE)) {
-            inviter.sendFailMsg(Messages.getMsg("commands.guild rank too low"));
+        if (!gUtil.checkPermission(inviter, GuildPermission.INVITE)) {
             return;
         }
 

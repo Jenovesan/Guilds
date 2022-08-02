@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
@@ -32,7 +33,7 @@ public class gLeave extends gCommand{
             return;
         }
 
-        if (leaver.getGuildRank() == Guild.Rank.LEADER) {
+        if (leaver.getGuildRank() == GuildRank.LEADER) {
             leaver.sendFailMsg(Messages.getMsg("commands.leave.is leader"));
             return;
         }

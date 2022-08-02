@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
@@ -26,7 +27,7 @@ public class gDisband extends gCommand{
     @Override
     public void perform(gPlayer gPlayer, String[] args) {
         // Checks
-        if (gPlayer.getGuildRank() != Guild.Rank.LEADER) {
+        if (gPlayer.getGuildRank() != GuildRank.LEADER) {
             gPlayer.sendFailMsg(Messages.getMsg("commands.guild rank too low"));
             return;
         }

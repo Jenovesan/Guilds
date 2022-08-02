@@ -38,7 +38,7 @@ public class Messages {
             assert commandsSection != null;
             commandsSection.addDefault("command does not exist", "&cCommand does not exist. Try /g help for a list of guild commands");
             commandsSection.addDefault("too few arguments given", "&cToo few arguments were given. Try /g help for command usage");
-            commandsSection.addDefault("guild rank too low", "&cYour guild rank must be higher to perform this command");
+            commandsSection.addDefault("guild rank too low", "&cYou must be at least &4<rank> &cto perform this command");
             //create
             commandsSection.addDefault("create.description", "&2Creates your own guild");
             commandsSection.addDefault("create.usage", "&2/g create <name> <description>");

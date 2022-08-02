@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.guilds.files.Data;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,15 +20,15 @@ public class Guilds {
             String description = guildData.getString("description");
 
             Map<String, Object> playersData = guildData.getConfigurationSection("players").getValues(false);
-            HashMap<UUID, Guild.Rank> players = new HashMap<>();
+            HashMap<UUID, GuildRank> players = new HashMap<>();
             for (Map.Entry<String, Object> entry : playersData.entrySet()) {
-                players.put(UUID.fromString(entry.getKey()), Guild.Rank.valueOf((String) entry.getValue()));
+                players.put(UUID.fromString(entry.getKey()), GuildRank.valueOf((String) entry.getValue()));
             }
 
             Map<String, Object> permissionsData = guildData.getConfigurationSection("permissions").getValues(false);
-            HashMap<Guild.Permission, Guild.Rank> permissions = new HashMap<>();
+            HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
             for (Map.Entry<String, Object> entry : permissionsData.entrySet()) {
-                permissions.put(Guild.Permission.valueOf(entry.getKey()), Guild.Rank.valueOf((String) entry.getValue()));
+                permissions.put(GuildPermission.valueOf(entry.getKey()), GuildRank.valueOf((String) entry.getValue()));
             }
 
             new Guild(id, name, description, players, permissions);

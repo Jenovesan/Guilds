@@ -1,8 +1,10 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.guilds.gUtil;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -35,8 +37,7 @@ public class gDeInvite extends gCommand{
         }
         Guild deInviterGuild = deInviter.getGuild();
 
-        if (!deInviter.hasPermission(Guild.Permission.INVITE)) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.guild rank too low"));
+        if (!gUtil.checkPermission(deInviter, GuildPermission.INVITE)) {
             return;
         }
 
