@@ -19,6 +19,7 @@ public class Guild {
     private HashMap<UUID, GuildRank> players = new HashMap<>();
     private HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
     private HashSet<OfflinePlayer> invites = new HashSet<>();
+    private HashSet<Integer> enemies = new HashSet<>();
 
     public int getId() {
         return id;
@@ -44,6 +45,9 @@ public class Guild {
         return invites;
     }
 
+    public HashSet<Integer> getEnemies() {
+        return enemies;
+    }
 
     // Creating a new guild
     public Guild(UUID creatorUUID, String name, String description) {
@@ -56,12 +60,18 @@ public class Guild {
     }
 
     // Loading an existing guild on startup
-    public Guild(Integer id, String name, String description, HashMap<UUID, GuildRank> players,HashMap<GuildPermission, GuildRank> permissions) {
+    public Guild(Integer id,
+                 String name,
+                 String description,
+                 HashMap<UUID, GuildRank> players,
+                 HashMap<GuildPermission, GuildRank> permissions,
+                 HashSet<Integer> enemies) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.players = players;
         this.permissions = permissions;
+        this.enemies = enemies;
         Guilds.addGuild(this);
     }
 
@@ -71,6 +81,7 @@ public class Guild {
         this.permissions.put(GuildPermission.SET_DESC, GuildRank.valueOf(Config.get().getString("default permissions.set_desc")));
         this.permissions.put(GuildPermission.SET_NAME, GuildRank.valueOf(Config.get().getString("default permissions.set_name")));
         this.permissions.put(GuildPermission.CHAT, GuildRank.valueOf(Config.get().getString("default permissions.chat")));
+        this.permissions.put(GuildPermission.RELATIONS, GuildRank.valueOf(Config.get().getString("default permissions.relations")));
     }
 
     public void setName(String changerName, String newName) {
@@ -262,6 +273,19 @@ public class Guild {
     public void changeGuildRank(OfflinePlayer player, GuildRank newRank) {
         UUID uuid = player.getUniqueId();
         this.getPlayers().replace(uuid, newRank);
+    }
+
+    public boolean isEnemied(Guild guild) {
+        return this.getEnemies().contains(guild.getId());
+    }
+
+    public void enemy(String changerName, Guild guild) {
+        this.getEnemies().add(guild.getId());
+        this.sendAnnouncement(Messages.getMsg("guilds.announcements.enemied guild").replace("<name>", guild.getName()).replace("<player name>", changerName));
+    }
+
+    public void truce(Integer guildId) {
+        this.getEnemies().remove(guildId);
     }
 }
 

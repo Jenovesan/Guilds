@@ -43,6 +43,7 @@ public class Config {
         defaultPermissionsSection.addDefault("set_desc", "COLEADER");
         defaultPermissionsSection.addDefault("set_name", "COLEADER");
         defaultPermissionsSection.addDefault("chat", "RECRUIT");
+        defaultPermissionsSection.addDefault("relations", "COLEADER");
     }
 
     public static FileConfiguration get() {

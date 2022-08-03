@@ -128,12 +128,21 @@ public class Messages {
             commandsSection.addDefault("name.successfully set name", "&aYou set your guild's name to: &2<name>");
             commandsSection.addDefault("name.guild name exists", "&cThat guild name is already being used");
             commandsSection.addDefault("name.guild name too long", "&cGuild name is too long");
-            // name
+            // chat
             commandsSection.addDefault("chat.description", "&2Joins or leaves your guild's chat channel");
             commandsSection.addDefault("chat.usage", "&2/g chat || /g chat <message>");
             commandsSection.addDefault("chat.not in guild", "&cYou are not in a guild");
             commandsSection.addDefault("chat.joined guild chat", "&aYou joined your guild's chat");
             commandsSection.addDefault("chat.left guild chat", "&aYou left your guild's chat");
+            // enemy
+            commandsSection.addDefault("enemy.description", "&2Enemies a guild");
+            commandsSection.addDefault("enemy.usage", "&2/g enemy <guild | player>");
+            commandsSection.addDefault("enemy.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("enemy.player not in guild", "&4<name> &cis not in a guild");
+            commandsSection.addDefault("enemy.not a guild or player", "&4<input> &cis not a guild or player");
+            commandsSection.addDefault("enemy.already enemied", "&cYour guild is already enemied with &4<name>");
+            commandsSection.addDefault("enemy.cannot enemy own guild", "&cYou cannot enemy your own guild");
+            commandsSection.addDefault("enemy.successfully enemied", "&cYou enemied &4<name>");
 
         // Guilds
         messagesFile.createSection("guilds");
@@ -147,6 +156,8 @@ public class Messages {
             guildsSection.addDefault("announcements.player kicked", "&4&l<kicker> &c&lhas kicked &4&l<kickee> &c&lfrom your guild!");
             guildsSection.addDefault("announcements.description changed", "&2&l<name> &a&lset your guild's description to: &2&l<description>");
             guildsSection.addDefault("announcements.name changed", "&2&l<player name> &a&lset your guild's name to: &2&l<name>");
+            guildsSection.addDefault("announcements.enemied guild", "&c&lYour guild is now enemied with &4&l<name>"); // Can use player name to say who enemied the guild
+            guildsSection.addDefault("announcements.truced guild", "&a&lYour guild is now truced with &4&l<name>"); // Can use player name to say who truced the guild
     }
 
     public static FileConfiguration get() {

@@ -31,7 +31,9 @@ public class Guilds implements Listener {
                 permissions.put(GuildPermission.valueOf(entry.getKey()), GuildRank.valueOf((String) entry.getValue()));
             }
 
-            new Guild(id, name, description, players, permissions);
+            HashSet<Integer> enemies = new HashSet<>(guildData.getIntegerList("enemies"));
+
+            new Guild(id, name, description, players, permissions, enemies);
         }
     }
 
@@ -39,11 +41,12 @@ public class Guilds implements Listener {
         int newestGuildId = 0;
         for (Guild guild : getGuilds()) {
             int guildId = guild.getId();
+            System.out.println(guildId);
             if (guildId > newestGuildId) {
                 newestGuildId = guildId;
             }
         }
-        return newestGuildId;
+        return newestGuildId + 1;
     }
 
     public static void saveGuildData(Guild guild) {
@@ -54,6 +57,7 @@ public class Guilds implements Listener {
         guildSection.set("description", guild.getDescription());
         guildSection.set("players", util.hashMapToHashMapString(guild.getPlayers()));
         guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
+        guildSection.set("enemies", List.copyOf(guild.getEnemies()));
         Data.save();
     }
 

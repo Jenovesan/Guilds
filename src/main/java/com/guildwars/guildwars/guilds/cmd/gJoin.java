@@ -33,8 +33,8 @@ public class gJoin extends gCommand{
             return;
         }
 
-        Player possiblePlayerToJoin = Bukkit.getPlayerExact(args[0]);
         Guild guildToJoin;
+        Player possiblePlayerToJoin = Bukkit.getPlayerExact(args[0]);
         if (possiblePlayerToJoin != null) { // Player using player name to join guild
             gPlayer gPlayerToJoin = gPlayers.get(possiblePlayerToJoin);
             if (!gPlayerToJoin.isInGuild()) {

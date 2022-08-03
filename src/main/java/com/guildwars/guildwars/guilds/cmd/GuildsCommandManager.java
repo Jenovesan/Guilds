@@ -27,7 +27,8 @@ public class GuildsCommandManager implements CommandExecutor {
         Map.entry("demote", new gDemote()),
         Map.entry("desc", new gDesc()),
         Map.entry("name", new gName()),
-        Map.entry("chat", new gChat())
+        Map.entry("chat", new gChat()),
+        Map.entry("enemy", new gEnemy())
     );
     
     Set<String> gCommandNames = gCommands.keySet();
