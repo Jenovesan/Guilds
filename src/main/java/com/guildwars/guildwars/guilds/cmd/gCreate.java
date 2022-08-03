@@ -40,7 +40,7 @@ public class gCreate extends gCommand {
             gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name too long"));
             return;
         }
-        if (util.containsIgnoreCase(Guilds.getAllGuildNames(), guildName)) {
+        if (Guilds.guidlNameExists(guildName)) {
             gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name exists"));
             return;
         }

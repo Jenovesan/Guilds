@@ -1,4 +1,4 @@
-package com.guildwars.guildwars.guilds.files;
+package com.guildwars.guildwars.core.files;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,7 +14,7 @@ public class Config {
     private static FileConfiguration configFile;
 
     public static void setup() {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/guilds", "config.yml");
+        file = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/core", "config.yml");
 
         if (file.exists()) {
             try {
@@ -30,19 +30,11 @@ public class Config {
     }
 
     public static void loadDefaults() {
-        configFile.addDefault("join guild at rank", "RECRUIT");
-        configFile.addDefault("max characters in guild name", 15);
-        configFile.addDefault("invite expire time (s)", 60);
-        configFile.addDefault("max players in guild", 10);
-
-        //default permissions
-        configFile.createSection("default permissions");
-        ConfigurationSection defaultPermissionsSection = configFile.getConfigurationSection("default permissions");
-        assert defaultPermissionsSection != null;
-        defaultPermissionsSection.addDefault("invite", "MOD");
-        defaultPermissionsSection.addDefault("set_desc", "COLEADER");
-        defaultPermissionsSection.addDefault("set_name", "COLEADER");
-        defaultPermissionsSection.addDefault("chat", "RECRUIT");
+        // Chat channels
+        configFile.createSection("chat channels");
+        ConfigurationSection chatChannelsSection = configFile.getConfigurationSection("chat channels");
+        assert chatChannelsSection != null;
+        chatChannelsSection.addDefault("GUILD", "&2[G] <display name> &a<msg>"); // Can use name instead to format the name
     }
 
     public static FileConfiguration get() {

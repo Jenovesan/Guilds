@@ -1,6 +1,5 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.entity.Player;
 
@@ -11,7 +10,7 @@ public class gPlayer {
     private final Player player;
     private final UUID uuid;
     private Guild guild;
-    private int guildId;
+    private int guildId = -1;
     private GuildRank guildRank;
     private final String name;
 
@@ -56,14 +55,11 @@ public class gPlayer {
         UUID uuid = player.getUniqueId();
         this.uuid = uuid;
         this.guild = guild;
+        this.name = player.getName();
         if (guild != null) {
             this.guildId = guild.getId();
             this.guildRank = guild.getPlayers().get(uuid);
-        } else {
-            this.guildId = -1;
-            this.guildRank = null;
         }
-        this.name = player.getName();
     }
 
     public void sendMessage(String msg) {
@@ -91,11 +87,4 @@ public class gPlayer {
         this.setGuildId(-1);
         this.setGuildRank(null);
     }
-
-//    public boolean hasPermission(GuildPermission permission) {
-//        GuildRank guildRank = this.getGuildRank();
-//        GuildRank permMinRank = this.getGuild().getPermissions().get(permission);
-//        return guildRank.level >= permMinRank.level;
-//    }
-
 }

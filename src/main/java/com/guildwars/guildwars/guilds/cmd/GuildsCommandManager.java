@@ -1,6 +1,5 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
@@ -15,19 +14,22 @@ public class GuildsCommandManager implements CommandExecutor {
 
     public gHelp helpCommand = new gHelp();
 
-    public Map<String, gCommand> gCommands = Map.of(
-        "create", new gCreate(),
-        "disband", new gDisband(),
-        "who", new gWho(),
-        "invite", new gInvite(),
-        "join", new gJoin(),
-        "deinvite", new gDeInvite(),
-        "leave", new gLeave(),
-        "kick", new gKick(),
-        "promote", new gPromote(),
-        "demote", new gDemote()
+    public Map<String, gCommand> gCommands = Map.ofEntries(
+        Map.entry("create", new gCreate()),
+        Map.entry("disband", new gDisband()),
+        Map.entry("who", new gWho()),
+        Map.entry("invite", new gInvite()),
+        Map.entry("join", new gJoin()),
+        Map.entry("deinvite", new gDeInvite()),
+        Map.entry( "leave", new gLeave()),
+        Map.entry("kick", new gKick()),
+        Map.entry("promote", new gPromote()),
+        Map.entry("demote", new gDemote()),
+        Map.entry("desc", new gDesc()),
+        Map.entry("name", new gName()),
+        Map.entry("chat", new gChat())
     );
-
+    
     Set<String> gCommandNames = gCommands.keySet();
 
     @Override

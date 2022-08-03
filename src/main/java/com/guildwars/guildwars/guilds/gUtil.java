@@ -1,6 +1,5 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.util;
 

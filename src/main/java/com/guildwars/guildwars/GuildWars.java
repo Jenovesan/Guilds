@@ -1,9 +1,9 @@
 package com.guildwars.guildwars;
 
+import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.GuildsFastData;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
-import com.guildwars.guildwars.guilds.files.FileManager;
 import com.guildwars.guildwars.guilds.gPlayers;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,30 +17,38 @@ public final class GuildWars extends JavaPlugin {
         // Plugin startup logic
         GuildWars.instance = this;
 
+        loadCore();
         loadGuilds();
         registerListeners();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Guild Wars Successfully Enabled");
     }
 
     public void loadGuilds() {
-        //Load Guilds data
-        FileManager.setupFiles();
+        // Load Guilds data
+        com.guildwars.guildwars.guilds.files.FileManager.setupFiles();
 
-        //Load Guilds
+        // Load Guilds
         Guilds.loadGuilds();
 
-        //Load fast guild data
+        // Load fast guild data
         GuildsFastData.loadPlayersGuildsIds();
 
-        //Load gPlayers
+        // Load gPlayers
         gPlayers.loadGPlayers();
 
-        //Load Guilds commands
+        // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
     }
 
+    public void loadCore() {
+        com.guildwars.guildwars.core.files.FileManager.setupFiles();
+    }
+
     public void registerListeners() {
-        //Guilds
+        // Core
+        getServer().getPluginManager().registerEvents(new ChatChannels(), this);
+
+        // Guilds
         getServer().getPluginManager().registerEvents(new GuildsFastData(), this);
         getServer().getPluginManager().registerEvents(new gPlayers(), this);
     }

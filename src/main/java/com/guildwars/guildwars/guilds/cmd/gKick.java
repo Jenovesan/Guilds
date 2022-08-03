@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildPermission;
+import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;

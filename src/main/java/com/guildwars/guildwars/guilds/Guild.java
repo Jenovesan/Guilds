@@ -1,6 +1,5 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
@@ -45,6 +44,7 @@ public class Guild {
         return invites;
     }
 
+
     // Creating a new guild
     public Guild(UUID creatorUUID, String name, String description) {
         this.id = Guilds.getNewGuildId();
@@ -68,23 +68,19 @@ public class Guild {
     public void loadDefaults() {
         // Permissions
         this.permissions.put(GuildPermission.INVITE, GuildRank.valueOf(Config.get().getString("default permissions.invite")));
+        this.permissions.put(GuildPermission.SET_DESC, GuildRank.valueOf(Config.get().getString("default permissions.set_desc")));
+        this.permissions.put(GuildPermission.SET_NAME, GuildRank.valueOf(Config.get().getString("default permissions.set_name")));
+        this.permissions.put(GuildPermission.CHAT, GuildRank.valueOf(Config.get().getString("default permissions.chat")));
     }
 
-    public void setName(String newName) {
+    public void setName(String changerName, String newName) {
         this.name = newName;
+        this.sendAnnouncement(Messages.getMsg("guilds.announcements.name changed").replace("<player name>", changerName).replace("<name>", name));
     }
 
-    public void setDescription(String desc) {
+    public void setDescription(String changerName, String desc) {
         this.description = desc;
-    }
-
-    public void setRank(Object playerInfo, GuildRank rank) {
-        if (playerInfo instanceof Player) {
-            this.players.replace(((Player) playerInfo).getUniqueId(), rank);
-        }
-        else if (playerInfo instanceof UUID) {
-            this.players.replace((UUID) playerInfo, rank);
-        }
+        this.sendAnnouncement(Messages.getMsg("guilds.announcements.description changed").replace("<name>", changerName).replace("<description>", desc));
     }
 
     public void setLeader(UUID uuid) {
@@ -185,6 +181,25 @@ public class Guild {
         return onlinePlayers;
     }
 
+    public HashSet<Player> getOnlinePlayersThatHavePermission(GuildPermission permission) {
+        int minGuildRankLevel = this.getPermissions().get(permission).level;
+
+        HashSet<Player> onlinePlayers = new HashSet<>();
+        for (Map.Entry<UUID, GuildRank> entry : this.getPlayers().entrySet()) {
+            // GuildRank too low
+            if (entry.getValue().level < minGuildRankLevel) {
+                continue;
+            }
+
+            // Add player if they are online
+            Player player = Bukkit.getPlayer(entry.getKey());
+            if (player != null) {
+                onlinePlayers.add(player);
+            }
+        }
+        return onlinePlayers;
+    }
+
     public void disband() {
 
         // Remove Guild from Guilds
@@ -249,4 +264,32 @@ public class Guild {
         this.getPlayers().replace(uuid, newRank);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

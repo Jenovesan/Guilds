@@ -30,7 +30,7 @@ public class gDemote extends gCommand{
 
     @Override
     public void perform(gPlayer demoter, String[] args) {
-// Checks
+        // Checks
         if (!demoter.isInGuild()) {
             demoter.sendFailMsg(Messages.getMsg("commands.demote.not in guild"));
             return;

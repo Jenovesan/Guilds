@@ -1,13 +1,13 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.GuildPermission;
 import com.guildwars.guildwars.guilds.files.Data;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.Listener;
 
 import java.util.*;
 
-public class Guilds {
+public class Guilds implements Listener {
 
     public static Set<Guild> guilds = new HashSet<>();
 
@@ -74,13 +74,13 @@ public class Guilds {
         getGuilds().add(guild);
     }
 
-    public static HashSet<String> getAllGuildNames() {
-        HashSet<String> guildNames = new HashSet<>();
+    public static boolean guidlNameExists(String name) {
         for (Guild guild : getGuilds()) {
-            System.out.println(guild.getId());
-            guildNames.add(guild.getName());
+            if (guild.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
         }
-        return guildNames;
+        return false;
     }
 
     public static Guild get(int guildId) {
@@ -100,5 +100,4 @@ public class Guilds {
         }
         return null;
     }
-
 }

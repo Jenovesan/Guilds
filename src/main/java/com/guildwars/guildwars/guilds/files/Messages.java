@@ -44,7 +44,7 @@ public class Messages {
             commandsSection.addDefault("create.usage", "&2/g create <name> <description>");
             commandsSection.addDefault("create.creation", "&aYou have created a new guild!");
             commandsSection.addDefault("create.already in guild", "&cYou must leave your guild to create your own");
-            commandsSection.addDefault("create.guild name too long", "&cYour guild name is too long");
+            commandsSection.addDefault("create.guild name too long", "&cGuild name is too long");
             commandsSection.addDefault("create.guild name exists", "&cThat guild name is already being used");
             //help
             commandsSection.addDefault("help.title", "&2&nGuild Commands");
@@ -108,7 +108,7 @@ public class Messages {
             commandsSection.addDefault("promote.successfully promoted", "&aYou promoted &2<name> &ato &2<rank>");
             commandsSection.addDefault("promote.tried to make leader", "&cYou must use &4/g leader <name> &cto make someone your guild's leader");
             // demote
-            commandsSection.addDefault("demote.description", "&Demotes a player in your guild");
+            commandsSection.addDefault("demote.description", "&2Demotes a player in your guild");
             commandsSection.addDefault("demote.usage", "&2/g demote <name>");
             commandsSection.addDefault("demote.not in guild", "&cYou are not in a guild");
             commandsSection.addDefault("demote.demotee not found", "&4<input> &cis not in your guild");
@@ -116,6 +116,24 @@ public class Messages {
             commandsSection.addDefault("demote.demotee demoted msg", "&cYou were demoted to &4<rank>");
             commandsSection.addDefault("demote.successfully demoted", "&aYou demoted &2<name> &ato &2<rank>");
             commandsSection.addDefault("demote.cannot demote any further", "&4<name> &ccannot be demoted any further");
+            // desc
+            commandsSection.addDefault("desc.description", "&2Sets your guild's description");
+            commandsSection.addDefault("desc.usage", "&2/g desc <description>");
+            commandsSection.addDefault("desc.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("desc.successfully set desc", "&aYou set your guild's description to: &2<description>");
+            // name
+            commandsSection.addDefault("name.description", "&2Sets your guild's name");
+            commandsSection.addDefault("name.usage", "&2/g name <name>");
+            commandsSection.addDefault("name.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("name.successfully set name", "&aYou set your guild's name to: &2<name>");
+            commandsSection.addDefault("name.guild name exists", "&cThat guild name is already being used");
+            commandsSection.addDefault("name.guild name too long", "&cGuild name is too long");
+            // name
+            commandsSection.addDefault("chat.description", "&2Joins or leaves your guild's chat channel");
+            commandsSection.addDefault("chat.usage", "&2/g chat || /g chat <message>");
+            commandsSection.addDefault("chat.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("chat.joined guild chat", "&aYou joined your guild's chat");
+            commandsSection.addDefault("chat.left guild chat", "&aYou left your guild's chat");
 
         // Guilds
         messagesFile.createSection("guilds");
@@ -127,7 +145,8 @@ public class Messages {
             guildsSection.addDefault("announcements.guild was full", "&4&l<name> &c&ltried to join your guild, but your guild was full!");
             guildsSection.addDefault("announcements.player leave", "&4&l<name> &c&lleft your guild!");
             guildsSection.addDefault("announcements.player kicked", "&4&l<kicker> &c&lhas kicked &4&l<kickee> &c&lfrom your guild!");
-
+            guildsSection.addDefault("announcements.description changed", "&2&l<name> &a&lset your guild's description to: &2&l<description>");
+            guildsSection.addDefault("announcements.name changed", "&2&l<player name> &a&lset your guild's name to: &2&l<name>");
     }
 
     public static FileConfiguration get() {
