@@ -8,7 +8,7 @@ import java.util.UUID;
 public class gUtil {
 
     public static Guild getOfflinePlayerGuild(UUID playerUUID) {
-        for (Guild guild : Guilds.getGuilds()) {
+        for (Guild guild : Guilds.getAllGuilds()) {
             if (guild.getPlayers().containsKey(playerUUID)) {
                 return guild;
             }

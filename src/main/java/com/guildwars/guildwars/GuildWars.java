@@ -51,6 +51,7 @@ public final class GuildWars extends JavaPlugin {
         // Guilds
         getServer().getPluginManager().registerEvents(new GuildsFastData(), this);
         getServer().getPluginManager().registerEvents(new gPlayers(), this);
+        getServer().getPluginManager().registerEvents(new Guilds(), this);
     }
 
     public static GuildWars getInstance(){

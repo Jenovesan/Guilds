@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
@@ -48,8 +49,9 @@ public class gDisband extends gCommand{
         for (Player onlineGuildMember : onlineGuildMembers) {
             // Update gPlayer
             gPlayers.get(onlineGuildMember).leftGuild();
-            // Call event
+            // Call events
             Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(onlineGuildMember, null, PlayerGuildChangeEvent.Reason.DISBAND));
+            Bukkit.getServer().getPluginManager().callEvent(new GuildDisbandEvent(guild));
         }
 
         // Inform

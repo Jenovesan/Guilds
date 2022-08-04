@@ -1,8 +1,10 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
 import com.guildwars.guildwars.guilds.files.Data;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.*;
@@ -39,7 +41,7 @@ public class Guilds implements Listener {
 
     public static Integer getNewGuildId() {
         int newestGuildId = 0;
-        for (Guild guild : getGuilds()) {
+        for (Guild guild : getAllGuilds()) {
             int guildId = guild.getId();
             System.out.println(guildId);
             if (guildId > newestGuildId) {
@@ -66,20 +68,20 @@ public class Guilds implements Listener {
         Data.save();
     }
 
-    public static Set<Guild> getGuilds() {
+    public static Set<Guild> getAllGuilds() {
         return guilds;
     }
 
     public static void removeGuild(Guild guild) {
-        getGuilds().remove(guild);
+        getAllGuilds().remove(guild);
     }
 
     public static void addGuild(Guild guild) {
-        getGuilds().add(guild);
+        getAllGuilds().add(guild);
     }
 
     public static boolean guidlNameExists(String name) {
-        for (Guild guild : getGuilds()) {
+        for (Guild guild : getAllGuilds()) {
             if (guild.getName().equalsIgnoreCase(name)) {
                 return true;
             }
@@ -88,7 +90,7 @@ public class Guilds implements Listener {
     }
 
     public static Guild get(int guildId) {
-        for (Guild guild : getGuilds()) {
+        for (Guild guild : getAllGuilds()) {
             if (guild.getId() == guildId) {
                 return guild;
             }
@@ -97,11 +99,19 @@ public class Guilds implements Listener {
     }
 
     public static Guild get(String guildName) {
-        for (Guild guild : getGuilds()) {
+        for (Guild guild : getAllGuilds()) {
             if (guild.getName().equalsIgnoreCase(guildName)) {
                 return guild;
             }
         }
         return null;
+    }
+
+    @EventHandler
+    public void updateGuildEnemiesOnGuildDisband(GuildDisbandEvent event) {
+        Integer disbandedGuildId = event.getGuild().getId();
+        for (Guild guild : getAllGuilds()) {
+            guild.getEnemies().remove(disbandedGuildId);
+        }
     }
 }
