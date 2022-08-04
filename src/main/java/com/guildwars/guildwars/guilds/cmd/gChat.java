@@ -33,7 +33,7 @@ public class gChat extends gCommand{
 
         // Checks
         if (!gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.chat.not in guild"));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 

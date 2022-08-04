@@ -27,7 +27,7 @@ public class gName extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.name.not in guild"));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 

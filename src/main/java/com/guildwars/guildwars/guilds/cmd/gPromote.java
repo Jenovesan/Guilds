@@ -30,7 +30,7 @@ public class gPromote extends gCommand{
 
         // Checks
         if (!promoter.isInGuild()) {
-            promoter.sendFailMsg(Messages.getMsg("commands.promote.not in guild"));
+            promoter.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 

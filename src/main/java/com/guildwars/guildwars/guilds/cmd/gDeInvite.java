@@ -32,7 +32,7 @@ public class gDeInvite extends gCommand{
 
         // Checks
         if (!deInviter.isInGuild()) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.deinvite.deinviter not in guild"));
+            deInviter.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
         Guild deInviterGuild = deInviter.getGuild();

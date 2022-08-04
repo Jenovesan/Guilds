@@ -34,7 +34,7 @@ public class gKick extends gCommand{
 
         // Checks
         if (!kicker.isInGuild()) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.not in guild"));
+            kicker.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 

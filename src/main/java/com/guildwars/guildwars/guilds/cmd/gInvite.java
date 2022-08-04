@@ -36,7 +36,7 @@ public class gInvite extends gCommand{
         }
 
         if (!inviter.isInGuild()) {
-            inviter.sendFailMsg(Messages.getMsg("commands.invite.inviter not in guild"));
+            inviter.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
