@@ -52,7 +52,7 @@ public class gKick extends gCommand{
         }
 
         if (!guild.hasHigherRank(kicker.getUUID(), kickee.getUniqueId())) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.rank not higher"));
+            kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher"));
             return;
         }
 
