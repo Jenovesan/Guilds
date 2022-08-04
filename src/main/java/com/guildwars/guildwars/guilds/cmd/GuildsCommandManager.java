@@ -16,17 +16,22 @@ public class GuildsCommandManager implements CommandExecutor {
 
     public Map<String, gCommand> gCommands = Map.ofEntries(
         Map.entry("create", new gCreate()),
+        Map.entry("new", new gCreate()),
         Map.entry("disband", new gDisband()),
         Map.entry("who", new gWho()),
+        Map.entry("show", new gWho()),
         Map.entry("invite", new gInvite()),
         Map.entry("join", new gJoin()),
         Map.entry("deinvite", new gDeInvite()),
         Map.entry( "leave", new gLeave()),
         Map.entry("kick", new gKick()),
         Map.entry("promote", new gPromote()),
+        Map.entry("promote", new gPromote()),
         Map.entry("demote", new gDemote()),
         Map.entry("desc", new gDesc()),
+        Map.entry("setdesc", new gDesc()),
         Map.entry("name", new gName()),
+        Map.entry("setname", new gName()),
         Map.entry("chat", new gChat()),
         Map.entry("enemy", new gEnemy()),
         Map.entry("truce", new gTruce())
