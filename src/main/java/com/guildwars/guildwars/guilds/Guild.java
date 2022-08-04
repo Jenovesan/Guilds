@@ -20,6 +20,7 @@ public class Guild {
     private HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
     private HashSet<OfflinePlayer> invites = new HashSet<>();
     private HashSet<Integer> enemies = new HashSet<>();
+    private HashSet<Integer> truceRequests = new HashSet<>();
 
     public int getId() {
         return id;
@@ -47,6 +48,10 @@ public class Guild {
 
     public HashSet<Integer> getEnemies() {
         return enemies;
+    }
+
+    public HashSet<Integer> getTruceRequests() {
+        return truceRequests;
     }
 
     // Creating a new guild
@@ -279,13 +284,59 @@ public class Guild {
         return this.getEnemies().contains(guild.getId());
     }
 
-    public void enemy(String changerName, Guild guild) {
-        this.getEnemies().add(guild.getId());
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.enemied guild").replace("<name>", guild.getName()).replace("<player name>", changerName));
+    public void enemy(String changerName, Guild enemyGuild) {
+        // Add enemyGuild to this enemy list
+        this.getEnemies().add(enemyGuild.getId());
+
+        // Add this guild to enemyGuild enemy list
+        enemyGuild.getEnemies().add(this.getId());
+
+        // Inform this guild
+        this.sendAnnouncement(Messages.getMsg("guilds.announcements.enemied guild").replace("<name>", enemyGuild.getName()).replace("<player name>", changerName));
+
+        // Inform enemyGuild
+        enemyGuild.sendAnnouncement(Messages.getMsg("guilds.announcements.guild has enemied your guild").replace("<name>", this.getName()));
     }
 
-    public void truce(Integer guildId) {
-        this.getEnemies().remove(guildId);
+    public void truce(Guild enemyGuild) {
+        // Remove enemyGuild from this enemy list
+        this.getEnemies().remove(enemyGuild.getId());
+
+        // Remove this guild from enemyGuild enemy list
+        enemyGuild.getEnemies().remove(this.getId());
+
+        // Inform this guild
+        this.sendAnnouncement(Messages.getMsg("guilds.announcements.truced guild").replace("<name>", enemyGuild.getName()));
+
+        // Inform enemyGuild
+        enemyGuild.sendAnnouncement(Messages.getMsg("guilds.announcements.truced guild").replace("<name>", this.getName()));
+
+        // Remove enemyGuild's truce request with this guild
+        enemyGuild.getTruceRequests().remove(this.getId());
+    }
+
+    public void sendTruceRequest(String requesterName, Guild guildToTruce) {
+        // Add to truce requests
+        this.getTruceRequests().add(guildToTruce.getId());
+
+        // Inform Guild to truce
+        guildToTruce.sendAnnouncement(Messages.getMsg("guilds.announcements.received truce request").replace("<name>", this.getName()));
+
+        // Inform this guild
+        this.sendAnnouncement(Messages.getMsg("guilds.announcements.sent truce request").replace("<name>", requesterName).replace("<guild>", guildToTruce.getName()));
+
+        // Remove truce request later
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // Remove truce request
+                getTruceRequests().remove(guildToTruce.getId());
+            }
+        }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("truce request expire time (m)") * 1200L);
+    }
+
+    public boolean hasTruceRequestWith(Guild guild) {
+        return this.getTruceRequests().contains(guild.getId());
     }
 }
 

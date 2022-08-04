@@ -143,6 +143,16 @@ public class Messages {
             commandsSection.addDefault("enemy.already enemied", "&cYour guild is already enemied with &4<name>");
             commandsSection.addDefault("enemy.cannot enemy own guild", "&cYou cannot enemy your own guild");
             commandsSection.addDefault("enemy.successfully enemied", "&cYou enemied &4<name>");
+            // truce
+            commandsSection.addDefault("truce.description", "&Truces a guild you are enemied with");
+            commandsSection.addDefault("truce.usage", "&2/g truce <guild | player>");
+            commandsSection.addDefault("truce.not in guild", "&cYou are not in a guild");
+            commandsSection.addDefault("truce.player not in guild", "&4<name> &cis not in a guild");
+            commandsSection.addDefault("truce.not a guild or player", "&4<input> &cis not a guild or player");
+            commandsSection.addDefault("truce.not enemied", "&cYour guild is not enemied with &4<name>");
+            commandsSection.addDefault("truce.successfully truced", "&aYou truced &2<name>");
+            commandsSection.addDefault("truce.successfully sent truce request", "&aYou sent a truce request to &2<name>");
+            commandsSection.addDefault("truce.already sent truce request", "&cYour guild has already requested a truce with &4<name>");
 
         // Guilds
         messagesFile.createSection("guilds");
@@ -157,7 +167,10 @@ public class Messages {
             guildsSection.addDefault("announcements.description changed", "&2&l<name> &a&lset your guild's description to: &2&l<description>");
             guildsSection.addDefault("announcements.name changed", "&2&l<player name> &a&lset your guild's name to: &2&l<name>");
             guildsSection.addDefault("announcements.enemied guild", "&c&lYour guild is now enemied with &4&l<name>"); // Can use player name to say who enemied the guild
-            guildsSection.addDefault("announcements.truced guild", "&a&lYour guild is now truced with &4&l<name>"); // Can use player name to say who truced the guild
+            guildsSection.addDefault("announcements.guild has enemied your guild", "&4&l<name> &c&lhas enemied your guild");
+            guildsSection.addDefault("announcements.truced guild", "&a&lYour guild is now truced with &2&l<name>");
+            guildsSection.addDefault("announcements.sent truce request", "&2&l<name> &a&lhas sent a truce request to &2&l<guild>");
+            guildsSection.addDefault("announcements.received truce request", "&2&l<name> &a&lhas requested to truce with your guild");
     }
 
     public static FileConfiguration get() {

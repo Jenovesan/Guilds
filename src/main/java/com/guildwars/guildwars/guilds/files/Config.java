@@ -33,6 +33,7 @@ public class Config {
         configFile.addDefault("join guild at rank", "RECRUIT");
         configFile.addDefault("max characters in guild name", 15);
         configFile.addDefault("invite expire time (s)", 60);
+        configFile.addDefault("truce request expire time (m)", 60);
         configFile.addDefault("max players in guild", 10);
 
         //default permissions
