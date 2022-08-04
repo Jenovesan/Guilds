@@ -44,19 +44,28 @@ public class gInvite extends gCommand{
             return;
         }
 
-        if (inviter.getGuild().isInvited(invitee)) {
+        Guild inviterGuild = inviter.getGuild();
+
+        if (inviterGuild.isInvited(invitee)) {
             inviter.sendFailMsg(Messages.getMsg("commands.invite.already invited").replace("<name>", invitee.getName()));
             return;
         }
 
         gPlayer gInvitee = gPlayers.get(invitee);
         if (gInvitee.isInGuild()) {
-            inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in guild").replace("<name>", invitee.getName()));
-            return;
+            // Invitee is already a member of the inviter's Guild
+            if (gInvitee.getGuild() == inviterGuild) {
+                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in inviter guild").replace("<name>", invitee.getName()));
+                return;
+            }
+            // Invitee not in Guild
+            else {
+                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in guild").replace("<name>", invitee.getName()));
+                return;
+            }
         }
 
         // Invite player
-        Guild inviterGuild = inviter.getGuild();
         inviterGuild.invite(invitee);
 
         // Inform invitee

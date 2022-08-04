@@ -60,6 +60,7 @@ public class Messages {
             commandsSection.addDefault("invite.inviter rank to low", "&cYou rank is too low");
             commandsSection.addDefault("invite.invite expired", "&cYour invite to &4<guild> &chas expired");
             commandsSection.addDefault("invite.invitee in guild", "&4<name> &cis in a guild");
+            commandsSection.addDefault("invite.invitee in inviter guild", "&4<name> &cis already a member of your guild");
             commandsSection.addDefault("invite.successfully invited", "&aYou invited &2<name> &ato your guild");
             commandsSection.addDefault("invite.invitee invite msg", "&aYou have been invited to &2<guild>");
             commandsSection.addDefault("invite.already invited", "&4<name> &cis already invited to your guild. Use &4/g deinvite &cto remove them from your guild's invite list");

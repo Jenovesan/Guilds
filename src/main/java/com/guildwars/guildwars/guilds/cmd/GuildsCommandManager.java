@@ -26,7 +26,6 @@ public class GuildsCommandManager implements CommandExecutor {
         Map.entry( "leave", new gLeave()),
         Map.entry("kick", new gKick()),
         Map.entry("promote", new gPromote()),
-        Map.entry("promote", new gPromote()),
         Map.entry("demote", new gDemote()),
         Map.entry("desc", new gDesc()),
         Map.entry("setdesc", new gDesc()),
