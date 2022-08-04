@@ -25,7 +25,7 @@ public class gEnemy extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.enemy.not in guild"));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 

@@ -3,13 +3,10 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.core.ChatChannel;
 import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class gChat extends gCommand{
 
@@ -33,7 +30,7 @@ public class gChat extends gCommand{
 
         // Checks
         if (!gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.chat.not in guild"));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 

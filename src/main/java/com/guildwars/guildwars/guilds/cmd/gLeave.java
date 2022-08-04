@@ -29,7 +29,7 @@ public class gLeave extends gCommand{
 
         // Checks
         if (!leaver.isInGuild()) {
-            leaver.sendFailMsg(Messages.getMsg("commands.leave.not in guild"));
+            leaver.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
