@@ -1,15 +1,11 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
-import java.util.Objects;
 
 public class gDeInvite extends gCommand{
     @Override
@@ -32,7 +28,7 @@ public class gDeInvite extends gCommand{
 
         // Checks
         if (!deInviter.isInGuild()) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            deInviter.sendFailMsg(Messages.getMsg("commands.not in guild", deInviter.getPlayer(), null, args, null, null, null, null));
             return;
         }
         Guild deInviterGuild = deInviter.getGuild();
@@ -45,7 +41,7 @@ public class gDeInvite extends gCommand{
         OfflinePlayer deInvitee = deInviterGuild.getInvitedPlayer(deInviteeName);
 
         if (deInvitee == null) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.deinvite.not invited").replace("<input>", args[0]));
+            deInviter.sendFailMsg(Messages.getMsg("commands.deinvite.not invited", deInviter.getPlayer(), null, args, deInviterGuild, null, deInviter.getGuildRank(), null));
             return;
         }
 
@@ -55,10 +51,10 @@ public class gDeInvite extends gCommand{
         // Inform deinvitee
         Player deInviteePlayer = deInvitee.getPlayer();
         if (deInviteePlayer != null) {
-            pUtil.sendNotifyMsg(deInviteePlayer, Messages.getMsg("commands.deinvite.deinvitee deinvited msg").replace("<name>", deInviterGuild.getName()));
+            pUtil.sendNotifyMsg(deInviteePlayer, Messages.getMsg("commands.deinvite.deinvitee deinvited msg", deInviteePlayer, deInviter.getPlayer(), args, deInviterGuild, deInviterGuild, null, GuildRank.valueOf(Config.get().getString("join guild at rank"))));
         }
 
         // Inform deinviter
-        deInviter.sendSuccessMsg(Messages.getMsg("commands.deinvite.successfully deinvited").replace("<name>", Objects.requireNonNullElse(deInvitee.getName(), args[0])));
+        deInviter.sendSuccessMsg(Messages.getMsg("commands.deinvite.successfully deinvited", deInviter.getPlayer(), deInviteePlayer, args, deInviterGuild, deInviterGuild, deInviter.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
     }
 }

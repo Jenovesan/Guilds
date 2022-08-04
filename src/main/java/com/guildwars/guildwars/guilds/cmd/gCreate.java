@@ -1,12 +1,12 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.utils.util;
 import org.bukkit.Bukkit;
 
 public class gCreate extends gCommand {
@@ -31,17 +31,17 @@ public class gCreate extends gCommand {
 
         // Checks
         if (gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.create.already in guild"));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.create.already in guild", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), null, gPlayer.getGuildRank(), GuildRank.LEADER));
             return;
         }
 
         String guildName = args[0];
         if (guildName.toCharArray().length > Config.get().getInt("max characters in guild name")) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name too long"));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name too long", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), null, gPlayer.getGuildRank(), GuildRank.LEADER));
             return;
         }
         if (Guilds.guidlNameExists(guildName)) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name exists"));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name exists", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), null, gPlayer.getGuildRank(), GuildRank.LEADER));
             return;
         }
 
@@ -58,6 +58,6 @@ public class gCreate extends gCommand {
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(gPlayer.getPlayer(), newGuild, PlayerGuildChangeEvent.Reason.CREATION));
 
         // Inform
-        gPlayer.sendSuccessMsg(Messages.getMsg("commands.create.creation"));
+        gPlayer.sendSuccessMsg(Messages.getMsg("commands.create.creation", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), gPlayer.getGuild(), gPlayer.getGuildRank(), GuildRank.LEADER));
     }
 }

@@ -25,7 +25,7 @@ public class gEnemy extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player.getPlayer(), null, args, null, null, null, null));
             return;
         }
 
@@ -38,33 +38,33 @@ public class gEnemy extends gCommand{
         if (possiblePlayerToEnemy != null) { // Player using player name to enemy guild
             gPlayer gPlayerToEnemy = gPlayers.get(possiblePlayerToEnemy);
             if (!gPlayerToEnemy.isInGuild()) {
-                player.sendFailMsg(Messages.getMsg("commands.enemy.player not in guild").replace("<name>", possiblePlayerToEnemy.getName()));
+                player.sendFailMsg(Messages.getMsg("commands.enemy.player not in guild", player.getPlayer(), possiblePlayerToEnemy, args, player.getGuild(), null, player.getGuildRank(), gPlayerToEnemy.getGuildRank()));
                 return;
             }
             guildToEnemy = gPlayerToEnemy.getGuild();
         } else { //Player using guild name to enemy guild
             guildToEnemy = Guilds.get(args[0]);
             if (guildToEnemy == null) {
-                player.sendFailMsg(Messages.getMsg("commands.enemy.not a guild or player").replace("<input>", args[0]));
+                player.sendFailMsg(Messages.getMsg("commands.enemy.not a guild or player", player.getPlayer(), null, args, player.getGuild(), guildToEnemy, player.getGuildRank(), null));
                 return;
             }
         }
 
         Guild playerGuild = player.getGuild();
         if (playerGuild.isEnemied(guildToEnemy)) {
-            player.sendFailMsg(Messages.getMsg("commands.enemy.already enemied").replace("<name>", guildToEnemy.getName()));
+            player.sendFailMsg(Messages.getMsg("commands.enemy.already enemied", player.getPlayer(), possiblePlayerToEnemy, args, playerGuild, guildToEnemy, player.getGuildRank(), null));
             return;
         }
 
         if (playerGuild == guildToEnemy) {
-            player.sendFailMsg(Messages.getMsg("commands.enemy.cannot enemy own guild"));
+            player.sendFailMsg(Messages.getMsg("commands.enemy.cannot enemy own guild", player.getPlayer(), possiblePlayerToEnemy, args, playerGuild, guildToEnemy, player.getGuildRank(), null));
             return;
         }
 
         // Enemy guild
-        playerGuild.enemy(player.getName(), guildToEnemy);
+        playerGuild.enemy(player.getPlayer(), guildToEnemy);
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.enemy.successfully enemied").replace("<name>", guildToEnemy.getName()));
+        player.sendSuccessMsg(Messages.getMsg("commands.enemy.successfully enemied", player.getPlayer(), possiblePlayerToEnemy, args, playerGuild, guildToEnemy, player.getGuildRank(), null));
     }
 }

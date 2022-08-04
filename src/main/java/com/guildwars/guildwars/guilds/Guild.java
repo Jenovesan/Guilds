@@ -89,14 +89,14 @@ public class Guild {
         this.permissions.put(GuildPermission.RELATIONS, GuildRank.valueOf(Config.get().getString("default permissions.relations")));
     }
 
-    public void setName(String changerName, String newName) {
+    public void setName(Player changer, String newName) {
         this.name = newName;
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.name changed").replace("<player name>", changerName).replace("<name>", name));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.name changed", changer, null, new String[] {newName}, this, this, this.getRank(changer.getUniqueId()), null));
     }
 
-    public void setDescription(String changerName, String desc) {
+    public void setDescription(Player changer, String desc) {
         this.description = desc;
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.description changed").replace("<name>", changerName).replace("<description>", desc));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.description changed", changer, null, new String[] {desc}, this, this, this.getRank(changer.getUniqueId()), null));
     }
 
     public void setLeader(UUID uuid) {
@@ -107,7 +107,7 @@ public class Guild {
         // Add else clause
     }
 
-    public void invite(Player inviteePlayer) {
+    public void invite(Player inviter, Player inviteePlayer) {
 
         // Convert player to offline player
         OfflinePlayer invitee = Bukkit.getOfflinePlayer(inviteePlayer.getUniqueId());
@@ -129,7 +129,7 @@ public class Guild {
 
                 // Notify player if they're online
                 if (inviteePlayer.isOnline()) {
-                    pUtil.sendNotifyMsg(inviteePlayer, Messages.getMsg("commands.invite.invite expired").replace("<guild>", getName()));
+                    pUtil.sendNotifyMsg(inviteePlayer, Messages.getMsg("commands.invite.invite expired", inviter, inviteePlayer, null, get(), get(), getRank(inviter.getUniqueId()),  GuildRank.valueOf(Config.get().getString("join guild at rank"))));
                 }
             }
         }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("invite expire time (s)") * 20L);
@@ -141,12 +141,14 @@ public class Guild {
 
     public void addPlayer(Player player) {
 
+        GuildRank playerNewGuidRank = GuildRank.valueOf(Config.get().getString("join guild at rank"));
+
         // Send Guild Announcement
         // This is done first because if it was done after the player was added to the guild, the new player would receive this announcement
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.player join").replace("<name>", player.getName()));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.player join", player, player, null, get(), get(), playerNewGuidRank,  playerNewGuidRank));
 
         // Update Guild's player list
-        this.getPlayers().put(player.getUniqueId(), GuildRank.valueOf(Config.get().getString("join guild at rank")));
+        this.getPlayers().put(player.getUniqueId(), playerNewGuidRank);
 
         // Update gPlayer
         gPlayer gPlayer = gPlayers.get(player);
@@ -163,10 +165,10 @@ public class Guild {
         gPlayer.leftGuild();
 
         // Send Guild Announcement
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.player leave").replace("<name>", player.getName()));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.player leave", player, player, null, get(), null, null,  null));
     }
 
-    public void kickPlayer(String kickerName, OfflinePlayer kickee) {
+    public void kickPlayer(Player kicker, OfflinePlayer kickee) {
 
         // Remove player from Guild
         this.getPlayers().remove(kickee.getUniqueId());
@@ -179,7 +181,7 @@ public class Guild {
         }
 
         // Send Guild Announcement
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.player kicked").replace("<kicker>", kickerName).replace("<kickee>", Objects.requireNonNullElse(kickee.getName(), "")));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.player kicked", kicker, kickeePlayer, null, get(), null, null,  null));
     }
 
     public GuildRank getRank(UUID uuid) {
@@ -216,7 +218,7 @@ public class Guild {
         return onlinePlayers;
     }
 
-    public void disband() {
+    public void disband(Player player) {
 
         // Remove Guild from Guilds
         Guilds.removeGuild(this);
@@ -225,7 +227,7 @@ public class Guild {
         Guilds.removeGuildData(this.getId());
 
         // Send Guild Announcement
-        sendAnnouncement(Messages.getMsg("guilds.announcements.disband"));
+        sendAnnouncement(Messages.getMsg("guild announcements.disband", player, null, null, this, null, GuildRank.LEADER, null));
     }
 
     public boolean isInvited(Player player) {
@@ -264,12 +266,6 @@ public class Guild {
         return null;
     }
 
-    public boolean hasHigherRank(UUID uuid1, UUID uuid2) {
-        GuildRank rank1 = this.getPlayers().get(uuid1);
-        GuildRank rank2 = this.getPlayers().get(uuid2);
-        return rank1.level > rank2.level;
-    }
-
     public GuildRank getGuildRank(OfflinePlayer player) {
         UUID uuid = player.getUniqueId();
         return this.getPlayers().get(uuid);
@@ -284,7 +280,7 @@ public class Guild {
         return this.getEnemies().contains(guild.getId());
     }
 
-    public void enemy(String changerName, Guild enemyGuild) {
+    public void enemy(Player player, Guild enemyGuild) {
         // Add enemyGuild to this enemy list
         this.getEnemies().add(enemyGuild.getId());
 
@@ -292,10 +288,10 @@ public class Guild {
         enemyGuild.getEnemies().add(this.getId());
 
         // Inform this guild
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.enemied guild").replace("<name>", enemyGuild.getName()).replace("<player name>", changerName));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.enemied guild", player, null, null, this, enemyGuild, getRank(player.getUniqueId()), null));
 
         // Inform enemyGuild
-        enemyGuild.sendAnnouncement(Messages.getMsg("guilds.announcements.guild has enemied your guild").replace("<name>", this.getName()));
+        enemyGuild.sendAnnouncement(Messages.getMsg("guild announcements.guild has enemied your guild", player, player, null, enemyGuild, this, getRank(player.getUniqueId()), getRank(player.getUniqueId())));
     }
 
     public void truce(Guild enemyGuild) {
@@ -306,24 +302,24 @@ public class Guild {
         enemyGuild.getEnemies().remove(this.getId());
 
         // Inform this guild
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.truced guild").replace("<name>", enemyGuild.getName()));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", null, null, null, this, enemyGuild, null, null));
 
         // Inform enemyGuild
-        enemyGuild.sendAnnouncement(Messages.getMsg("guilds.announcements.truced guild").replace("<name>", this.getName()));
+        enemyGuild.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", null, null, null, enemyGuild, this, null, null));
 
         // Remove enemyGuild's truce request with this guild
         enemyGuild.getTruceRequests().remove(this.getId());
     }
 
-    public void sendTruceRequest(String requesterName, Guild guildToTruce) {
+    public void sendTruceRequest(Player player, Guild guildToTruce) {
         // Add to truce requests
         this.getTruceRequests().add(guildToTruce.getId());
 
         // Inform Guild to truce
-        guildToTruce.sendAnnouncement(Messages.getMsg("guilds.announcements.received truce request").replace("<name>", this.getName()));
+        guildToTruce.sendAnnouncement(Messages.getMsg("guild announcements.received truce request", player, player, null, guildToTruce, this, getRank(player.getUniqueId()), null));
 
         // Inform this guild
-        this.sendAnnouncement(Messages.getMsg("guilds.announcements.sent truce request").replace("<name>", requesterName).replace("<guild>", guildToTruce.getName()));
+        this.sendAnnouncement(Messages.getMsg("guild announcements.sent truce request", player, player, null, this, guildToTruce, getRank(player.getUniqueId()), null));
 
         // Remove truce request later
         new BukkitRunnable() {
@@ -337,6 +333,10 @@ public class Guild {
 
     public boolean hasTruceRequestWith(Guild guild) {
         return this.getTruceRequests().contains(guild.getId());
+    }
+
+    public Guild get() {
+        return this;
     }
 }
 

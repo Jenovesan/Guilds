@@ -30,32 +30,39 @@ public class gDisband extends gCommand{
 
 
     @Override
-    public void perform(gPlayer gPlayer, String[] args) {
+    public void perform(gPlayer player, String[] args) {
         // Checks
-        if (gPlayer.getGuildRank() != GuildRank.LEADER) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.guild rank too low"));
+        if (!player.isInGuild()) {
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player.getPlayer(), null, args, null, null, null, null));
+            return;
+        }
+
+        if (player.getGuildRank() != GuildRank.LEADER) {
+            player.sendFailMsg(Messages.getMsg("commands.guild rank too low", player.getPlayer(), null, args, player.getGuild(), player.getGuild(), player.getGuildRank(), GuildRank.LEADER));
             return;
         }
 
         // Disband Guild
-        Guild guild = gPlayer.getGuild();
+        Guild guild = player.getGuild();
 
         // Used to update gPlayers & inform guild members later
         HashSet<Player> onlineGuildMembers = guild.getOnlinePlayers();
 
-        guild.disband();
+        guild.disband(player.getPlayer());
 
         // Update gPlayers & call event
         for (Player onlineGuildMember : onlineGuildMembers) {
             // Update gPlayer
             gPlayers.get(onlineGuildMember).leftGuild();
-            // Call events
+            // Call PlayerGuildChangeEvents
             Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(onlineGuildMember, null, PlayerGuildChangeEvent.Reason.DISBAND));
-            Bukkit.getServer().getPluginManager().callEvent(new GuildDisbandEvent(guild));
         }
 
+        // Call GuildDisbandEvent
+        Bukkit.getServer().getPluginManager().callEvent(new GuildDisbandEvent(guild));
+
         // Inform
-        gPlayer.sendSuccessMsg(Messages.getMsg("commands.disband.successfully disbanded"));
+        player.sendSuccessMsg(Messages.getMsg("commands.disband.successfully disbanded", player.getPlayer(), null, args, player.getGuild(), null, player.getGuildRank(), null));
 
     }
 }

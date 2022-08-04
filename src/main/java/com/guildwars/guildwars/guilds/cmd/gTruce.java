@@ -25,7 +25,7 @@ public class gTruce extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player.getPlayer(), null, args, null, null, null, null));
             return;
         }
 
@@ -38,42 +38,42 @@ public class gTruce extends gCommand{
         if (possiblePlayerToTruce != null) { // Player using player name to truce guild
             gPlayer gPlayerToTruce = gPlayers.get(possiblePlayerToTruce);
             if (!gPlayerToTruce.isInGuild()) {
-                player.sendFailMsg(Messages.getMsg("commands.truce.player not in guild").replace("<name>", possiblePlayerToTruce.getName()));
+                player.sendFailMsg(Messages.getMsg("commands.truce.player not in guild", player.getPlayer(), possiblePlayerToTruce, args, player.getGuild(), null, player.getGuildRank(), gPlayerToTruce.getGuildRank()));
                 return;
             }
             guildToTruce = gPlayerToTruce.getGuild();
         } else { //Player using guild name to truce guild
             guildToTruce = Guilds.get(args[0]);
             if (guildToTruce == null) {
-                player.sendFailMsg(Messages.getMsg("commands.truce.not a guild or player").replace("<input>", args[0]));
+                player.sendFailMsg(Messages.getMsg("commands.truce.not a guild or player", player.getPlayer(), null, args, player.getGuild(), null, player.getGuildRank(), null));
                 return;
             }
         }
 
         Guild playerGuild = player.getGuild();
         if (!playerGuild.isEnemied(guildToTruce)) {
-            player.sendFailMsg(Messages.getMsg("commands.truce.not enemied").replace("<name>", guildToTruce.getName()));
+            player.sendFailMsg(Messages.getMsg("commands.truce.not enemied", player.getPlayer(), possiblePlayerToTruce, args, playerGuild, guildToTruce, player.getGuildRank(), null));
             return;
         }
 
         if (playerGuild.hasTruceRequestWith(guildToTruce)) {
-            player.sendFailMsg(Messages.getMsg("commands.truce.already sent truce request").replace("<name>", guildToTruce.getName()));
+            player.sendFailMsg(Messages.getMsg("commands.truce.already sent truce request", player.getPlayer(), possiblePlayerToTruce, args, playerGuild, guildToTruce, player.getGuildRank(), null));
             return;
         }
 
         // Send a truce request
         if (!guildToTruce.hasTruceRequestWith(playerGuild)) {
-            playerGuild.sendTruceRequest(player.getName(), guildToTruce);
+            playerGuild.sendTruceRequest(player.getPlayer(), guildToTruce);
 
             // Inform
-            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully sent truce request").replace("<name>", guildToTruce.getName()));
+            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully sent truce request", player.getPlayer(), possiblePlayerToTruce, args, playerGuild, guildToTruce, player.getGuildRank(), null));
         }
         // Truce guild
         else {
             playerGuild.truce(guildToTruce);
 
             // Inform
-            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully truced").replace("<name>", guildToTruce.getName()));
+            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully truced", player.getPlayer(), possiblePlayerToTruce, args, playerGuild, guildToTruce, player.getGuildRank(), null));
         }
 
     }

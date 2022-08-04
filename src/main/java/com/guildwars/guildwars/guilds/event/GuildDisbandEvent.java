@@ -22,4 +22,7 @@ public class GuildDisbandEvent extends Event {
         return handlers;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
@@ -25,7 +26,7 @@ public class gDesc extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player.getPlayer(), null, args, null, null, null, null));
             return;
         }
 
@@ -35,9 +36,10 @@ public class gDesc extends gCommand{
 
         // Set Guild Description
         String description = String.join(" ", args);
-        player.getGuild().setDescription(player.getName(), description);
+        Guild guild = player.getGuild();
+        guild.setDescription(player.getPlayer(), description);
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.desc.successfully set desc").replace("<description>", description));
+        player.sendSuccessMsg(Messages.getMsg("commands.desc.successfully set desc", player.getPlayer(), null, args, guild, guild, player.getGuildRank(), null));
     }
 }

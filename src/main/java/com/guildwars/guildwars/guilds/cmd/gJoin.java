@@ -1,11 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.Guilds;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -29,7 +27,7 @@ public class gJoin extends gCommand{
     public void perform(gPlayer joiner, String[] args) {
         // Checks
         if (joiner.isInGuild()) {
-            joiner.sendFailMsg(Messages.getMsg("commands.join.in guild"));
+            joiner.sendFailMsg(Messages.getMsg("commands.join.in guild", joiner.getPlayer(), null, args, joiner.getGuild(), null, joiner.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
             return;
         }
 
@@ -38,27 +36,27 @@ public class gJoin extends gCommand{
         if (possiblePlayerToJoin != null) { // Player using player name to join guild
             gPlayer gPlayerToJoin = gPlayers.get(possiblePlayerToJoin);
             if (!gPlayerToJoin.isInGuild()) {
-                joiner.sendFailMsg(Messages.getMsg("commands.join.player not in guild").replace("<name>", possiblePlayerToJoin.getName()));
+                joiner.sendFailMsg(Messages.getMsg("commands.join.player not in guild", joiner.getPlayer(), possiblePlayerToJoin, args, null, null, joiner.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
                 return;
             }
             guildToJoin = gPlayerToJoin.getGuild();
         } else { //Player using guild name to join guild
             guildToJoin = Guilds.get(args[0]);
             if (guildToJoin == null) {
-                joiner.sendFailMsg(Messages.getMsg("commands.join.not a guild or player").replace("<input>", args[0]));
+                joiner.sendFailMsg(Messages.getMsg("commands.join.not a guild or player", joiner.getPlayer(), possiblePlayerToJoin, args, null, guildToJoin, joiner.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
                 return;
             }
         }
 
         if (!guildToJoin.isInvited(joiner.getPlayer())) {
-            joiner.sendFailMsg(Messages.getMsg("commands.join.not invited").replace("<name>", guildToJoin.getName()));
+            joiner.sendFailMsg(Messages.getMsg("commands.join.not invited", joiner.getPlayer(), possiblePlayerToJoin, args, null, guildToJoin, joiner.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
             return;
         }
 
         if (guildToJoin.isFull()) {
-            joiner.sendFailMsg(Messages.getMsg("commands.join.guild is full").replace("<name>", guildToJoin.getName()));
+            joiner.sendFailMsg(Messages.getMsg("commands.join.guild is full", joiner.getPlayer(), possiblePlayerToJoin, args, null, guildToJoin, joiner.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
             // Send guild announcement saying player tried to join, but guild was full
-            guildToJoin.sendAnnouncement(Messages.getMsg("guilds.announcements.guild was full").replace("<name>", joiner.getName()));
+            guildToJoin.sendAnnouncement(Messages.getMsg("guilds announcements.guild was full", joiner.getPlayer(), possiblePlayerToJoin, args, null, guildToJoin, joiner.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
             return;
         }
 
@@ -76,6 +74,6 @@ public class gJoin extends gCommand{
         newGuild.deInvite(player);
 
         // Inform player
-        joiner.sendSuccessMsg(Messages.getMsg("commands.join.successfully joined").replace("<name>", newGuild.getName()));
+        joiner.sendSuccessMsg(Messages.getMsg("commands.join.successfully joined", joiner.getPlayer(), possiblePlayerToJoin, args, null, guildToJoin, joiner.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
     }
 }

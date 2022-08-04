@@ -3,11 +3,8 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
-import com.guildwars.guildwars.utils.util;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
-import java.util.Objects;
 
 public class gPromote extends gCommand{
     @Override
@@ -30,7 +27,7 @@ public class gPromote extends gCommand{
 
         // Checks
         if (!promoter.isInGuild()) {
-            promoter.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            promoter.sendFailMsg(Messages.getMsg("commands.not in guild", promoter.getPlayer(), null, args, null, null, null, null));
             return;
         }
 
@@ -39,7 +36,7 @@ public class gPromote extends gCommand{
         OfflinePlayer promotee = guild.getOfflinePlayer(args[0]);
 
         if (promotee == null) {
-            promoter.sendFailMsg(Messages.getMsg("commands.promote.promotee not found").replace("<input>", args[0]));
+            promoter.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", promoter.getPlayer(), null, args, guild, guild, promoter.getGuildRank(), null));
             return;
         }
 
@@ -47,9 +44,9 @@ public class gPromote extends gCommand{
         GuildRank promoteeGuildRank = guild.getGuildRank(promotee);
         if (GuildRank.higherByAmount(promoterGuildRank, promoteeGuildRank) < 2) {
             if (promoterGuildRank != GuildRank.LEADER) {
-                promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough").replace("<name>", Objects.requireNonNullElse(promotee.getName(), "")));
+                promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough", promoter.getPlayer(), promotee.getPlayer(), args, guild, guild, promoterGuildRank, promoteeGuildRank));
             } else { // Tried to promote member to GuildRank: Leader
-                promoter.sendFailMsg(Messages.getMsg("commands.promote.tried to make leader"));
+                promoter.sendFailMsg(Messages.getMsg("commands.promote.tried to make leader", promoter.getPlayer(), promotee.getPlayer(), args, guild, guild, promoterGuildRank, promoteeGuildRank));
             }
             return;
         }
@@ -66,10 +63,10 @@ public class gPromote extends gCommand{
             promoteeGPlayer.setGuildRank(newGuildRank);
 
             // Inform
-            pUtil.sendSuccessMsg(promoteePlayer, Messages.getMsg("commands.promote.promotee promoted msg").replace("<rank>", util.formatEnum(newGuildRank)));
+            pUtil.sendSuccessMsg(promoteePlayer, Messages.getMsg("commands.promote.promotee promoted msg", promoteePlayer, promoter.getPlayer(), args, guild, guild, promoteeGuildRank, newGuildRank));
         }
 
         // Inform promoter
-        promoter.sendSuccessMsg(Messages.getMsg("commands.promote.successfully promoted").replace("<name>", Objects.requireNonNullElse(promotee.getName(), "")).replace("<rank>", util.formatEnum(newGuildRank)));
+        promoter.sendSuccessMsg(Messages.getMsg("commands.promote.successfully promoted", promoter.getPlayer(), promoteePlayer, args, guild, guild, promoterGuildRank, newGuildRank));
     }
 }

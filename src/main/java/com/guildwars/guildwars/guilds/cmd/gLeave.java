@@ -47,6 +47,6 @@ public class gLeave extends gCommand{
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(leaverPlayer, null, PlayerGuildChangeEvent.Reason.LEAVE));
 
         // Inform player
-        leaver.sendSuccessMsg(Messages.getMsg("commands.leave.successfully left").replace("<name>", guild.getName()));
+        leaver.sendSuccessMsg(Messages.getMsg("commands.leave.successfully left", leaverPlayer, null, args, guild, null, leaver.getGuildRank(), null));
     }
 }
