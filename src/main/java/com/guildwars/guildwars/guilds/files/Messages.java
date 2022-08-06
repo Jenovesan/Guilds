@@ -134,7 +134,7 @@ public class Messages {
             commandsSection.addDefault("enemy.cannot enemy own guild", "&cYou cannot enemy your own guild");
             commandsSection.addDefault("enemy.successfully enemied", "&cYou enemied &4%TARGET_GUILD_NAME%");
             // truce
-            commandsSection.addDefault("truce.description", "&Truces a guild you are enemied with");
+            commandsSection.addDefault("truce.description", "&2Truces a guild you are enemied with");
             commandsSection.addDefault("truce.usage", "&2/g truce <guild | player>");
             commandsSection.addDefault("truce.player not in guild", "&4%TARGET_DISPLAY_NAME% &cis not in a guild");
             commandsSection.addDefault("truce.not a guild or player", "&4%INPUT% &cis not a guild or player");
@@ -142,6 +142,12 @@ public class Messages {
             commandsSection.addDefault("truce.successfully truced", "&aYou truced &2%TARGET_GUILD_NAME%");
             commandsSection.addDefault("truce.successfully sent truce request", "&aYou sent a truce request to &2%TARGET_GUILD_NAME%");
             commandsSection.addDefault("truce.already sent truce request", "&cYour guild has already requested a truce with &4%TARGRT_GUILD_NAME%");
+            // leader
+            commandsSection.addDefault("leader.description", "&2Sets a member of your guild to Leader rank");
+            commandsSection.addDefault("leader.usage", "&2/g leader <name>");
+            commandsSection.addDefault("leader.not leader", "&4%TARGET_DISPLAY_NAME% &cis not in a guild");
+            commandsSection.addDefault("leader.new leader success msg", "&aYou have been given leadership to &2%TARGET_GUILD_NAME%");
+            commandsSection.addDefault("leader.old leader success msg", "&aYou gave &4%TARGET_DISPLAY_NAME% &aleadership of your guild");
 
         // Guilds
         messagesFile.createSection("guild announcements");
@@ -153,13 +159,14 @@ public class Messages {
             guildAnnouncementsSection.addDefault("guild was full", "&4&l%PLAYER_DISPLAY_NAME% &c&ltried to join your guild, but your guild was full!");
             guildAnnouncementsSection.addDefault("player leave", "&4&l%PLAYER_DISPLAY_NAME% &c&lleft your guild!");
             guildAnnouncementsSection.addDefault("player kicked", "&4&l%PLAYER_DISPLAY_NAME% &c&lhas kicked &4&l%TARGET_DISPLAY_NAME% &c&lfrom your guild!");
-            guildAnnouncementsSection.addDefault("description changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's description to: &2&l%INPUT%");
-            guildAnnouncementsSection.addDefault("name changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's name to: &2&l%INPUT%");
-            guildAnnouncementsSection.addDefault("enemied guild", "&c&lYour guild is now enemied with &4&l%TARGET_GUILD_NAME%");
-            guildAnnouncementsSection.addDefault("guild has enemied your guild", "&4&l%TARGET_GUILD_NAME% &c&lhas enemied your guild");
-            guildAnnouncementsSection.addDefault("truced guild", "&a&lYour guild is now truced with &2&l%TARGET_GUILD_NAME%");
-            guildAnnouncementsSection.addDefault("sent truce request", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas sent a truce request to &2&l%TARGET_GUILD_NAME%");
-            guildAnnouncementsSection.addDefault("received truce request", "&2&l%TARGET_GUILD_NAME% &a&lhas requested to truce with your guild");
+            guildAnnouncementsSection.addDefault("description changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's description to: &2&l%INPUT%!");
+            guildAnnouncementsSection.addDefault("name changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's name to: &2&l%INPUT%!");
+            guildAnnouncementsSection.addDefault("enemied guild", "&c&lYour guild is now enemied with &4&l%TARGET_GUILD_NAME%!");
+            guildAnnouncementsSection.addDefault("guild has enemied your guild", "&4&l%TARGET_GUILD_NAME% &c&lhas enemied your guild!");
+            guildAnnouncementsSection.addDefault("truced guild", "&a&lYour guild is now truced with &2&l%TARGET_GUILD_NAME%!");
+            guildAnnouncementsSection.addDefault("sent truce request", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas sent a truce request to &2&l%TARGET_GUILD_NAME%!");
+            guildAnnouncementsSection.addDefault("received truce request", "&2&l%TARGET_GUILD_NAME% &a&lhas requested to truce with your guild!");
+            guildAnnouncementsSection.addDefault("gave leadership", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas given leadership to the guild to &2&l%TARGET_DISPLAY_NAME%!");
 
 
         // Guild Naming

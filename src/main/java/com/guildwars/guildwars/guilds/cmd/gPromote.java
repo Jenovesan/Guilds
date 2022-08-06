@@ -24,7 +24,6 @@ public class gPromote extends gCommand{
 
     @Override
     public void perform(gPlayer promoter, String[] args) {
-
         // Checks
         if (!promoter.isInGuild()) {
             promoter.sendFailMsg(Messages.getMsg("commands.not in guild", promoter.getPlayer(), null, args, null, null, null, null));

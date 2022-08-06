@@ -59,7 +59,7 @@ public class Guild {
         this.id = Guilds.getNewGuildId();
         this.name = name;
         this.description = description;
-        this.setLeader(creatorUUID);
+        this.getPlayers().put(creatorUUID, GuildRank.LEADER);
         loadDefaults();
         Guilds.addGuild(this);
     }
@@ -99,12 +99,14 @@ public class Guild {
         this.sendAnnouncement(Messages.getMsg("guild announcements.description changed", changer, null, new String[] {desc}, this, this, this.getRank(changer.getUniqueId()), null));
     }
 
-    public void setLeader(UUID uuid) {
-        boolean hasLeader = this.getPlayers().containsValue(GuildRank.LEADER);
-        if (!hasLeader) {
-            this.getPlayers().put(uuid, GuildRank.LEADER);
-        }
-        // Add else clause
+    public void setLeader(Player oldLeader, OfflinePlayer newLeader) {
+        // Set the new leader to leader
+        this.getPlayers().replace(newLeader.getUniqueId(), GuildRank.LEADER);
+
+        // Set the old leader to coleader
+        this.getPlayers().replace(oldLeader.getUniqueId(), GuildRank.COLEADER);
+        // Inform guild
+        this.sendAnnouncement(Messages.getMsg("guild announcements.gave leadership", oldLeader, newLeader.getPlayer(), null, this, this, GuildRank.LEADER, null));
     }
 
     public void invite(Player inviter, Player inviteePlayer) {
