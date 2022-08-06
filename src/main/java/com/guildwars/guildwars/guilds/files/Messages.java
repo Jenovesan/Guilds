@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.files;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.utils.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -216,10 +217,10 @@ public class Messages {
             msg = msg.replace("%TARGET_GUILD_NAME%", targetGuild.getName());
         }
         if (playerRank != null) {
-            msg = msg.replace("%PLAYER_GUILD_RANK%", playerRank.name());
+            msg = msg.replace("%PLAYER_GUILD_RANK%", util.formatEnum(playerRank));
         }
         if (targetRank != null) {
-            msg = msg.replace("%TARGET_GUILD_RANK%", targetRank.name());
+            msg = msg.replace("%TARGET_GUILD_RANK%", util.formatEnum(targetRank));
         }
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
