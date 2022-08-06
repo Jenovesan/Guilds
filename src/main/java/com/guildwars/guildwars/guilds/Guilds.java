@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Data;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
@@ -78,15 +79,6 @@ public class Guilds implements Listener {
 
     public static void addGuild(Guild guild) {
         getAllGuilds().add(guild);
-    }
-
-    public static boolean guidlNameExists(String name) {
-        for (Guild guild : getAllGuilds()) {
-            if (guild.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static Guild get(int guildId) {

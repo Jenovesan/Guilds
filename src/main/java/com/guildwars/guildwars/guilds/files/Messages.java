@@ -48,8 +48,6 @@ public class Messages {
             commandsSection.addDefault("create.usage", "&2/g create <name> <description>");
             commandsSection.addDefault("create.creation", "&aYou have created a new guild!");
             commandsSection.addDefault("create.already in guild", "&cYou must leave your guild to create your own");
-            commandsSection.addDefault("create.guild name too long", "&cGuild name is too long");
-            commandsSection.addDefault("create.guild name exists", "&cThat guild name is already being used");
             //help
             commandsSection.addDefault("help.title", "&2&nGuild Commands");
             commandsSection.addDefault("help.color", "&a");
@@ -122,8 +120,6 @@ public class Messages {
             commandsSection.addDefault("name.description", "&2Sets your guild's name");
             commandsSection.addDefault("name.usage", "&2/g name <name>");
             commandsSection.addDefault("name.successfully set name", "&aYou set your guild's name to: &2%INPUT%");
-            commandsSection.addDefault("name.guild name exists", "&cThat guild name is already being used");
-            commandsSection.addDefault("name.guild name too long", "&cGuild name is too long");
             // chat
             commandsSection.addDefault("chat.description", "&2Joins or leaves your guild's chat channel");
             commandsSection.addDefault("chat.usage", "&2/g chat || /g chat <message>");
@@ -159,11 +155,22 @@ public class Messages {
             guildAnnouncementsSection.addDefault("player kicked", "&4&l%PLAYER_DISPLAY_NAME% &c&lhas kicked &4&l%TARGET_DISPLAY_NAME% &c&lfrom your guild!");
             guildAnnouncementsSection.addDefault("description changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's description to: &2&l%INPUT%");
             guildAnnouncementsSection.addDefault("name changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's name to: &2&l%INPUT%");
-            guildAnnouncementsSection.addDefault("enemied guild", "&c&lYour guild is now enemied with &4&l%TARGET_GUILD_NAME%"); // Can use player name to say who enemied the guild
+            guildAnnouncementsSection.addDefault("enemied guild", "&c&lYour guild is now enemied with &4&l%TARGET_GUILD_NAME%");
             guildAnnouncementsSection.addDefault("guild has enemied your guild", "&4&l%TARGET_GUILD_NAME% &c&lhas enemied your guild");
             guildAnnouncementsSection.addDefault("truced guild", "&a&lYour guild is now truced with &2&l%TARGET_GUILD_NAME%");
             guildAnnouncementsSection.addDefault("sent truce request", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas sent a truce request to &2&l%TARGET_GUILD_NAME%");
             guildAnnouncementsSection.addDefault("received truce request", "&2&l%TARGET_GUILD_NAME% &a&lhas requested to truce with your guild");
+
+
+        // Guild Naming
+        messagesFile.createSection("guild naming");
+            ConfigurationSection guildNamingSection = messagesFile.getConfigurationSection("guild naming");
+            assert guildNamingSection != null;
+            // naming
+            guildNamingSection.addDefault("name too long", "&cGuild name is too long");
+            guildNamingSection.addDefault("name exists", "&cThat guild name is already being used");
+            guildNamingSection.addDefault("name contains not legal character", "&cThat guild name contains an illegal character");
+            guildNamingSection.addDefault("name blacklisted", "&cThat guild name is not allowed");
     }
 
     public static FileConfiguration get() {

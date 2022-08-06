@@ -1,12 +1,8 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.GuildRank;
-import com.guildwars.guildwars.guilds.Guilds;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gPlayer;
 import org.bukkit.Bukkit;
 
 public class gCreate extends gCommand {
@@ -36,12 +32,8 @@ public class gCreate extends gCommand {
         }
 
         String guildName = args[0];
-        if (guildName.toCharArray().length > Config.get().getInt("max characters in guild name")) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name too long", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), null, gPlayer.getGuildRank(), GuildRank.LEADER));
-            return;
-        }
-        if (Guilds.guidlNameExists(guildName)) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.create.guild name exists", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), null, gPlayer.getGuildRank(), GuildRank.LEADER));
+        // Command return messages are handled in this method
+        if (!gUtil.guildNameLegal(gPlayer.getPlayer(), guildName)) {
             return;
         }
 

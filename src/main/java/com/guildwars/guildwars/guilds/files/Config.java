@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Config {
 
@@ -35,6 +36,9 @@ public class Config {
         configFile.addDefault("invite expire time (s)", 60);
         configFile.addDefault("truce request expire time (m)", 60);
         configFile.addDefault("max players in guild", 10);
+        configFile.addDefault("valid guild name characters", Arrays.asList('q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
+        'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        configFile.addDefault("blacklisted guild names", Arrays.asList(""));
 
         //default permissions
         configFile.createSection("default permissions");

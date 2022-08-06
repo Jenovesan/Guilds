@@ -1,8 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.Guilds;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
@@ -36,14 +34,8 @@ public class gName extends gCommand{
         }
 
         String newGuildName = args[0];
-
-        if (newGuildName.toCharArray().length > Config.get().getInt("max characters in guild name")) {
-            player.sendFailMsg(Messages.getMsg("commands.name.guild name too long", player.getPlayer(), null, args, player.getGuild(), player.getGuild(), player.getGuildRank(), null));
-            return;
-        }
-
-        if (Guilds.guidlNameExists(newGuildName)) {
-            player.sendFailMsg(Messages.getMsg("commands.name.guild name exists", player.getPlayer(), null, args, player.getGuild(), player.getGuild(), player.getGuildRank(), null));
+        // Command return messages are handled in this method
+        if (!gUtil.guildNameLegal(player.getPlayer(), newGuildName)) {
             return;
         }
 
