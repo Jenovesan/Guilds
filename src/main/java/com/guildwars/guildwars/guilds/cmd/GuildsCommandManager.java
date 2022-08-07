@@ -35,7 +35,9 @@ public class GuildsCommandManager implements CommandExecutor {
         Map.entry("enemy", new gEnemy()),
         Map.entry("truce", new gTruce()),
         Map.entry("leader", new gLeader()),
-        Map.entry("owner", new gLeader())
+        Map.entry("owner", new gLeader()),
+        Map.entry("claim", new gClaim()),
+        Map.entry("map", new gMap())
     );
     
     Set<String> gCommandNames = gCommands.keySet();
@@ -50,14 +52,20 @@ public class GuildsCommandManager implements CommandExecutor {
                 return true;
             }
 
-            String gCommandName = args[0].toLowerCase();
-
-            if (!gCommandNames.contains(gCommandName)) {
+            String gCommandName;
+            String[] modifiedArgs;
+            if (args.length > 1 && gCommandNames.contains(args[0] + " " + args[1])) {
+                gCommandName = (args[0] + " " + args[1]).toLowerCase();
+                modifiedArgs = Arrays.copyOfRange(args, 2, args.length);
+            } else if (gCommandNames.contains(args[0])) {
+                gCommandName = args[0].toLowerCase();
+                modifiedArgs = Arrays.copyOfRange(args, 1, args.length);
+            } else {
                 sender.sendMessage(Messages.getMsg("commands.command does not exist"));
                 return true;
             }
+
             gCommand guildCommand = getgCommands().get(gCommandName);
-            String[] modifiedArgs = Arrays.copyOfRange(args, 1, args.length);
 
             if (modifiedArgs.length < guildCommand.getMinArgs()) {
                 sender.sendMessage(Messages.getMsg("commands.too few arguments given"));

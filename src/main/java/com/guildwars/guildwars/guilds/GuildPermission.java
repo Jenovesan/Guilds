@@ -6,4 +6,5 @@ public enum GuildPermission {
     SET_NAME,
     CHAT,
     RELATIONS,
+    CLAIM,
 }

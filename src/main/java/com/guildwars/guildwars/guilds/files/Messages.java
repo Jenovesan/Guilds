@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Messages {
 
@@ -149,6 +151,16 @@ public class Messages {
             commandsSection.addDefault("leader.not leader", "&4%TARGET_DISPLAY_NAME% &cis not in a guild");
             commandsSection.addDefault("leader.new leader success msg", "&aYou have been given leadership to &2%TARGET_GUILD_NAME%");
             commandsSection.addDefault("leader.old leader success msg", "&aYou gave &4%TARGET_DISPLAY_NAME% &aleadership of your guild");
+            // map
+            commandsSection.addDefault("map.map construction.header", "&7&l |-=-=-=-=- &6&lN &7&l-=-=-=-=-|");
+            commandsSection.addDefault("map.map construction.west", "&6W");
+            commandsSection.addDefault("map.map construction.east", "&6E");
+            commandsSection.addDefault("map.map construction.claim symbol", "&l■");
+            commandsSection.addDefault("map.map construction.player symbol", "&a♦ ");
+            commandsSection.addDefault("map.map construction.wilderness claim prefix", "&7");
+            commandsSection.addDefault("map.map construction.player guild claim prefix", "&a");
+            commandsSection.addDefault("map.map construction.guild colors", List.of("&9", "&c", "&d", "&e", "&b", "&6", "&f", "&2", "&3", "&5", "&1", "&8"));
+            commandsSection.addDefault("map.map construction.footer", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|");
 
         // Guilds
         messagesFile.createSection("guild announcements");
@@ -160,7 +172,7 @@ public class Messages {
             guildAnnouncementsSection.addDefault("guild was full", "&4&l%PLAYER_DISPLAY_NAME% &c&ltried to join your guild, but your guild was full!");
             guildAnnouncementsSection.addDefault("player leave", "&4&l%PLAYER_DISPLAY_NAME% &c&lleft your guild!");
             guildAnnouncementsSection.addDefault("player kicked", "&4&l%PLAYER_DISPLAY_NAME% &c&lhas kicked &4&l%TARGET_DISPLAY_NAME% &c&lfrom your guild!");
-            guildAnnouncementsSection.addDefault("description changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's description to: &2&l%INPUT%!");
+            guildAnnouncementsSection.addDefault("description changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's description to &2&l%INPUT%!");
             guildAnnouncementsSection.addDefault("name changed", "&2&l%PLAYER_DISPLAY_NAME% &a&lset your guild's name to: &2&l%INPUT%!");
             guildAnnouncementsSection.addDefault("enemied guild", "&c&lYour guild is now enemied with &4&l%TARGET_GUILD_NAME%!");
             guildAnnouncementsSection.addDefault("guild has enemied your guild", "&4&l%TARGET_GUILD_NAME% &c&lhas enemied your guild!");
@@ -187,6 +199,15 @@ public class Messages {
 
     public static String getMsg(String path) {
         return ChatColor.translateAlternateColorCodes('&', get().getString(path));
+    }
+
+    public static String[] getStringArray(String path) {
+        List<String> stringList = get().getStringList(path);
+        String[] newStringArray = new String[stringList.size()];
+        for (int i = 0; i < stringList.size(); i++) {
+            newStringArray[i] = stringList.get(i);
+        }
+        return newStringArray;
     }
 
     public static String getMsg(String path,

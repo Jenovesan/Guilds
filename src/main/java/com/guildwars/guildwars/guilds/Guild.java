@@ -87,6 +87,7 @@ public class Guild {
         this.permissions.put(GuildPermission.SET_NAME, GuildRank.valueOf(Config.get().getString("default permissions.set_name")));
         this.permissions.put(GuildPermission.CHAT, GuildRank.valueOf(Config.get().getString("default permissions.chat")));
         this.permissions.put(GuildPermission.RELATIONS, GuildRank.valueOf(Config.get().getString("default permissions.relations")));
+        this.permissions.put(GuildPermission.CLAIM, GuildRank.valueOf(Config.get().getString("default permissions.claim")));
     }
 
     public void setName(Player changer, String newName) {
@@ -339,6 +340,10 @@ public class Guild {
 
     public Guild get() {
         return this;
+    }
+
+    public static void claimChunk(Player claimer, int chunkX, int chunkZ) {
+
     }
 }
 

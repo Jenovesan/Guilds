@@ -40,6 +40,10 @@ public class Config {
         'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
         configFile.addDefault("blacklisted guild names", Arrays.asList(""));
 
+        // Restart server to update
+        configFile.addDefault("world claim radius (chunks)", 30);
+        configFile.addDefault("g map radius (chunks)", 7);
+
         //default permissions
         configFile.createSection("default permissions");
         ConfigurationSection defaultPermissionsSection = configFile.getConfigurationSection("default permissions");
@@ -48,7 +52,8 @@ public class Config {
         defaultPermissionsSection.addDefault("set_desc", "COLEADER");
         defaultPermissionsSection.addDefault("set_name", "COLEADER");
         defaultPermissionsSection.addDefault("chat", "RECRUIT");
-        defaultPermissionsSection.addDefault("relations", "COLEADER");
+        defaultPermissionsSection.addDefault("relations", "MOD");
+        defaultPermissionsSection.addDefault("claim", "MOD");
     }
 
     public static FileConfiguration get() {

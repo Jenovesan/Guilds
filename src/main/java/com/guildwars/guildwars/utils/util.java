@@ -1,8 +1,12 @@
 package com.guildwars.guildwars.utils;
 
+import net.md_5.bungee.api.ChatColor;
+
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class util {
 
@@ -25,5 +29,14 @@ public class util {
 
     public static String formatEnum(Enum<?> enumToFormat) {
         return enumToFormat.name().substring(0, 1).toUpperCase() + enumToFormat.name().substring(1).toLowerCase();
+    }
+
+    public static ChatColor getRandomColor() {
+        ThreadLocalRandom gen = ThreadLocalRandom.current();
+        int randR = gen.nextInt(0, 256);
+        int randG = gen.nextInt(0, 256);
+        int randB = gen.nextInt(0, 256);
+
+        return ChatColor.of(new Color(randR, randG, randB));
     }
 }

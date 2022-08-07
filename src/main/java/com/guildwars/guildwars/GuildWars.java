@@ -1,6 +1,7 @@
 package com.guildwars.guildwars;
 
 import com.guildwars.guildwars.core.ChatChannels;
+import com.guildwars.guildwars.guilds.Board;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.GuildsFastData;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
@@ -35,6 +36,9 @@ public final class GuildWars extends JavaPlugin {
 
         // Load gPlayers
         gPlayers.loadGPlayers();
+
+        // Load Board
+        Board.fillBoard();
 
         // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
