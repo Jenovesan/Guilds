@@ -166,6 +166,7 @@ public class Messages {
             // power
             commandsSection.addDefault("power.description", "&2Sets a member of your guild to Leader rank");
             commandsSection.addDefault("power.usage", "&2/g leader <name>");
+            commandsSection.addDefault("power.power msg", "&2Guild Power: &a%INPUT%");
 
         // Guilds
         messagesFile.createSection("guild announcements");

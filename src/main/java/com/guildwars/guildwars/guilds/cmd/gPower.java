@@ -20,7 +20,17 @@ public class gPower extends gCommand{
     }
 
     @Override
-    public void perform(gPlayer gPlayer, String[] args) {
+    public void perform(gPlayer player, String[] args) {
+        // Checks
+        if (!player.isInGuild()) {
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            return;
+        }
 
+        // Check power
+        int guildPower = player.getGuild().getPower();
+        int maxGuildPower = player.getGuild().getMaxPower();
+
+        player.sendMessage(Messages.getMsg("commands.power.power msg", player, null, String.join(" ", args)) + guildPower + "/" + maxGuildPower);
     }
 }

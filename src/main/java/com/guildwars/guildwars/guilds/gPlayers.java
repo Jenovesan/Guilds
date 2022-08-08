@@ -29,6 +29,15 @@ public class gPlayers implements Listener {
         }
     }
 
+    public static void loadGPlayersGuilds() {
+        for (Guild guild : Guilds.getAllGuilds()) {
+            Set<gPlayer> players = guild.getPlayers().keySet();
+            for (gPlayer player : players) {
+                player.setGuild(guild);
+            }
+        }
+    }
+
     private static HashMap<UUID, gPlayer> getGPlayers() {
         return gPlayers;
     }

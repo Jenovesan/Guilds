@@ -57,7 +57,11 @@ public class Guilds implements Listener {
         assert guildSection != null;
         guildSection.set("name", guild.getName());
         guildSection.set("description", guild.getDescription());
-        guildSection.set("players", util.hashMapToHashMapString(guild.getPlayers()));
+        HashMap<String, String> players = new HashMap<>();
+        for (Map.Entry<gPlayer, GuildRank> entry : guild.getPlayers().entrySet()) {
+            players.put(String.valueOf(entry.getKey().getUUID()), entry.getValue().name());
+        }
+        guildSection.set("players", players);
         guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
         guildSection.set("enemies", List.copyOf(guild.getEnemies()));
         GuildData.save();

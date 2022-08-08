@@ -1,11 +1,9 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Config;
-import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class gPlayer {
@@ -16,7 +14,7 @@ public class gPlayer {
     private int guildId = 0;
     private GuildRank guildRank;
     private String name;
-    private int power = Objects.requireNonNullElse(PlayerData.get().getInt("power." + this.getUUID()), Config.get().getInt("player max power"));
+    private int power = Config.get().getInt("player max power");
 
     public Player getPlayer() {
         return this.player;
@@ -48,10 +46,11 @@ public class gPlayer {
 
     public void setGuild(Guild guild) {
         this.guild = guild;
-    }
-
-    public void setGuildId(int id) {
-        this.guildId = id;
+        if (guild != null) {
+            this.guildId = guild.getId();
+        } else {
+            this.guildId = 0;
+        }
     }
 
     public void setGuildRank(GuildRank rank) {
@@ -120,13 +119,11 @@ public class gPlayer {
 
     public void joinedNewGuild(Guild newGuild) {
         this.setGuild(newGuild);
-        this.setGuildId(newGuild.getId());
         this.setGuildRank(newGuild.getRank(this));
     }
 
     public void leftGuild() {
         this.setGuild(null);
-        this.setGuildId(-1);
         this.setGuildRank(null);
     }
 }

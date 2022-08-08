@@ -30,14 +30,17 @@ public final class GuildWars extends JavaPlugin {
         // Load Guilds data
         com.guildwars.guildwars.guilds.files.FileManager.setupFiles();
 
+        // Load gPlayers
+        gPlayers.loadGPlayers();
+
         // Load Guilds
         Guilds.loadGuilds();
 
+        // Fill gPlayers guilds
+        gPlayers.loadGPlayersGuilds();
+
         // Load fast guild data
         GuildsFastData.loadPlayersGuildsIds();
-
-        // Load gPlayers
-        gPlayers.loadGPlayers();
 
         // Load Board
         Board.fillBoard();

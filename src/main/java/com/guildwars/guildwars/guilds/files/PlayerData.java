@@ -56,7 +56,7 @@ public class PlayerData {
             assert playerSection != null;
             playerSection.set("guildId", player.getGuildId());
             if (player.getGuildRank() != null) {
-                playerSection.set("guildRank", player.getGuildRank());
+                playerSection.set("guildRank", player.getGuildRank().name());
             }
             playerSection.set("name", player.getName());
             playerSection.set("power", player.getPower());

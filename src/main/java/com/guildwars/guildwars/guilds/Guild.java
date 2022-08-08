@@ -21,7 +21,6 @@ public class Guild {
     private HashSet<gPlayer> invites = new HashSet<>();
     private HashSet<Integer> enemies = new HashSet<>();
     private HashSet<Integer> truceRequests = new HashSet<>();
-    private int power;
 
     public int getId() {
         return id;
@@ -53,10 +52,6 @@ public class Guild {
 
     public HashSet<Integer> getTruceRequests() {
         return truceRequests;
-    }
-
-    public int getPower() {
-        return power;
     }
 
     // Creating a new guild
@@ -346,6 +341,18 @@ public class Guild {
             }
         }
         return null;
+    }
+
+    public int getPower() {
+        int power = 0;
+        for (gPlayer player : this.getPlayers().keySet()) {
+            power += player.getPower();
+        }
+        return power;
+    }
+
+    public int getMaxPower() {
+        return this.getPlayers().size() * Config.get().getInt("player max power");
     }
 }
 
