@@ -25,7 +25,7 @@ public class gName extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player.getPlayer(), null, args, null, null, null, null));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
             return;
         }
 
@@ -35,14 +35,14 @@ public class gName extends gCommand{
 
         String newGuildName = args[0];
         // Command return messages are handled in this method
-        if (!gUtil.guildNameLegal(player.getPlayer(), newGuildName)) {
+        if (!gUtil.guildNameLegal(player, newGuildName)) {
             return;
         }
 
         // Set Guild name
-        player.getGuild().setName(player.getPlayer(), newGuildName);
+        player.getGuild().setName(player, newGuildName);
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.name.successfully set name", player.getPlayer(), null, args, player.getGuild(), player.getGuild(), player.getGuildRank(), null));
+        player.sendSuccessMsg(Messages.getMsg("commands.name.successfully set name", player, null, String.join(" ", args)));
     }
 }

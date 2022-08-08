@@ -77,7 +77,7 @@ public class ChatChannels implements Listener {
 
     @EventHandler
     public void updateChannelOnGuildChange(PlayerGuildChangeEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getPlayer().getPlayer();
 
         // Player was in guild chat
         if (getPlayersChatChannel().get(player) == ChatChannel.GUILD) {

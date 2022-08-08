@@ -26,7 +26,7 @@ public class gDesc extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player.getPlayer(), null, args, null, null, null, null));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
             return;
         }
 
@@ -37,9 +37,9 @@ public class gDesc extends gCommand{
         // Set Guild Description
         String description = String.join(" ", args);
         Guild guild = player.getGuild();
-        guild.setDescription(player.getPlayer(), description);
+        guild.setDescription(player, description);
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.desc.successfully set desc", player.getPlayer(), null, args, guild, guild, player.getGuildRank(), null));
+        player.sendSuccessMsg(Messages.getMsg("commands.desc.successfully set desc", player, null, String.join(" ", args)));
     }
 }

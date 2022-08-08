@@ -29,28 +29,28 @@ public class gDemote extends gCommand{
     public void perform(gPlayer demoter, String[] args) {
         // Checks
         if (!demoter.isInGuild()) {
-            demoter.sendFailMsg(Messages.getMsg("commands.not in guild", demoter.getPlayer(), null, args, null, null, null, null));
+            demoter.sendFailMsg(Messages.getMsg("commands.not in guild", demoter, null, String.join(" ", args)));
             return;
         }
 
         Guild guild = demoter.getGuild();
 
-        OfflinePlayer demotee = guild.getOfflinePlayer(args[0]);
+        gPlayer demotee = guild.getPlayer(args[0]);
 
         if (demotee == null) {
-            demoter.sendFailMsg(Messages.getMsg("commands.demote.demotee not found", demoter.getPlayer(), null, args, guild, null, null, null));
+            demoter.sendFailMsg(Messages.getMsg("commands.demote.demotee not found", demoter, null, String.join(" ", args)));
             return;
         }
 
         GuildRank demoterGuildRank = demoter.getGuildRank();
         GuildRank demoteeGuildRank = guild.getGuildRank(demotee);
         if (GuildRank.higherByAmount(demoterGuildRank, demoteeGuildRank) < 1) {
-            demoter.sendFailMsg(Messages.getMsg("commands.demote.rank not high enough", demoter.getPlayer(), demotee.getPlayer(), args, guild, guild, demoterGuildRank, demoteeGuildRank));
+            demoter.sendFailMsg(Messages.getMsg("commands.demote.rank not high enough", demoter, demotee, String.join(" ", args)));
             return;
         }
 
         if (demoteeGuildRank.level == 1) {
-            demoter.sendFailMsg(Messages.getMsg("commands.demote.cannot demote any further", demoter.getPlayer(), demotee.getPlayer(), args, guild, guild, demoterGuildRank, demoteeGuildRank));
+            demoter.sendFailMsg(Messages.getMsg("commands.demote.cannot demote any further", demoter, demotee, String.join(" ", args)));
             return;
         }
 
@@ -59,17 +59,12 @@ public class gDemote extends gCommand{
         guild.changeGuildRank(demotee, newGuildRank);
 
         // Update gPlayer & Inform demotee if online
-        Player demoteePlayer = demotee.getPlayer();
-        if (demoteePlayer != null) {
-            // Update gPlayer
-            gPlayer demoteeGPlayer = gPlayers.get(demoteePlayer);
-            demoteeGPlayer.setGuildRank(newGuildRank);
+        demotee.setGuildRank(newGuildRank);
 
-            // Inform
-            pUtil.sendSuccessMsg(demoteePlayer, Messages.getMsg("commands.demote.demotee demoted msg", demoteePlayer, demoter.getPlayer(), args, guild, guild, demoteeGuildRank, newGuildRank));
-        }
+        // Inform demotee
+        demotee.sendNotifyMsg(Messages.getMsg("commands.demote.demotee demoted msg", demoter, demotee, String.join(" ", args)));
 
         // Inform demoter
-        demoter.sendSuccessMsg(Messages.getMsg("commands.demote.successfully demoted", demoter.getPlayer(), demoteePlayer, args, guild, guild, demoterGuildRank, newGuildRank));
+        demoter.sendSuccessMsg(Messages.getMsg("commands.demote.successfully demoted", demoter, demotee, String.join(" ", args)));
     }
 }

@@ -24,16 +24,16 @@ public class gInvite extends gCommand{
     @Override
     public void perform(gPlayer inviter, String[] args) {
 
-        Player invitee = Bukkit.getPlayerExact(args[0]);
+        gPlayer invitee = gPlayers.get(args[0]);
 
         // Checks
         if (invitee == null) {
-            inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee not found", inviter.getPlayer(), null, args, inviter.getGuild(), null, inviter.getGuildRank(), null));
+            inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee not found", inviter, null, String.join(" ", args)));
             return;
         }
 
         if (!inviter.isInGuild()) {
-            inviter.sendFailMsg(Messages.getMsg("commands.not in guild", inviter.getPlayer(), invitee, args, null, null, null, null));
+            inviter.sendFailMsg(Messages.getMsg("commands.not in guild", inviter, invitee, String.join(" ", args)));
             return;
         }
 
@@ -44,32 +44,32 @@ public class gInvite extends gCommand{
         Guild inviterGuild = inviter.getGuild();
 
         if (inviterGuild.isInvited(invitee)) {
-            inviter.sendFailMsg(Messages.getMsg("commands.invite.already invited", inviter.getPlayer(), invitee, args, inviterGuild, inviterGuild, inviter.getGuildRank(), null));
+            inviter.sendFailMsg(Messages.getMsg("commands.invite.already invited", inviter, invitee, String.join(" ", args)));
             return;
         }
 
-        gPlayer gInvitee = gPlayers.get(invitee);
-        if (gInvitee.isInGuild()) {
+
+        if (invitee.isInGuild()) {
             // Invitee is already a member of the inviter's Guild
-            if (gInvitee.getGuild() == inviterGuild) {
-                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in inviter guild", inviter.getPlayer(), invitee, args, inviterGuild, inviterGuild, inviter.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
+            if (invitee.getGuild() == inviterGuild) {
+                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in inviter guild", inviter, invitee, String.join(" ", args)));
                 return;
             }
             // Invitee not in Guild
             else {
-                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in guild", inviter.getPlayer(), invitee, args, inviterGuild, gInvitee.getGuild(), inviter.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
+                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in guild", inviter, invitee, String.join(" ", args)));
                 return;
             }
         }
 
         // Invite player
-        inviterGuild.invite(inviter.getPlayer(), invitee);
+        inviterGuild.invite(inviter, invitee);
 
         // Inform invitee
-        pUtil.sendNotifyMsg(invitee, Messages.getMsg("commands.invite.invitee invite msg", invitee, inviter.getPlayer(), args, null, inviterGuild, null, GuildRank.valueOf(Config.get().getString("join guild at rank"))));
+        invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invitee invite msg", inviter, invitee, String.join(" ", args)));
 
         // Inform inviter
-        inviter.sendSuccessMsg(Messages.getMsg("commands.invite.successfully invited", inviter.getPlayer(), invitee, args, inviterGuild, inviterGuild, inviter.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
+        inviter.sendSuccessMsg(Messages.getMsg("commands.invite.successfully invited", inviter, invitee, String.join(" ", args)));
 
     }
 }

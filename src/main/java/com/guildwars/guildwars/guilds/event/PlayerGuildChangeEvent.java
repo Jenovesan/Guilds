@@ -1,18 +1,18 @@
 package com.guildwars.guildwars.guilds.event;
 
 import com.guildwars.guildwars.guilds.Guild;
-import org.bukkit.entity.Player;
+import com.guildwars.guildwars.guilds.gPlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class PlayerGuildChangeEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
-    private final Player player;
+    private final gPlayer player;
     private final Guild newGuild;
     private final Reason reason;
 
-    public Player getPlayer() {
+    public gPlayer getPlayer() {
         return player;
     }
 
@@ -24,7 +24,7 @@ public class PlayerGuildChangeEvent extends Event {
         return reason;
     }
 
-    public PlayerGuildChangeEvent(Player player, Guild newGuild, Reason reason) {
+    public PlayerGuildChangeEvent(gPlayer player, Guild newGuild, Reason reason) {
         this.player = player;
         this.newGuild = newGuild;
         this.reason = reason;

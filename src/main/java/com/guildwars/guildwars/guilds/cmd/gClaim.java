@@ -26,7 +26,7 @@ public class gClaim extends gCommand{
     public void perform(gPlayer gPlayer, String[] args) {
 
         if (!gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.not in guild", gPlayer.getPlayer(), null, args, null, null, null, null));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.not in guild", gPlayer, null, String.join(" ", args)));
             return;
         }
 

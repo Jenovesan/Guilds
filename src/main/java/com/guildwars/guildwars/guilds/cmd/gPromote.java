@@ -26,16 +26,16 @@ public class gPromote extends gCommand{
     public void perform(gPlayer promoter, String[] args) {
         // Checks
         if (!promoter.isInGuild()) {
-            promoter.sendFailMsg(Messages.getMsg("commands.not in guild", promoter.getPlayer(), null, args, null, null, null, null));
+            promoter.sendFailMsg(Messages.getMsg("commands.not in guild", promoter, null, String.join(" ", args)));
             return;
         }
 
         Guild guild = promoter.getGuild();
 
-        OfflinePlayer promotee = guild.getOfflinePlayer(args[0]);
+        gPlayer promotee = guild.getPlayer(args[0]);
 
         if (promotee == null) {
-            promoter.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", promoter.getPlayer(), null, args, guild, guild, promoter.getGuildRank(), null));
+            promoter.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", promoter, null, String.join(" ", args)));
             return;
         }
 
@@ -43,9 +43,9 @@ public class gPromote extends gCommand{
         GuildRank promoteeGuildRank = guild.getGuildRank(promotee);
         if (GuildRank.higherByAmount(promoterGuildRank, promoteeGuildRank) < 2) {
             if (promoterGuildRank != GuildRank.LEADER) {
-                promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough", promoter.getPlayer(), promotee.getPlayer(), args, guild, guild, promoterGuildRank, promoteeGuildRank));
+                promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough", promoter, promotee, String.join(" ", args)));
             } else { // Tried to promote member to GuildRank: Leader
-                promoter.sendFailMsg(Messages.getMsg("commands.promote.tried to make leader", promoter.getPlayer(), promotee.getPlayer(), args, guild, guild, promoterGuildRank, promoteeGuildRank));
+                promoter.sendFailMsg(Messages.getMsg("commands.promote.tried to make leader", promoter, promotee, String.join(" ", args)));
             }
             return;
         }
@@ -54,18 +54,12 @@ public class gPromote extends gCommand{
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(promoteeGuildRank.level + 1);
         guild.changeGuildRank(promotee, newGuildRank);
 
-        // Update gPlayer & Inform promotee if online
-        Player promoteePlayer = promotee.getPlayer();
-        if (promoteePlayer != null) {
-            // Update gPlayer
-            gPlayer promoteeGPlayer = gPlayers.get(promoteePlayer);
-            promoteeGPlayer.setGuildRank(newGuildRank);
-
-            // Inform
-            pUtil.sendSuccessMsg(promoteePlayer, Messages.getMsg("commands.promote.promotee promoted msg", promoteePlayer, promoter.getPlayer(), args, guild, guild, promoteeGuildRank, newGuildRank));
-        }
+        // Update gPlayer & Inform promotee
+        promotee.setGuildRank(newGuildRank);
+        // Inform
+        promotee.sendNotifyMsg(Messages.getMsg("commands.promote.promotee promoted msg", promoter, promotee, String.join(" ", args)));
 
         // Inform promoter
-        promoter.sendSuccessMsg(Messages.getMsg("commands.promote.successfully promoted", promoter.getPlayer(), promoteePlayer, args, guild, guild, promoterGuildRank, newGuildRank));
+        promoter.sendSuccessMsg(Messages.getMsg("commands.promote.successfully promoted", promoter, promotee, String.join(" ", args)));
     }
 }

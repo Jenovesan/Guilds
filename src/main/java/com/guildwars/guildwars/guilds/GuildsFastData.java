@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class GuildsFastData implements Listener {
 
@@ -35,7 +36,7 @@ public class GuildsFastData implements Listener {
 
     @EventHandler
     public void updatePlayerOnGuildChange(PlayerGuildChangeEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getPlayer().getPlayer();
         Guild newGuild = event.getNewGuild();
         putPlayer(player, newGuild);
     }
@@ -51,4 +52,6 @@ public class GuildsFastData implements Listener {
     public void removePlayerDataOnLogout(PlayerQuitEvent event) {
         getPlayersGuildsIds().remove(event.getPlayer());
     }
+
+    public static HashMap<UUID, Integer> playerPowers = new HashMap<>();
 }

@@ -25,4 +25,8 @@ public class GuildChunk {
         }
     }
 
+//    public boolean claimable() {
+//
+//    }
+
 }

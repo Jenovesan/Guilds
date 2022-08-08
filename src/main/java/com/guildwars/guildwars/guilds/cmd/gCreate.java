@@ -23,33 +23,33 @@ public class gCreate extends gCommand {
     }
 
     @Override
-    public void perform(gPlayer gPlayer, String[] args) {
+    public void perform(gPlayer player, String[] args) {
 
         // Checks
-        if (gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.create.already in guild", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), null, gPlayer.getGuildRank(), GuildRank.LEADER));
+        if (player.isInGuild()) {
+            player.sendFailMsg(Messages.getMsg("commands.create.already in guild", player, null, String.join(" ", args)));
             return;
         }
 
         String guildName = args[0];
         // Command return messages are handled in this method
-        if (!gUtil.guildNameLegal(gPlayer.getPlayer(), guildName)) {
+        if (!gUtil.guildNameLegal(player, guildName)) {
             return;
         }
 
         // Create guild
         String guildDesc = args.length == 2 ? args[1] : "None";
 
-        Guild newGuild = new Guild(gPlayer.getUUID(), guildName, guildDesc);
+        Guild newGuild = new Guild(player, guildName, guildDesc);
         Guilds.saveGuildData(newGuild);
 
         // Update gPlayer
-        gPlayer.joinedNewGuild(newGuild);
+        player.joinedNewGuild(newGuild);
 
         // Call Event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(gPlayer.getPlayer(), newGuild, PlayerGuildChangeEvent.Reason.CREATION));
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, newGuild, PlayerGuildChangeEvent.Reason.CREATION));
 
         // Inform
-        gPlayer.sendSuccessMsg(Messages.getMsg("commands.create.creation", gPlayer.getPlayer(), null, args, gPlayer.getGuild(), gPlayer.getGuild(), gPlayer.getGuildRank(), GuildRank.LEADER));
+        player.sendSuccessMsg(Messages.getMsg("commands.create.creation", player, null, String.join(" ", args)));
     }
 }

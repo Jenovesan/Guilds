@@ -1,55 +1,81 @@
 package com.guildwars.guildwars.guilds;
 
-import org.bukkit.Bukkit;
+import com.guildwars.guildwars.guilds.files.PlayerData;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class gPlayers implements Listener {
 
-    private static HashMap<Player, gPlayer> gPlayers = new HashMap<>();
+    private static HashMap<UUID, gPlayer> gPlayers = new HashMap<>();
 
     public static void loadGPlayers() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            addGPlayer(player);
+        for (String playerUUID : PlayerData.get().getKeys(false)) {
+            UUID uuid = UUID.fromString(playerUUID);
+
+            ConfigurationSection playerSection = PlayerData.get().getConfigurationSection(playerUUID);
+            assert playerSection != null;
+            int guildId = playerSection.getInt("guildId");
+            GuildRank guildRank = playerSection.getString("guildRank") != null ? GuildRank.valueOf(playerSection.getString("guildRank")) : null;
+            String name = playerSection.getString("name");
+            int power = playerSection.getInt("power");
+
+            getGPlayers().put(uuid, new gPlayer(uuid, guildId, guildRank, name, power));
         }
     }
 
-    private static HashMap<Player, gPlayer> getGPlayers() {
+    private static HashMap<UUID, gPlayer> getGPlayers() {
         return gPlayers;
     }
 
-    private static void addGPlayer(Player player) {
-        getGPlayers().put(player, getNewGPlayer(player));
+    public static Collection<gPlayer> getAllGPlayers() {
+        return gPlayers.values();
     }
 
-    private static void removeGPlayer(Player player) {
-        getGPlayers().remove(player);
+    public static gPlayer get(UUID uuid) {
+        return getGPlayers().get(uuid);
     }
 
     public static gPlayer get(Player player) {
-        return getGPlayers().get(player);
+        return getGPlayers().get(player.getUniqueId());
     }
 
-    private static gPlayer getNewGPlayer(Player player) {
-        int guildId = Objects.requireNonNullElse(GuildsFastData.getPlayersGuildsIds().get(player), -1);
-        Guild playerGuild = Guilds.get(guildId);
-        return new gPlayer(player, playerGuild);
-    }
-
-    @EventHandler
-    public void addGPlayerOnLogin(PlayerJoinEvent event) {
-        addGPlayer(event.getPlayer());
-        event.getPlayer().sendMessage(String.valueOf(getGPlayers()));
+    public static gPlayer get(String name) {
+        for (gPlayer player : getAllGPlayers()) {
+            if (player.getName().equalsIgnoreCase(name)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     @EventHandler
-    public void removeGPlayerOnLogout(PlayerQuitEvent event) {
-        removeGPlayer(event.getPlayer());
+    public void onPlayerLogin(PlayerJoinEvent event) {
+        // Create new gPlayer if player is new to server
+        Player player = event.getPlayer();
+        if (getGPlayers().get(player.getUniqueId()) == null) {
+            getGPlayers().put(player.getUniqueId(), new gPlayer(player));
+            return;
+        }
+        player.sendMessage(String.valueOf(getGPlayers()));
+        gPlayer gPlayer = get(player);
+
+        // Set their gPlayer's player
+        gPlayer.setPlayer(player);
+
+
+        // Update gPlayer name in case they changed their name
+        get(player).setName(player.getName());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        // Remove player from gPlayer
+        get(event.getPlayer()).setPlayer(null);
     }
 }

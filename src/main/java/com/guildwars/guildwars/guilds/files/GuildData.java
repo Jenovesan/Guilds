@@ -7,18 +7,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class Data {
+public class GuildData {
     private static File file;
     private static FileConfiguration dataFile;
 
     public static void setup() {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/guilds", "data.yml");
+        file = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/guilds", "guild_data.yml");
 
         if (file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                System.out.println("Error when creating guilds/messages.yml file");
+                System.out.println("Error when creating guilds/guild_data.yml file");
             }
         }
         dataFile = YamlConfiguration.loadConfiguration(file);
@@ -37,7 +37,7 @@ public class Data {
         try {
             dataFile.save(file);
         } catch (IOException e) {
-            System.out.println("Error when saving guilds/messages.yml file");
+            System.out.println("Error when saving guilds/guild_data.yml file");
         }
     }
 

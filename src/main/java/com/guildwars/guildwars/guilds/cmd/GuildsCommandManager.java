@@ -37,7 +37,8 @@ public class GuildsCommandManager implements CommandExecutor {
         Map.entry("leader", new gLeader()),
         Map.entry("owner", new gLeader()),
         Map.entry("claim", new gClaim()),
-        Map.entry("map", new gMap())
+        Map.entry("map", new gMap()),
+        Map.entry("power", new gPower())
     );
     
     Set<String> gCommandNames = gCommands.keySet();
@@ -71,7 +72,6 @@ public class GuildsCommandManager implements CommandExecutor {
                 sender.sendMessage(Messages.getMsg("commands.too few arguments given"));
                 return true;
             }
-
             gPlayer gPlayer = gPlayers.get(player);
 
             guildCommand.perform(gPlayer, modifiedArgs);

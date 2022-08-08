@@ -3,6 +3,7 @@ package com.guildwars.guildwars.guilds;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
+import com.guildwars.guildwars.utils.util;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -19,29 +20,29 @@ public class gUtil {
         return null;
     }
 
-    public static boolean checkPermission(gPlayer gPlayer, GuildPermission permission) {
-        GuildRank guildRank = gPlayer.getGuildRank();
-        GuildRank permMinRank = gPlayer.getGuild().getPermissions().get(permission);
+    public static boolean checkPermission(gPlayer player, GuildPermission permission) {
+        GuildRank guildRank = player.getGuildRank();
+        GuildRank permMinRank = player.getGuild().getPermissions().get(permission);
         if (guildRank.level >= permMinRank.level) {
             return true;
         } else { // Guild rank too low
-            gPlayer.sendFailMsg(Messages.getMsg("commands.guild rank too low", gPlayer.getPlayer(), null, null, gPlayer.getGuild(), null, guildRank, permMinRank));
+            player.sendFailMsg(Messages.getMsg("commands.guild rank too low", player, null, util.formatEnum(permission)));
             return false;
         }
     }
 
-    public static boolean guildNameLegal(Player player, String guildName) {
+    public static boolean guildNameLegal(gPlayer player, String guildName) {
         // Check if guild name is too long
         int guildNameCharacterLimit = Config.get().getInt("max characters in guild name");
         if (guildName.toCharArray().length > guildNameCharacterLimit) {
-            pUtil.sendFailMsg(player, Messages.getMsg("guild naming.name too long", player, null, new String[] {guildName}, null, null, null, null));
+            player.sendFailMsg(Messages.getMsg("guild naming.name too long", player, null, guildName));
             return false;
         }
 
         // Check if the guild name exists already
         for (Guild guild : Guilds.getAllGuilds()) {
             if (guild.getName().equalsIgnoreCase(guildName)) {
-                pUtil.sendFailMsg(player, Messages.getMsg("guild naming.name exists", player, null, new String[] {guildName}, null, null, null, null));
+                player.sendFailMsg(Messages.getMsg("guild naming.name exists", player, null, guildName));
                 return false;
             }
         }
@@ -50,7 +51,7 @@ public class gUtil {
         List<Character> legalGuildNameCharacters = Config.get().getCharacterList("valid guild name characters");
         for (Character character : guildName.toCharArray()) {
             if (!legalGuildNameCharacters.contains(character)) {
-                pUtil.sendFailMsg(player, Messages.getMsg("guild naming.name contains not legal character", player, null, new String[] {guildName}, null, null, null, null));
+                player.sendFailMsg(Messages.getMsg("guild naming.name contains not legal character", player, null, guildName));
                 return false;
             }
         }
@@ -58,7 +59,7 @@ public class gUtil {
         // Check if the name is a blacklisted guild name
         List<String> blackListedGuildNames = Config.get().getStringList("blacklisted guild names");
         if (blackListedGuildNames.contains(guildName)) {
-            pUtil.sendFailMsg(player, Messages.getMsg("guild naming.name blacklisted", player, null, new String[] {guildName}, null, null, null, null));
+            player.sendFailMsg(Messages.getMsg("guild naming.name blacklisted", player, null, guildName));
             return false;
         }
 

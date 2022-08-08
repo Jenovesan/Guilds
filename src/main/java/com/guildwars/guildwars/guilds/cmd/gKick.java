@@ -29,16 +29,16 @@ public class gKick extends gCommand{
 
         // Checks
         if (!kicker.isInGuild()) {
-            kicker.sendFailMsg(Messages.getMsg("commands.invite.invitee not found", kicker.getPlayer(), null, args, kicker.getGuild(), null, kicker.getGuildRank(), null));
+            kicker.sendFailMsg(Messages.getMsg("commands.invite.invitee not found", kicker, null, String.join(" ", args)));
             return;
         }
 
         Guild guild = kicker.getGuild();
 
-        OfflinePlayer kickee = guild.getOfflinePlayer(args[0]);
+        gPlayer kickee = gPlayers.get(args[0]);
 
         if (kickee == null) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.kickee not found", kicker.getPlayer(), null, args, guild, null, kicker.getGuildRank(), null));
+            kicker.sendFailMsg(Messages.getMsg("commands.kick.kickee not found", kicker, null, String.join(" ", args)));
             return;
         }
 
@@ -46,26 +46,23 @@ public class gKick extends gCommand{
             return;
         }
 
-        GuildRank kickerRank = guild.getRank(kicker.getUUID());
-        GuildRank kickeeRank = guild.getRank(kickee.getUniqueId());
+        GuildRank kickerRank = guild.getRank(kicker);
+        GuildRank kickeeRank = guild.getRank(kickee);
         if (kickerRank.level <= kickeeRank.level) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher", kicker.getPlayer(), kickee.getPlayer(), args, guild, null, kickerRank, kickeeRank));
+            kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher", kicker, kickee, String.join(" ", args)));
             return;
         }
 
         // Kick player
-        guild.kickPlayer(kicker.getPlayer(), kickee);
+        guild.kickPlayer(kicker, kickee);
 
         // Call event
-        Player kickeePlayer = kickee.getPlayer();
-        if (kickeePlayer != null) {
-            // Call event
-            Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(kickeePlayer, null, PlayerGuildChangeEvent.Reason.KICKED));
-            // Inform kickee
-            pUtil.sendNotifyMsg(kickeePlayer, Messages.getMsg("commands.kick.kickee kicked msg", kickeePlayer, kicker.getPlayer(), args, guild, null, kickeeRank, kickerRank));
-        }
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(kickee, null, PlayerGuildChangeEvent.Reason.KICKED));
+
+        // Inform kickee
+        kickee.sendNotifyMsg(Messages.getMsg("commands.kick.kickee kicked msg", kicker, kickee, String.join(" ", args)));
 
         // Inform kicker
-        kicker.sendSuccessMsg(Messages.getMsg("commands.kick.successfully kicked", kicker.getPlayer(), kickeePlayer, args, guild, null, kickerRank, kickeeRank));
+        kicker.sendSuccessMsg(Messages.getMsg("commands.kick.successfully kicked", kicker, kickee, String.join(" ", args)));
     }
 }

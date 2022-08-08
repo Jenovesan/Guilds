@@ -6,7 +6,6 @@ import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class gLeave extends gCommand{
     @Override
@@ -25,28 +24,27 @@ public class gLeave extends gCommand{
     }
 
     @Override
-    public void perform(gPlayer leaver, String[] args) {
+    public void perform(gPlayer player, String[] args) {
 
         // Checks
-        if (!leaver.isInGuild()) {
-            leaver.sendFailMsg(Messages.getMsg("commands.not in guild"));
+        if (!player.isInGuild()) {
+            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
             return;
         }
 
-        if (leaver.getGuildRank() == GuildRank.LEADER) {
-            leaver.sendFailMsg(Messages.getMsg("commands.leave.is leader"));
+        if (player.getGuildRank() == GuildRank.LEADER) {
+            player.sendFailMsg(Messages.getMsg("commands.leave.is leader", player, null, String.join(" ", args)));
             return;
         }
 
         //Leave guild
-        Guild guild = leaver.getGuild();
-        Player leaverPlayer = leaver.getPlayer();
-        guild.removePlayer(leaverPlayer);
+        Guild guild = player.getGuild();
+        guild.removePlayer(player);
 
         // Call event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(leaverPlayer, null, PlayerGuildChangeEvent.Reason.LEAVE));
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, null, PlayerGuildChangeEvent.Reason.LEAVE));
 
         // Inform player
-        leaver.sendSuccessMsg(Messages.getMsg("commands.leave.successfully left", leaverPlayer, null, args, guild, null, leaver.getGuildRank(), null));
+        player.sendSuccessMsg(Messages.getMsg("commands.leave.successfully left", player, null, String.join(" ", args)));
     }
 }

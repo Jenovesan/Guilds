@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.files;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Messages {
 
@@ -44,7 +46,7 @@ public class Messages {
             assert commandsSection != null;
             commandsSection.addDefault("command does not exist", "&cCommand does not exist. Try /g help for a list of guild commands");
             commandsSection.addDefault("too few arguments given", "&cToo few arguments were given. Try /g help for command usage");
-            commandsSection.addDefault("guild rank too low", "&cYou must be at least &4%TARGET_GUILD_RANK% &cto perform this command");
+            commandsSection.addDefault("guild rank too low", "&cYou must be at least &4%INPUT% &cto perform this command");
             commandsSection.addDefault("not in guild", "&cYou must be in a guild to perform this command");
             //create
             commandsSection.addDefault("create.description", "&2Creates your own guild");
@@ -161,6 +163,9 @@ public class Messages {
             commandsSection.addDefault("map.map construction.player guild claim prefix", "&a");
             commandsSection.addDefault("map.map construction.guild colors", List.of("&9", "&c", "&d", "&e", "&b", "&6", "&f", "&2", "&3", "&5", "&1", "&8"));
             commandsSection.addDefault("map.map construction.footer", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|");
+            // power
+            commandsSection.addDefault("power.description", "&2Sets a member of your guild to Leader rank");
+            commandsSection.addDefault("power.usage", "&2/g leader <name>");
 
         // Guilds
         messagesFile.createSection("guild announcements");
@@ -198,7 +203,7 @@ public class Messages {
     }
 
     public static String getMsg(String path) {
-        return ChatColor.translateAlternateColorCodes('&', get().getString(path));
+        return ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(get().getString(path)));
     }
 
     public static String[] getStringArray(String path) {
@@ -211,38 +216,46 @@ public class Messages {
     }
 
     public static String getMsg(String path,
-                                Player player,
-                                Player targetPlayer,
-                                String[] input,
-                                Guild playerGuild,
-                                Guild targetGuild,
-                                GuildRank playerRank,
-                                GuildRank targetRank) {
+                                gPlayer player,
+                                gPlayer targetPlayer,
+                                String input) {
         String msg = get().getString(path);
         assert msg != null;
         if (player != null) {
             msg = msg.replace("%PLAYER_NAME%", player.getName());
-            msg = msg.replace("%PLAYER_DISPLAY_NAME%", player.getDisplayName());
-        } 
+
+            if (player.getPlayer() != null) {
+                msg = msg.replace("%PLAYER_DISPLAY_NAME%", player.getPlayer().getDisplayName());
+            }
+
+            if (player.getGuild() != null) {
+                msg = msg.replace("%PLAYER_GUILD_NAME%", player.getGuild().getName());
+            }
+
+            if (player.getGuildRank() != null) {
+                msg = msg.replace("%PLAYER_GUILD_RANK%", util.formatEnum(player.getGuildRank()));
+            }
+        }
         if (targetPlayer != null) {
             msg = msg.replace("%TARGET_NAME%", targetPlayer.getName());
-            msg = msg.replace("%TARGET_DISPLAY_NAME%", targetPlayer.getDisplayName());
+
+            if (targetPlayer.getPlayer() != null) {
+                msg = msg.replace("%TARGET_DISPLAY_NAME%", targetPlayer.getPlayer().getDisplayName());
+            }
+
+            if (targetPlayer.getGuild() != null) {
+                msg = msg.replace("%TARGET_GUILD_NAME%", targetPlayer.getGuild().getName());
+            }
+
+            if (targetPlayer.getGuildRank() != null) {
+                msg = msg.replace("%TARGET_GUILD_RANK%", util.formatEnum(targetPlayer.getGuildRank()));
+            }
         }
+
         if (input != null) {
-            msg = msg.replace("%INPUT%", String.join(" ", input));
+            msg = msg.replace("%INPUT%", input);
         }
-        if (playerGuild != null) {
-            msg = msg.replace("%PLAYER_GUILD_NAME%", playerGuild.getName());
-        }
-        if (targetGuild != null) {
-            msg = msg.replace("%TARGET_GUILD_NAME%", targetGuild.getName());
-        }
-        if (playerRank != null) {
-            msg = msg.replace("%PLAYER_GUILD_RANK%", util.formatEnum(playerRank));
-        }
-        if (targetRank != null) {
-            msg = msg.replace("%TARGET_GUILD_RANK%", util.formatEnum(targetRank));
-        }
+
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 

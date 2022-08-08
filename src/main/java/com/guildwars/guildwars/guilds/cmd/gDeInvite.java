@@ -28,7 +28,7 @@ public class gDeInvite extends gCommand{
 
         // Checks
         if (!deInviter.isInGuild()) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.not in guild", deInviter.getPlayer(), null, args, null, null, null, null));
+            deInviter.sendFailMsg(Messages.getMsg("commands.not in guild", deInviter, null, String.join(" ", args)));
             return;
         }
         Guild deInviterGuild = deInviter.getGuild();
@@ -38,10 +38,10 @@ public class gDeInvite extends gCommand{
         }
 
         String deInviteeName = args[0];
-        OfflinePlayer deInvitee = deInviterGuild.getInvitedPlayer(deInviteeName);
+        gPlayer deInvitee = deInviterGuild.getInvitedPlayer(deInviteeName);
 
         if (deInvitee == null) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.deinvite.not invited", deInviter.getPlayer(), null, args, deInviterGuild, null, deInviter.getGuildRank(), null));
+            deInviter.sendFailMsg(Messages.getMsg("commands.deinvite.not invited", null, null, String.join(" ", args)));
             return;
         }
 
@@ -49,12 +49,9 @@ public class gDeInvite extends gCommand{
         deInviterGuild.deInvite(deInvitee);
 
         // Inform deinvitee
-        Player deInviteePlayer = deInvitee.getPlayer();
-        if (deInviteePlayer != null) {
-            pUtil.sendNotifyMsg(deInviteePlayer, Messages.getMsg("commands.deinvite.deinvitee deinvited msg", deInviteePlayer, deInviter.getPlayer(), args, deInviterGuild, deInviterGuild, null, GuildRank.valueOf(Config.get().getString("join guild at rank"))));
-        }
+        deInvitee.sendNotifyMsg(Messages.getMsg("commands.deinvite.deinvitee deinvited msg", deInviter, deInvitee, String.join(" ", args)));
 
         // Inform deinviter
-        deInviter.sendSuccessMsg(Messages.getMsg("commands.deinvite.successfully deinvited", deInviter.getPlayer(), deInviteePlayer, args, deInviterGuild, deInviterGuild, deInviter.getGuildRank(), GuildRank.valueOf(Config.get().getString("join guild at rank"))));
+        deInviter.sendSuccessMsg(Messages.getMsg("commands.deinvite.successfully deinvited", deInviter, deInvitee, String.join(" ", args)));
     }
 }
