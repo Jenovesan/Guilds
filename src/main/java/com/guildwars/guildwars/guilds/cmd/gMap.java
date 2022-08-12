@@ -58,6 +58,7 @@ public class gMap extends gCommand{
                 // Add player symbol at center of map
                 if (x == playerChunkX && z == playerChunkZ) {
                     mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.player symbol"));
+                    guildsOnMap.put(playerGuild, playerClaimPrefix); // So player's claim shows up on Guild's list
                     continue;
                 }
 
