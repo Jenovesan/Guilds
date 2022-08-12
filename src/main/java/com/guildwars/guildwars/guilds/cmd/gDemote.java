@@ -2,10 +2,13 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
 import com.guildwars.guildwars.utils.pUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -60,6 +63,9 @@ public class gDemote extends gCommand{
 
         // Update gPlayer & Inform demotee if online
         demotee.setGuildRank(newGuildRank);
+
+        // Call Event
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(demotee, newGuildRank));
 
         // Inform demotee
         demotee.sendNotifyMsg(Messages.getMsg("commands.demote.demotee demoted msg", demoter, demotee, String.join(" ", args)));

@@ -34,7 +34,7 @@ public class gChat extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(gPlayer, GuildPermission.CHAT)) {
+        if (!gUtil.checkPermission(gPlayer, GuildPermission.CHAT, true)) {
             return;
         }
 

@@ -176,7 +176,7 @@ public class Messages {
             commandsSection.addDefault("claim.usage", "&2/g claim <?radius?>");
             commandsSection.addDefault("claim.cannot claim in world", "&cYou cannot claim land in this world");
             commandsSection.addDefault("claim.not enough power", "&cYour guild does not have enough power to claim more land");
-            commandsSection.addDefault("claim.not overclaimable", "&4%INPUT% is not overclaimable");
+            commandsSection.addDefault("claim.not overclaimable", "&4%INPUT% &cis not overclaimable");
             commandsSection.addDefault("claim.successfully claimed single chunk", "&aYou claimed land for your guild");
             commandsSection.addDefault("claim.invalid radius", "&4%INPUT% &cis not a valid radius");
             commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%INPUT% &achunks for your guild");
@@ -186,7 +186,6 @@ public class Messages {
             commandsSection.addDefault("unclaim.usage", "&2/g unclaim <?radius?>");
             commandsSection.addDefault("unclaim.cannot claim in world", "&cYou cannot claim or unclaim land in this world");
             commandsSection.addDefault("unclaim.chunk not owned by guild", "&cYour guild does not own this chunk");
-            commandsSection.addDefault("unclaim.chunk not owned by guild", "&cYour guild does not own this chunk");
             commandsSection.addDefault("unclaim.successfully unclaimed single chunk", "&aYou unclaimed land from your guild");
             commandsSection.addDefault("unclaim.successfully unclaimed multiple chunks", "&aYou unclaimed &2%INPUT% &achunks for your guild");
             commandsSection.addDefault("unclaim.invalid radius", "&4%INPUT% &cis not a valid radius");
@@ -195,6 +194,10 @@ public class Messages {
             commandsSection.addDefault("unclaimall.description", "&2Unclaim all of your guild's land");
             commandsSection.addDefault("unclaimall.usage", "&2/g unclaimall");
             commandsSection.addDefault("unclaimall.successfully unclaimed all", "&aYou unclaimed all your guild's land");
+            // autoclaim
+            commandsSection.addDefault("autoclaim.description", "&2Claim each new chunk you move into");
+            commandsSection.addDefault("autoclaim.usage", "&2/g autoclaim");
+            commandsSection.addDefault("autoclaim.cannot claim in world", "&cYou cannot claim land in this world");
 
         // Guilds
         messagesFile.createSection("guild announcements");
@@ -228,6 +231,13 @@ public class Messages {
             guildNamingSection.addDefault("name exists", "&cThat guild name is already being used");
             guildNamingSection.addDefault("name contains not legal character", "&cThat guild name contains an illegal character");
             guildNamingSection.addDefault("name blacklisted", "&cThat guild name is not allowed");
+
+        // Autoclaiming
+        messagesFile.createSection("autoclaiming");
+        ConfigurationSection autoclaimingSection = messagesFile.getConfigurationSection("autoclaiming");
+        assert autoclaimingSection != null;
+        autoclaimingSection.addDefault("enabled", "&aYou have &2enabled &aautoclaiming");
+        autoclaimingSection.addDefault("disabled", "&cYou have &4disabled &cautoclaiming");
     }
 
     public static FileConfiguration get() {

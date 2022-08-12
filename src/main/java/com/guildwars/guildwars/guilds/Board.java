@@ -23,9 +23,9 @@ public class Board {
         }
 
         // Fill remaining board spaces with empty GuildChunks
-        for (int x = 0; x < board.length; x++) {
-            for (int z = 0; z < board.length; z++) {
-                if (board[x][z] != null) {
+        for (int x = 0; x < getBoard().length; x++) {
+            for (int z = 0; z < getBoard().length; z++) {
+                if (getBoard()[x][z] != null) {
                     continue;
                 }
                 getBoard()[x][z] = new GuildChunk(null, new int[]{x, z});
@@ -42,6 +42,10 @@ public class Board {
 
     public static int[] getChunkBoardLocation(Chunk chunk) {
         return new int[] {getChunkCord(chunk.getX()), getChunkCord(chunk.getZ())};
+    }
+
+    public static GuildChunk getChunk(Chunk chunk) {
+        return getBoard()[getChunkCord(chunk.getX())][getChunkCord(chunk.getZ())];
     }
 
     public static Guild getGuildAt(Location location) {

@@ -29,7 +29,7 @@ public class gEnemy extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(player, GuildPermission.RELATIONS)) {
+        if (!gUtil.checkPermission(player, GuildPermission.RELATIONS, true)) {
             return;
         }
 

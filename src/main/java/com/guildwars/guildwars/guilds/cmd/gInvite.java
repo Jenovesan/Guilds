@@ -37,7 +37,7 @@ public class gInvite extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(inviter, GuildPermission.INVITE)) {
+        if (!gUtil.checkPermission(inviter, GuildPermission.INVITE, true)) {
             return;
         }
 

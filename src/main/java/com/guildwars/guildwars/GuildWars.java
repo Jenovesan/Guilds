@@ -5,6 +5,7 @@ import com.guildwars.guildwars.guilds.Board;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.GuildsFastData;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
+import com.guildwars.guildwars.guilds.engine.AutoClaim;
 import com.guildwars.guildwars.guilds.engine.Power;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayers;
@@ -47,6 +48,9 @@ public final class GuildWars extends JavaPlugin {
 
         // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
+
+        // Start Runnables
+        AutoClaim.perform();
     }
 
     public void unloadGuilds() {
@@ -67,6 +71,7 @@ public final class GuildWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new gPlayers(), this);
         getServer().getPluginManager().registerEvents(new Guilds(), this);
         getServer().getPluginManager().registerEvents(new Power(), this);
+        getServer().getPluginManager().registerEvents(new AutoClaim(), this);
     }
 
     public static GuildWars getInstance(){

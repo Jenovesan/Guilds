@@ -28,7 +28,7 @@ public class gClaim extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(player, GuildPermission.CLAIM)) {
+        if (!gUtil.checkPermission(player, GuildPermission.CHAT, true)) {
             return;
         }
 

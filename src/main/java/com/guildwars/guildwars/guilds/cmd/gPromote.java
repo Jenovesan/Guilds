@@ -1,8 +1,10 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -54,9 +56,13 @@ public class gPromote extends gCommand{
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(promoteeGuildRank.level + 1);
         guild.changeGuildRank(promotee, newGuildRank);
 
-        // Update gPlayer & Inform promotee
+        // Update gPlayer
         promotee.setGuildRank(newGuildRank);
-        // Inform
+
+        // Call Event
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(promotee, newGuildRank));
+
+        // Inform promotee
         promotee.sendNotifyMsg(Messages.getMsg("commands.promote.promotee promoted msg", promoter, promotee, String.join(" ", args)));
 
         // Inform promoter

@@ -18,13 +18,15 @@ public class gUtil {
         return null;
     }
 
-    public static boolean checkPermission(gPlayer player, GuildPermission permission) {
+    public static boolean checkPermission(gPlayer player, GuildPermission permission, boolean sendReturnMsg) {
         GuildRank guildRank = player.getGuildRank();
         GuildRank permMinRank = player.getGuild().getPermissions().get(permission);
         if (guildRank.level >= permMinRank.level) {
             return true;
         } else { // Guild rank too low
-            player.sendFailMsg(Messages.getMsg("commands.guild rank too low", player, null, util.formatEnum(permission)));
+            if (sendReturnMsg) {
+                player.sendFailMsg(Messages.getMsg("commands.guild rank too low", player, null, util.formatEnum(permission)));
+            }
             return false;
         }
     }

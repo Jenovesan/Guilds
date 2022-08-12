@@ -30,7 +30,7 @@ public class gDesc extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(player, GuildPermission.SET_DESC)) {
+        if (!gUtil.checkPermission(player, GuildPermission.SET_DESC, true)) {
             return;
         }
 

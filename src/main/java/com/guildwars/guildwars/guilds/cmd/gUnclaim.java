@@ -28,7 +28,7 @@ public class gUnclaim extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(player, GuildPermission.UNCLAIM)) {
+        if (!gUtil.checkPermission(player, GuildPermission.UNCLAIM, true)) {
             return;
         }
 

@@ -29,7 +29,7 @@ public class gUnclaimAll extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(player, GuildPermission.UNCLAIM_ALL)) {
+        if (!gUtil.checkPermission(player, GuildPermission.UNCLAIM_ALL, true)) {
             return;
         }
 

@@ -29,7 +29,7 @@ public class gName extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(player, GuildPermission.SET_NAME)) {
+        if (!gUtil.checkPermission(player, GuildPermission.SET_NAME, true)) {
             return;
         }
 

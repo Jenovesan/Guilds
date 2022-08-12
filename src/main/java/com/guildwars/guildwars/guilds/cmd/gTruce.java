@@ -29,7 +29,7 @@ public class gTruce extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(player, GuildPermission.RELATIONS)) {
+        if (!gUtil.checkPermission(player, GuildPermission.RELATIONS, true)) {
             return;
         }
 

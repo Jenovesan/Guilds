@@ -34,6 +34,7 @@ public class GuildsCommandManager implements CommandExecutor {
     private final gPower powerCommand = new gPower();
     private final gUnclaim unclaimCommand = new gUnclaim();
     private final gUnclaimAll unclaimAllCommand = new gUnclaimAll();
+    private final gAutoClaim autoClaimCommand = new gAutoClaim();
 
 
     public Map<String, gCommand> gCommands = Map.ofEntries(
@@ -62,7 +63,8 @@ public class GuildsCommandManager implements CommandExecutor {
         Map.entry("map", mapCommand),
         Map.entry("power", powerCommand),
         Map.entry("unclaim", unclaimCommand),
-        Map.entry("unclaimall", unclaimAllCommand)
+        Map.entry("unclaimall", unclaimAllCommand),
+            Map.entry("autoclaim", autoClaimCommand)
     );
     
     Set<String> gCommandNames = gCommands.keySet();

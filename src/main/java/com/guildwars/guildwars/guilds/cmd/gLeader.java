@@ -2,10 +2,12 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
 import com.guildwars.guildwars.utils.pUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -53,6 +55,9 @@ public class gLeader extends gCommand{
         // Update gPlayers
         oldLeader.setGuildRank(GuildRank.COLEADER);
         newLeader.setGuildRank(GuildRank.LEADER);
+
+        // Call Event
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(newLeader, GuildRank.LEADER));
 
         // Inform newLeader
         newLeader.sendNotifyMsg(Messages.getMsg("commands.leader.new leader success msg", oldLeader, newLeader, String.join(" ", args)));

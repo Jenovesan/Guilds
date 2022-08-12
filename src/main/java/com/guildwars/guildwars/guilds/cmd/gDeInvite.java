@@ -33,7 +33,7 @@ public class gDeInvite extends gCommand{
         }
         Guild deInviterGuild = deInviter.getGuild();
 
-        if (!gUtil.checkPermission(deInviter, GuildPermission.INVITE)) {
+        if (!gUtil.checkPermission(deInviter, GuildPermission.INVITE, true)) {
             return;
         }
 

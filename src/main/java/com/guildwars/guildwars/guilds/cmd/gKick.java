@@ -42,7 +42,7 @@ public class gKick extends gCommand{
             return;
         }
 
-        if (!gUtil.checkPermission(kicker, GuildPermission.INVITE)) {
+        if (!gUtil.checkPermission(kicker, GuildPermission.INVITE, true)) {
             return;
         }
 
