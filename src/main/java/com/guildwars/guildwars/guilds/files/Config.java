@@ -61,6 +61,7 @@ public class Config {
         defaultPermissionsSection.addDefault("chat", "RECRUIT");
         defaultPermissionsSection.addDefault("relations", "MOD");
         defaultPermissionsSection.addDefault("claim", "MOD");
+        defaultPermissionsSection.addDefault("unclaim", "MOD");
     }
 
     public static FileConfiguration get() {

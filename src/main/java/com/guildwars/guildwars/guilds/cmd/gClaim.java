@@ -1,7 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gClaim extends gCommand{
@@ -33,14 +32,14 @@ public class gClaim extends gCommand{
             return;
         }
 
-        if (!player.getPlayer().getWorld().getName().equals(Config.get().getString("world name"))) {
+        if (!gUtil.isInMainWorld(player)) {
             player.sendFailMsg(Messages.getMsg("commands.claim.cannot claim in world", player, null, String.join(" ", args)));
             return;
         }
 
         Guild guild = player.getGuild();
 
-        // Claim chunk
+        // Claim chunk(s)
         // Player is claiming a radius
         if (args.length > 0) {
             try {

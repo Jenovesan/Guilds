@@ -7,4 +7,5 @@ public enum GuildPermission {
     CHAT,
     RELATIONS,
     CLAIM,
+    UNCLAIM,
 }

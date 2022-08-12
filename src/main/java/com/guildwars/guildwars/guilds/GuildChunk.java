@@ -43,7 +43,8 @@ public class GuildChunk {
     }
 
     public void setWilderness() {
-        this.claim(null);
+        this.guild = null;
+        this.guildId = 0;
     }
 
 }

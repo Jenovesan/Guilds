@@ -2,9 +2,7 @@ package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.utils.pUtil;
 import com.guildwars.guildwars.utils.util;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -66,5 +64,9 @@ public class gUtil {
         // Guild name passes all checks.
         // Guild name is deemed legal.
         return true;
+    }
+
+    public static boolean isInMainWorld(gPlayer player) {
+        return player.getPlayer().getWorld().getName().equals(Config.get().getString("world name"));
     }
 }
