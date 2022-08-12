@@ -93,6 +93,7 @@ public class Guild {
         this.permissions.put(GuildPermission.RELATIONS, GuildRank.valueOf(Config.get().getString("default permissions.relations")));
         this.permissions.put(GuildPermission.CLAIM, GuildRank.valueOf(Config.get().getString("default permissions.claim")));
         this.permissions.put(GuildPermission.UNCLAIM, GuildRank.valueOf(Config.get().getString("default permissions.unclaim")));
+        this.permissions.put(GuildPermission.UNCLAIM_ALL, GuildRank.valueOf(Config.get().getString("default permissions.unclaim_all")));
     }
 
     public void setName(gPlayer changer, String newName) {
@@ -389,6 +390,16 @@ public class Guild {
 
         // Send Guild announcement
         this.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", unclaimer, null, null));
+    }
+
+    public void unclaimAll(gPlayer unclaimer) {
+        // Update Board
+        for (int[] claimBoardLocation : this.getClaimLocations()) {
+            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
+        }
+
+        // Send Guild announcement
+        this.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", unclaimer, null, null));
     }
 }
 

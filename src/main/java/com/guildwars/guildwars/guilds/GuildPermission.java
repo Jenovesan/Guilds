@@ -8,4 +8,5 @@ public enum GuildPermission {
     RELATIONS,
     CLAIM,
     UNCLAIM,
+    UNCLAIM_ALL,
 }

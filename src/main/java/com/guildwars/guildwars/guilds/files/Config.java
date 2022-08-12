@@ -62,6 +62,7 @@ public class Config {
         defaultPermissionsSection.addDefault("relations", "MOD");
         defaultPermissionsSection.addDefault("claim", "MOD");
         defaultPermissionsSection.addDefault("unclaim", "MOD");
+        defaultPermissionsSection.addDefault("unclaim_all", "COLEADER");
     }
 
     public static FileConfiguration get() {

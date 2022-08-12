@@ -189,6 +189,10 @@ public class Messages {
             commandsSection.addDefault("unclaim.successfully unclaimed single chunk", "&aYou unclaimed land from your guild");
             commandsSection.addDefault("unclaim.successfully unclaimed multiple chunks", "&aYou unclaimed &2%INPUT% &achunks for your guild");
             commandsSection.addDefault("unclaim.invalid radius", "&4%INPUT% &cis not a valid radius");
+            // unclaimall
+            commandsSection.addDefault("unclaimall.description", "&2Unclaim all of your guild's land");
+            commandsSection.addDefault("unclaimall.usage", "&2/g unclaimall");
+            commandsSection.addDefault("unclaimall.successfully unclaimed all", "&aYou unclaimed all your guild's land");
 
         // Guilds
         messagesFile.createSection("guild announcements");
@@ -210,6 +214,7 @@ public class Messages {
             guildAnnouncementsSection.addDefault("gave leadership", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas given leadership to the guild to &2&l%TARGET_DISPLAY_NAME%!");
             guildAnnouncementsSection.addDefault("claimed land", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas claimed land");
             guildAnnouncementsSection.addDefault("unclaimed land", "&4&l%PLAYER_DISPLAY_NAME% &c&lhas unclaimed land");
+            guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER_DISPLAY_NAME% &c&lhas unclaimed all your guild's land");
 
 
         // Guild Naming
