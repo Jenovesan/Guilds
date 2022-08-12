@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gUnclaim extends gCommand{
@@ -43,6 +44,13 @@ public class gUnclaim extends gCommand{
         if (args.length > 0) {
             try {
                 int radius = Integer.parseInt(args[0]);
+
+                // Check if radius is too big
+                if (radius > Config.get().getInt("max unclaim radius (chunks)")) {
+                    player.sendFailMsg(Messages.getMsg("commands.unclaim.radius too big", player, null, String.valueOf(radius)));
+                    return;
+                }
+
                 int playerChunkX = player.getPlayer().getLocation().getChunk().getX();
                 int playerChunkZ = player.getPlayer().getLocation().getChunk().getZ();
                 int successfulUnclaims = 0;
@@ -56,7 +64,6 @@ public class gUnclaim extends gCommand{
 
                         // Check if chunk is owned by the player's guild
                         if (chunk.getGuild() != guild) {
-                            player.sendMessage(Messages.getMsg("commands.unclaim.chunk not owned by guild", player, null, String.join(" ", args)));
                             continue;
                         }
 

@@ -44,6 +44,13 @@ public class gClaim extends gCommand{
         if (args.length > 0) {
             try {
                 int radius = Integer.parseInt(args[0]);
+
+                // Check if Guild will have enough power
+                if ((radius + 1) * (radius + 1) > guild.getExcessPower()) {
+                    player.sendFailMsg(Messages.getMsg("commands.claim.will not have enough power", player, null, String.valueOf((radius + 1) * (radius + 1))));
+                    return;
+                }
+
                 int playerChunkX = player.getPlayer().getLocation().getChunk().getX();
                 int playerChunkZ = player.getPlayer().getLocation().getChunk().getZ();
                 int successfulClaims = 0;

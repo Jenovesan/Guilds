@@ -176,10 +176,11 @@ public class Messages {
             commandsSection.addDefault("claim.usage", "&2/g claim <?radius?>");
             commandsSection.addDefault("claim.cannot claim in world", "&cYou cannot claim land in this world");
             commandsSection.addDefault("claim.not enough power", "&cYour guild does not have enough power to claim more land");
-            commandsSection.addDefault("claim.not overclaimable", "&4%INPUT % is not overclaimable");
+            commandsSection.addDefault("claim.not overclaimable", "&4%INPUT% is not overclaimable");
             commandsSection.addDefault("claim.successfully claimed single chunk", "&aYou claimed land for your guild");
             commandsSection.addDefault("claim.invalid radius", "&4%INPUT% &cis not a valid radius");
             commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%INPUT% &achunks for your guild");
+            commandsSection.addDefault("claim.will not have enough power", "&cYour guild will not have enough power to claim that many chunks");
             // unclaim
             commandsSection.addDefault("unclaim.description", "&2Unclaim a chunk from your guild");
             commandsSection.addDefault("unclaim.usage", "&2/g unclaim <?radius?>");
@@ -189,6 +190,7 @@ public class Messages {
             commandsSection.addDefault("unclaim.successfully unclaimed single chunk", "&aYou unclaimed land from your guild");
             commandsSection.addDefault("unclaim.successfully unclaimed multiple chunks", "&aYou unclaimed &2%INPUT% &achunks for your guild");
             commandsSection.addDefault("unclaim.invalid radius", "&4%INPUT% &cis not a valid radius");
+            commandsSection.addDefault("unclaim.radius too big", "&4%INPUT% &cis too big of an unclaim radius");
             // unclaimall
             commandsSection.addDefault("unclaimall.description", "&2Unclaim all of your guild's land");
             commandsSection.addDefault("unclaimall.usage", "&2/g unclaimall");

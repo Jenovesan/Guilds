@@ -44,6 +44,7 @@ public class Config {
         configFile.addDefault("player min power", 0);
         configFile.addDefault("player power regen amount", 1);
         configFile.addDefault("world name", "world");
+        configFile.addDefault("max unclaim radius (chunks)", 10);
 
         // Restart server to update
         configFile.addDefault("world claim radius (chunks)", 30);

@@ -398,8 +398,15 @@ public class Guild {
             Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
         }
 
+        // Remove chunks from this Guild's claim locations list
+        this.getClaimLocations().clear();
+
         // Send Guild announcement
         this.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", unclaimer, null, null));
+    }
+
+    public int getExcessPower() {
+        return this.getPower() - this.getNumberOfClaims();
     }
 }
 
