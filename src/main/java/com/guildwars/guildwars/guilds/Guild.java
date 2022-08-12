@@ -4,7 +4,6 @@ import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,6 +20,7 @@ public class Guild {
     private HashSet<gPlayer> invites = new HashSet<>();
     private HashSet<Integer> enemies = new HashSet<>();
     private HashSet<Integer> truceRequests = new HashSet<>();
+    private HashSet<int[]> claimLocations = new HashSet<>();
 
     public int getId() {
         return id;
@@ -52,6 +52,10 @@ public class Guild {
 
     public HashSet<Integer> getTruceRequests() {
         return truceRequests;
+    }
+
+    public HashSet<int[]> getClaimLocations() {
+        return claimLocations;
     }
 
     // Creating a new guild
@@ -230,6 +234,11 @@ public class Guild {
             Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(onlineGuildMember, null, PlayerGuildChangeEvent.Reason.DISBAND));
         }
 
+        // Update board
+        for (int[] claimBoardLocation : this.getClaimLocations()) {
+            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
+        }
+
         // Send Guild Announcement
         sendAnnouncement(Messages.getMsg("guild announcements.disband", player, null, null));
     }
@@ -351,8 +360,27 @@ public class Guild {
         return power;
     }
 
+    public int getNumberOfClaims() {
+        return this.getClaimLocations().size();
+    }
+
     public int getMaxPower() {
         return this.getPlayers().size() * Config.get().getInt("player max power");
+    }
+
+    public boolean canClaim() {
+        return this.getPower() > this.getNumberOfClaims();
+    }
+
+    public void claim(gPlayer claimer, GuildChunk chunk) {
+        // Claim chunk on Board
+        chunk.claim(this);
+
+        // Add chunk to this Guild's claim locations list
+        this.getClaimLocations().add(chunk.getBoardLocation());
+
+        // Send Guild announcement
+        this.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", claimer, null, null));
     }
 }
 

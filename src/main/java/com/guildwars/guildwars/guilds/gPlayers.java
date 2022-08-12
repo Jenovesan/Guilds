@@ -71,7 +71,7 @@ public class gPlayers implements Listener {
             getGPlayers().put(player.getUniqueId(), new gPlayer(player));
             return;
         }
-        player.sendMessage(String.valueOf(getGPlayers()));
+
         gPlayer gPlayer = get(player);
 
         // Set their gPlayer's player

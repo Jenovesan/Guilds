@@ -12,33 +12,53 @@ import java.util.*;
 
 public class GuildsCommandManager implements CommandExecutor {
 
-    public gHelp helpCommand = new gHelp();
+    private final gHelp helpCommand = new gHelp();
+    private final gCreate createCommand = new gCreate();
+    private final gDisband disbandComand = new gDisband();
+    private final gWho whoCommand = new gWho();
+    private final gInvite inviteCommand = new gInvite();
+    private final gJoin joinCommand = new gJoin();
+    private final gDeInvite deInviteCommand = new gDeInvite();
+    private final gLeave leaveCommand = new gLeave();
+    private final gKick kickCommand = new gKick();
+    private final gPromote promoteCommand = new gPromote();
+    private final gDemote demoteCommand = new gDemote();
+    private final gDesc descCommand = new gDesc();
+    private final gName nameCommand = new gName();
+    private final gChat chatCommand = new gChat();
+    private final gEnemy enemyCommand = new gEnemy();
+    private final gTruce truceCommand = new gTruce();
+    private final gLeader leaderCommand = new gLeader();
+    private final gClaim claimCommand = new gClaim();
+    private final gMap mapCommand = new gMap();
+    private final gPower powerCommand = new gPower();
+
 
     public Map<String, gCommand> gCommands = Map.ofEntries(
-        Map.entry("create", new gCreate()),
-        Map.entry("new", new gCreate()),
-        Map.entry("disband", new gDisband()),
-        Map.entry("who", new gWho()),
-        Map.entry("show", new gWho()),
-        Map.entry("invite", new gInvite()),
-        Map.entry("join", new gJoin()),
-        Map.entry("deinvite", new gDeInvite()),
-        Map.entry( "leave", new gLeave()),
-        Map.entry("kick", new gKick()),
-        Map.entry("promote", new gPromote()),
-        Map.entry("demote", new gDemote()),
-        Map.entry("desc", new gDesc()),
-        Map.entry("setdesc", new gDesc()),
-        Map.entry("name", new gName()),
-        Map.entry("setname", new gName()),
-        Map.entry("chat", new gChat()),
-        Map.entry("enemy", new gEnemy()),
-        Map.entry("truce", new gTruce()),
-        Map.entry("leader", new gLeader()),
-        Map.entry("owner", new gLeader()),
-        Map.entry("claim", new gClaim()),
-        Map.entry("map", new gMap()),
-        Map.entry("power", new gPower())
+        Map.entry("create", createCommand),
+        Map.entry("new", createCommand),
+        Map.entry("disband", disbandComand),
+        Map.entry("who", whoCommand),
+        Map.entry("show", whoCommand),
+        Map.entry("invite", inviteCommand),
+        Map.entry("join", joinCommand),
+        Map.entry("deinvite", deInviteCommand),
+        Map.entry( "leave", leaveCommand),
+        Map.entry("kick", kickCommand),
+        Map.entry("promote", promoteCommand),
+        Map.entry("demote", demoteCommand),
+        Map.entry("desc", descCommand),
+        Map.entry("setdesc", descCommand),
+        Map.entry("name", nameCommand),
+        Map.entry("setname", nameCommand),
+        Map.entry("chat", chatCommand),
+        Map.entry("enemy", enemyCommand),
+        Map.entry("truce", truceCommand),
+        Map.entry("leader", leaderCommand),
+        Map.entry("owner", leaderCommand),
+        Map.entry("claim", claimCommand),
+        Map.entry("map", mapCommand),
+        Map.entry("power", powerCommand)
     );
     
     Set<String> gCommandNames = gCommands.keySet();

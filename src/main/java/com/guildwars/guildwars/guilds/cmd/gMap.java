@@ -7,8 +7,6 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,12 +14,12 @@ import java.util.Map;
 public class gMap extends gCommand{
     @Override
     public String getDescription() {
-        return null;
+        return Messages.getMsg("commands.map.description");
     }
 
     @Override
     public String getUsage() {
-        return null;
+        return Messages.getMsg("commands.map.usage");
     }
 
     @Override
@@ -32,12 +30,11 @@ public class gMap extends gCommand{
     static final int gMapSize = Config.get().getInt("g map radius (chunks)");
 
     @Override
-    public void perform(gPlayer gPlayer, String[] args) {
-        Guild playerGuildId = gPlayer.getGuild();
-        Player player = gPlayer.getPlayer();
-        Chunk chunk = player.getLocation().getChunk();
-        int playerChunkX = chunk.getX();
-        int playerChunkZ = chunk.getZ();
+    public void perform(gPlayer player, String[] args) {
+        Guild playerGuild = player.getGuild();
+
+        int playerChunkX = player.getPlayer().getLocation().getChunk().getX();
+        int playerChunkZ = player.getPlayer().getLocation().getChunk().getZ();
 
         // Create map
         HashMap<Guild, String> guildsOnMap = new HashMap<>();
@@ -48,36 +45,28 @@ public class gMap extends gCommand{
         String claimSymbol = Messages.getMsg("commands.map.map construction.claim symbol");
         String[] guildColors = Messages.getStringArray("commands.map.map construction.guild colors");
 
-        for (int z = -gMapSize; z <= gMapSize; z++) {
+        for (int z = playerChunkZ + gMapSize; z >= playerChunkZ - gMapSize; z--) {
             mapMsg = mapMsg.concat("\n" + ChatColor.RESET);
 
-            if (z == 0) { // Center of the map (z-axis)
+            if (z == playerChunkZ) { // Center of the map (z-axis)
                 mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.west") + wildernessClaimPrefix + "|");
             } else {
                 mapMsg = mapMsg.concat("  ");
             }
 
-            for (int x = -gMapSize; x <= gMapSize; x++) {
+            for (int x = playerChunkX + gMapSize; x >= playerChunkX - gMapSize; x--) {
                 // Add player symbol at center of map
-                if (x == 0 && z == 0) {
+                if (x == playerChunkX && z == playerChunkZ) {
                     mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.player symbol"));
                     continue;
                 }
 
-                int chunkX = playerChunkX + x;
-                int chunkZ = playerChunkZ + z;
 
-                Guild guildAtChunk = Board.getGuildAt(chunkX, chunkZ);
+                Guild guildAtChunk = Board.getBoard()[Board.getChunkCord(x)][Board.getChunkCord(z)].getGuild();
 
                 // Wilderness claim
                 if (guildAtChunk == null) {
-                    mapMsg = mapMsg.concat(wildernessClaimPrefix + "■ ");
-                    continue;
-                }
-
-                // Player guild's claim
-                if (guildAtChunk == playerGuildId) {
-                    mapMsg = mapMsg.concat(playerClaimPrefix + claimSymbol);
+                    mapMsg = mapMsg.concat(wildernessClaimPrefix + claimSymbol);
                     continue;
                 }
 
@@ -88,12 +77,17 @@ public class gMap extends gCommand{
                 } else { // First time guild is being added to map
                     // Get new guild claim prefix
                     String newGuildPrefix;
-                    if (guildsOnMap.size() == guildColors.length) {
-                        // More guilds on map than guildColors.
-                        // Generate random color.
-                        newGuildPrefix = util.getRandomColor().toString();
+                    // Player's guild
+                    if (playerGuild != null && guildAtChunk == playerGuild) {
+                        newGuildPrefix = playerClaimPrefix;
                     } else {
-                        newGuildPrefix = guildColors[guildsOnMap.size()];
+                        if (guildsOnMap.size() == guildColors.length) {
+                            // More guilds on map than guildColors.
+                            // Generate random color.
+                            newGuildPrefix = util.getRandomColor().toString();
+                        } else {
+                            newGuildPrefix = guildColors[guildsOnMap.size()];
+                        }
                     }
                     // Add guild to guildsOnMap
                     guildsOnMap.put(guildAtChunk, newGuildPrefix);
@@ -101,19 +95,35 @@ public class gMap extends gCommand{
                     mapMsg = mapMsg.concat(newGuildPrefix + claimSymbol);
                 }
             }
-            if (z == 0) { // Center of the map (z-axis)
+            if (z == playerChunkX) { // Center of the map (z-axis)
                 mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.east"));
             }
         }
-        mapMsg = mapMsg.concat("\n" + Messages.getMsg("commands.map.map construction.footer"));
-
-        // Construct footer
-        for (Map.Entry<Guild, String> entry : guildsOnMap.entrySet()) {
-            String guildName = entry.getKey().getName();
-            String guildPrefix = entry.getValue();
-            mapMsg = mapMsg.concat(guildPrefix + guildName + "  ");
-        }
+        mapMsg = mapMsg.concat("\n" + constructFooter(guildsOnMap));
 
         player.sendMessage(mapMsg);
+    }
+
+    private static String constructFooter(HashMap<Guild, String> guildsOnMap) {
+        // No Guilds on map
+        if (guildsOnMap.isEmpty()) {
+            return Messages.getMsg("commands.map.map construction.footer without guilds");
+        }
+        // Guilds on map
+        else {
+            String guildsList = "";
+            int numberOfGuilds = guildsOnMap.size();
+            int i = 0;
+            for (Map.Entry<Guild, String> entry : guildsOnMap.entrySet()) {
+                i++;
+                String guildName = entry.getKey().getName();
+                String guildPrefix = entry.getValue();
+                guildsList = guildsList.concat(guildPrefix + guildName);
+                if (i != numberOfGuilds) {
+                    guildsList = guildsList.concat(Messages.getMsg("commands.map.map construction.guilds list delimiter"));
+                }
+            }
+            return Messages.getMsg("commands.map.map construction.footer with guilds", null, null, guildsList);
+        }
     }
 }

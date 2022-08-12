@@ -154,19 +154,32 @@ public class Messages {
             commandsSection.addDefault("leader.new leader success msg", "&aYou have been given leadership to &2%TARGET_GUILD_NAME%");
             commandsSection.addDefault("leader.old leader success msg", "&aYou gave &4%TARGET_DISPLAY_NAME% &aleadership of your guild");
             // map
+            commandsSection.addDefault("map.description", "&2Displays a map of nearby guild claims");
+            commandsSection.addDefault("map.usage", "&2/g map <?radius?>");
             commandsSection.addDefault("map.map construction.header", "&7&l |-=-=-=-=- &6&lN &7&l-=-=-=-=-|");
             commandsSection.addDefault("map.map construction.west", "&6W");
             commandsSection.addDefault("map.map construction.east", "&6E");
-            commandsSection.addDefault("map.map construction.claim symbol", "&l■");
+            commandsSection.addDefault("map.map construction.claim symbol", "■ ");
             commandsSection.addDefault("map.map construction.player symbol", "&a♦ ");
             commandsSection.addDefault("map.map construction.wilderness claim prefix", "&7");
             commandsSection.addDefault("map.map construction.player guild claim prefix", "&a");
             commandsSection.addDefault("map.map construction.guild colors", List.of("&9", "&c", "&d", "&e", "&b", "&6", "&f", "&2", "&3", "&5", "&1", "&8"));
-            commandsSection.addDefault("map.map construction.footer", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|");
+            commandsSection.addDefault("map.map construction.footer with guilds", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|\n&7Guilds: %INPUT%");
+            commandsSection.addDefault("map.map construction.footer without guilds", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|");
+            commandsSection.addDefault("map.map construction.guilds list delimiter", "&7, ");
             // power
-            commandsSection.addDefault("power.description", "&2Sets a member of your guild to Leader rank");
-            commandsSection.addDefault("power.usage", "&2/g leader <name>");
+            commandsSection.addDefault("power.description", "&2Returns your guild's power and max power");
+            commandsSection.addDefault("power.usage", "&2/g power");
             commandsSection.addDefault("power.power msg", "&2Guild Power: &a%INPUT%");
+            // claim
+            commandsSection.addDefault("claim.description", "&2Claim a chunk for your guild");
+            commandsSection.addDefault("claim.usage", "&2/g claim <?radius?>");
+            commandsSection.addDefault("claim.cannot claim in world", "&cYou cannot claim land in this world");
+            commandsSection.addDefault("claim.not enough power", "&cYour guild does not have enough power to claim more land");
+            commandsSection.addDefault("claim.not overclaimable", "&4%INPUT % is not overclaimable");
+            commandsSection.addDefault("claim.successfully claimed single chunk", "&aYou claimed land for your guild");
+            commandsSection.addDefault("claim.invalid radius", "&4%INPUT% &cis not a valid radius");
+            commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%INPUT% &achunks for your guild");
 
         // Guilds
         messagesFile.createSection("guild announcements");
@@ -186,6 +199,7 @@ public class Messages {
             guildAnnouncementsSection.addDefault("sent truce request", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas sent a truce request to &2&l%TARGET_GUILD_NAME%!");
             guildAnnouncementsSection.addDefault("received truce request", "&2&l%TARGET_GUILD_NAME% &a&lhas requested to truce with your guild!");
             guildAnnouncementsSection.addDefault("gave leadership", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas given leadership to the guild to &2&l%TARGET_DISPLAY_NAME%!");
+            guildAnnouncementsSection.addDefault("claimed land", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas claimed land");
 
 
         // Guild Naming
@@ -211,7 +225,7 @@ public class Messages {
         List<String> stringList = get().getStringList(path);
         String[] newStringArray = new String[stringList.size()];
         for (int i = 0; i < stringList.size(); i++) {
-            newStringArray[i] = stringList.get(i);
+            newStringArray[i] = ChatColor.translateAlternateColorCodes('&', stringList.get(i));
         }
         return newStringArray;
     }
