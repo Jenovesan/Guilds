@@ -40,10 +40,11 @@ public class Board {
     }
 
     public static int getChunkCord(int chunkCord) {
-        if (chunkCord < 0) {
-            return worldClaimRadius + Math.abs(chunkCord);
+        if (chunkCord > 0) {
+            return worldClaimRadius + chunkCord;
+        } else {
+            return chunkCord * -1;
         }
-        return chunkCord;
     }
 
     public static int[] getChunkBoardLocation(Chunk chunk) {
