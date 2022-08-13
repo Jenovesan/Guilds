@@ -67,13 +67,17 @@ public class gClaim extends gCommand{
 
                         // Get the chunk
                         GuildChunk chunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z];
-
                         // Check if it is claimable
                         if (!chunk.isClaimable()) {
+                            // Player is trying to claim their own chunk
+                            if (chunk.getGuild() == guild) {
+                                player.sendFailMsg(Messages.getMsg("commands.claim.claiming own land", player, null, null));
+                            }
                             // Player is trying to overclaim land that is surrounded by the guild's claims
-                            if (chunk.getGuild().isOverclaimable()) {
+                            else if (chunk.getGuild().isOverclaimable()) {
                                 player.sendFailMsg(Messages.getMsg("commands.claim.cannot overclaim because claim surrounded", player, null, chunk.getGuild().getName()));
-                            } else {
+                            }
+                            else {
                                 player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", player, null, chunk.getGuild().getName()));
                             }
                             continue;
@@ -108,10 +112,15 @@ public class gClaim extends gCommand{
 
             // Check if it's claimable
             if (!chunk.isClaimable()) {
+                // Player is trying to claim their own chunk
+                if (chunk.getGuild() == guild) {
+                    player.sendFailMsg(Messages.getMsg("commands.claim.claiming own land", player, null, null));
+                }
                 // Player is trying to overclaim land that is surrounded by the guild's claims
-                if (chunk.getGuild().isOverclaimable()) {
+                else if (chunk.getGuild().isOverclaimable()) {
                     player.sendFailMsg(Messages.getMsg("commands.claim.cannot overclaim because claim surrounded", player, null, chunk.getGuild().getName()));
-                } else {
+                }
+                else {
                     player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", player, null, chunk.getGuild().getName()));
                 }
                 return;

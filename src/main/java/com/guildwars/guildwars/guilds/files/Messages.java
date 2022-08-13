@@ -183,6 +183,7 @@ public class Messages {
             commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%INPUT% &achunks for your guild");
             commandsSection.addDefault("claim.will not have enough power", "&cYour guild will not have enough power to claim that many chunks");
             commandsSection.addDefault("claim.cannot overclaim because claim surrounded", "&cYou can only overclaim land that is not completely surrounded by the guild's claims");
+            commandsSection.addDefault("claim.claiming own land", "&cYour guild already owns this land");
             // unclaim
             commandsSection.addDefault("unclaim.description", "&2Unclaim a chunk from your guild");
             commandsSection.addDefault("unclaim.usage", "&2/g unclaim <?radius?>");
