@@ -27,7 +27,7 @@ public class gJoin extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.join.in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.join.in guild"));
             return;
         }
 
@@ -35,27 +35,27 @@ public class gJoin extends gCommand{
         gPlayer possiblePlayerToJoin = gPlayers.get(args[0]);
         if (possiblePlayerToJoin != null) { // Player using player name to join guild
             if (!possiblePlayerToJoin.isInGuild()) {
-                player.sendFailMsg(Messages.getMsg("commands.join.player not in guild", player, possiblePlayerToJoin, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.join.player not in guild", possiblePlayerToJoin));
                 return;
             }
             guildToJoin = possiblePlayerToJoin.getGuild();
         } else { //Player using guild name to join guild
             guildToJoin = Guilds.get(args[0]);
             if (guildToJoin == null) {
-                player.sendFailMsg(Messages.getMsg("commands.join.not a guild or player", player, null, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.join.not a guild or player", args[0]));
                 return;
             }
         }
 
         if (!guildToJoin.isInvited(player)) {
-            player.sendFailMsg(Messages.getMsg("commands.join.not invited", player, possiblePlayerToJoin, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.join.not invited", guildToJoin));
             return;
         }
 
         if (guildToJoin.isFull()) {
-            player.sendFailMsg(Messages.getMsg("commands.join.guild is full", player, possiblePlayerToJoin, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.join.guild is full", guildToJoin));
             // Send guild announcement saying player tried to join, but guild was full
-            guildToJoin.sendAnnouncement(Messages.getMsg("guilds announcements.guild was full", player, possiblePlayerToJoin, String.join(" ", args)));
+            guildToJoin.sendAnnouncement(Messages.getMsg("guilds announcements.guild was full", player));
             return;
         }
 
@@ -69,6 +69,6 @@ public class gJoin extends gCommand{
         guildToJoin.deInvite(player);
 
         // Inform player
-        player.sendSuccessMsg(Messages.getMsg("commands.join.successfully joined", player, possiblePlayerToJoin, String.join(" ", args)));
+        player.sendSuccessMsg(Messages.getMsg("commands.join.successfully joined", guildToJoin));
     }
 }

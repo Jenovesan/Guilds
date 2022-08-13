@@ -24,7 +24,7 @@ public class gUnclaim extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -33,7 +33,7 @@ public class gUnclaim extends gCommand{
         }
 
         if (!gUtil.isInMainWorld(player)) {
-            player.sendFailMsg(Messages.getMsg("commands.unclaim.cannot claim in world", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.unclaim.cannot claim in world"));
             return;
         }
 
@@ -47,7 +47,7 @@ public class gUnclaim extends gCommand{
 
                 // Check if radius is too big
                 if (radius > Config.get().getInt("max unclaim radius (chunks)")) {
-                    player.sendFailMsg(Messages.getMsg("commands.unclaim.radius too big", player, null, String.valueOf(radius)));
+                    player.sendFailMsg(Messages.getMsg("commands.unclaim.radius too big", String.valueOf(radius)));
                     return;
                 }
 
@@ -76,10 +76,10 @@ public class gUnclaim extends gCommand{
                 }
 
                 // Inform plauer
-                player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", player, null, String.valueOf(successfulUnclaims)));
+                player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", String.valueOf(successfulUnclaims)));
 
             } catch (NumberFormatException e) {
-                player.sendFailMsg(Messages.getMsg("commands.unclaim.invalid radius", player, null, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.unclaim.invalid radius", args[0]));
             }
         }
         // Player is unclaiming a single chunk
@@ -89,7 +89,7 @@ public class gUnclaim extends gCommand{
 
             // Check if chunk is owned by the player's guild
             if (chunk.getGuild() != guild) {
-                player.sendFailMsg(Messages.getMsg("commands.unclaim.chunk not owned by guild", player, null, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.unclaim.chunk not owned by guild"));
                 return;
             }
 
@@ -97,7 +97,7 @@ public class gUnclaim extends gCommand{
             guild.unclaim(player, chunk);
 
             // Inform player
-            player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed single chunk", player, null, String.valueOf(player.getPlayer().getLocation())));
+            player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed single chunk"));
         }
     }
 }

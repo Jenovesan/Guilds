@@ -25,7 +25,7 @@ public class gTruce extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -37,26 +37,26 @@ public class gTruce extends gCommand{
         gPlayer possiblePlayerToTruce = gPlayers.get(args[0]);
         if (possiblePlayerToTruce != null) { // Player using player name to truce guild
             if (!possiblePlayerToTruce.isInGuild()) {
-                player.sendFailMsg(Messages.getMsg("commands.truce.player not in guild", player, possiblePlayerToTruce, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.truce.player not in guild", possiblePlayerToTruce));
                 return;
             }
             guildToTruce = possiblePlayerToTruce.getGuild();
         } else { //Player using guild name to truce guild
             guildToTruce = Guilds.get(args[0]);
             if (guildToTruce == null) {
-                player.sendFailMsg(Messages.getMsg("commands.truce.not a guild or player", player, null, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.truce.not a guild or player", args[0]));
                 return;
             }
         }
 
         Guild playerGuild = player.getGuild();
         if (!playerGuild.isEnemied(guildToTruce)) {
-            player.sendFailMsg(Messages.getMsg("commands.truce.not enemied", player, possiblePlayerToTruce, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.truce.not enemied", guildToTruce));
             return;
         }
 
         if (playerGuild.hasTruceRequestWith(guildToTruce)) {
-            player.sendFailMsg(Messages.getMsg("commands.truce.already sent truce request", player, possiblePlayerToTruce, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.truce.already sent truce request", guildToTruce));
             return;
         }
 
@@ -65,14 +65,14 @@ public class gTruce extends gCommand{
             playerGuild.sendTruceRequest(player, guildToTruce);
 
             // Inform
-            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully sent truce request", player, possiblePlayerToTruce, String.join(" ", args)));
+            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully sent truce request", guildToTruce));
         }
         // Truce guild
         else {
             playerGuild.truce(guildToTruce);
 
             // Inform
-            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully truced", player, possiblePlayerToTruce, String.join(" ", args)));
+            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully truced", guildToTruce));
         }
     }
 }

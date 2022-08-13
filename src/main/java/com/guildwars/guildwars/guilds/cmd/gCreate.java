@@ -27,7 +27,7 @@ public class gCreate extends gCommand {
 
         // Checks
         if (player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.create.already in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.create.already in guild"));
             return;
         }
 
@@ -50,6 +50,6 @@ public class gCreate extends gCommand {
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, newGuild, PlayerGuildChangeEvent.Reason.CREATION));
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.create.creation", player, null, String.join(" ", args)));
+        player.sendSuccessMsg(Messages.getMsg("commands.create.creation", newGuild));
     }
 }

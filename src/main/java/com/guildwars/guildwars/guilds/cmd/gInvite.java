@@ -24,16 +24,16 @@ public class gInvite extends gCommand{
     @Override
     public void perform(gPlayer inviter, String[] args) {
 
-        gPlayer invitee = gPlayers.get(args[0]);
-
         // Checks
-        if (invitee == null) {
-            inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee not found", inviter, null, String.join(" ", args)));
+        if (!inviter.isInGuild()) {
+            inviter.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
-        if (!inviter.isInGuild()) {
-            inviter.sendFailMsg(Messages.getMsg("commands.not in guild", inviter, invitee, String.join(" ", args)));
+        gPlayer invitee = gPlayers.get(args[0]);
+
+        if (invitee == null) {
+            inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee not found", args[0]));
             return;
         }
 
@@ -44,7 +44,7 @@ public class gInvite extends gCommand{
         Guild inviterGuild = inviter.getGuild();
 
         if (inviterGuild.isInvited(invitee)) {
-            inviter.sendFailMsg(Messages.getMsg("commands.invite.already invited", inviter, invitee, String.join(" ", args)));
+            inviter.sendFailMsg(Messages.getMsg("commands.invite.already invited", invitee));
             return;
         }
 
@@ -52,12 +52,12 @@ public class gInvite extends gCommand{
         if (invitee.isInGuild()) {
             // Invitee is already a member of the inviter's Guild
             if (invitee.getGuild() == inviterGuild) {
-                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in inviter guild", inviter, invitee, String.join(" ", args)));
+                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in inviter guild", invitee));
                 return;
             }
             // Invitee not in Guild
             else {
-                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in guild", inviter, invitee, String.join(" ", args)));
+                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in guild", invitee));
                 return;
             }
         }
@@ -66,10 +66,10 @@ public class gInvite extends gCommand{
         inviterGuild.invite(inviter, invitee);
 
         // Inform invitee
-        invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invitee invite msg", inviter, invitee, String.join(" ", args)));
+        invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invitee invite msg", inviterGuild));
 
         // Inform inviter
-        inviter.sendSuccessMsg(Messages.getMsg("commands.invite.successfully invited", inviter, invitee, String.join(" ", args)));
+        inviter.sendSuccessMsg(Messages.getMsg("commands.invite.successfully invited", invitee));
 
     }
 }

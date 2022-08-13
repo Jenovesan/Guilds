@@ -34,24 +34,24 @@ public class gDisband extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
         if (player.getGuildRank() != GuildRank.LEADER) {
-            player.sendFailMsg(Messages.getMsg("commands.guild rank too low", player, null, util.formatEnum(GuildRank.LEADER)));
+            player.sendFailMsg(Messages.getMsg("commands.guild rank too low", util.formatEnum(GuildRank.LEADER)));
             return;
         }
 
         // Disband Guild
         Guild guild = player.getGuild();
-        guild.disband(player);
+        guild.disband();
 
         // Call GuildDisbandEvent
         Bukkit.getServer().getPluginManager().callEvent(new GuildDisbandEvent(guild));
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.disband.successfully disbanded", player, null, String.join(" ", args)));
+        player.sendSuccessMsg(Messages.getMsg("commands.disband.successfully disbanded", guild));
 
     }
 }

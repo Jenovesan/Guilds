@@ -32,12 +32,12 @@ public class gLeader extends gCommand{
     public void perform(gPlayer oldLeader, String[] args) {
         // Checks
         if (!oldLeader.isInGuild()) {
-            oldLeader.sendFailMsg(Messages.getMsg("commands.not in guild", oldLeader, null, String.join(" ", args)));
+            oldLeader.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
         if (oldLeader.getGuildRank() != GuildRank.LEADER) {
-            oldLeader.sendFailMsg(Messages.getMsg("commands.guild rank too low", oldLeader, null, String.join(" ", args)));
+            oldLeader.sendFailMsg(Messages.getMsg("commands.guild rank too low"));
             return;
         }
 
@@ -45,7 +45,7 @@ public class gLeader extends gCommand{
         gPlayer newLeader = gPlayers.get(args[0]);
 
         if (newLeader == null) {
-            oldLeader.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", oldLeader, null, String.join(" ", args)));
+            oldLeader.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", args[0]));
             return;
         }
 
@@ -60,9 +60,9 @@ public class gLeader extends gCommand{
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(newLeader, GuildRank.LEADER));
 
         // Inform newLeader
-        newLeader.sendNotifyMsg(Messages.getMsg("commands.leader.new leader success msg", oldLeader, newLeader, String.join(" ", args)));
+        newLeader.sendNotifyMsg(Messages.getMsg("commands.leader.new leader success msg", guild));
 
         // Inform
-        oldLeader.sendSuccessMsg(Messages.getMsg("commands.leader.old leader success msg", oldLeader, newLeader, String.join(" ", args)));
+        oldLeader.sendSuccessMsg(Messages.getMsg("commands.leader.old leader success msg", newLeader, guild));
     }
 }

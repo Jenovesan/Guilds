@@ -26,7 +26,7 @@ public class gAutoClaim extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -35,7 +35,7 @@ public class gAutoClaim extends gCommand{
         }
 
         if (!gUtil.isInMainWorld(player)) {
-            player.sendFailMsg(Messages.getMsg("autoclaim.cannot claim in world", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("autoclaim.cannot claim in world"));
             return;
         }
 

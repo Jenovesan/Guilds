@@ -39,10 +39,8 @@ public class gMap extends gCommand {
             MapAuto.addPlayer(player);
         } else if (args[0].equalsIgnoreCase("off")) {
             MapAuto.removePlayer(player);
-        }
-
-        else {
-            player.sendFailMsg(Messages.getMsg("commands.map.invalid syntax", player, null, String.join(" ", args)));
+        } else {
+            player.sendFailMsg(Messages.getMsg("commands.map.invalid syntax"));
         }
     }
 }

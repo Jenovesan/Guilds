@@ -23,7 +23,7 @@ public class gPower extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -31,6 +31,6 @@ public class gPower extends gCommand{
         int guildPower = player.getGuild().getPower();
         int maxGuildPower = player.getGuild().getMaxPower();
 
-        player.sendMessage(Messages.getMsg("commands.power.power msg", player, null, String.join(" ", args)) + guildPower + "/" + maxGuildPower);
+        player.sendMessage(Messages.getMsg("commands.power.power msg", guildPower + "/" + maxGuildPower));
     }
 }

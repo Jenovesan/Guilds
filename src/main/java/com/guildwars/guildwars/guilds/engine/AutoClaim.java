@@ -25,12 +25,12 @@ public class AutoClaim implements Listener {
 
     public static void addPlayer(gPlayer player) {
         getPlayers().put(player, null);
-        player.sendSuccessMsg(Messages.getMsg("autoclaiming.enabled", player, null, null));
+        player.sendSuccessMsg(Messages.getMsg("autoclaiming.enabled"));
     }
 
     public static void removePlayer(gPlayer player) {
         if (getPlayers().containsKey(player)) {
-            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled", player, null, null));
+            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
             getPlayers().remove(player);
         }
     }
@@ -53,14 +53,14 @@ public class AutoClaim implements Listener {
 
                         // Checks
                         if (!guild.canClaim()) {
-                            player.sendFailMsg(Messages.getMsg("commands.claim.not enough power", player, null, null));
+                            player.sendFailMsg(Messages.getMsg("commands.claim.not enough power"));
                             continue;
                         }
 
                         GuildChunk guildChunk = Board.getChunk(newChunk);
 
                         if (!guildChunk.isClaimable()) {
-                            player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", player, null, guildChunk.getGuild().getName()));
+                            player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", guildChunk.getGuild()));
                             continue;
                         }
 
@@ -68,7 +68,7 @@ public class AutoClaim implements Listener {
                         guild.claim(player, guildChunk);
 
                         // Inform player
-                        player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk", player, null, String.valueOf(player.getPlayer().getLocation())));
+                        player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
                     }
                     // Update player chunk.
                     getPlayers().put(player, newChunk);

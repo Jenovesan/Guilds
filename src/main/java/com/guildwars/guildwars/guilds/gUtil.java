@@ -25,7 +25,7 @@ public class gUtil {
             return true;
         } else { // Guild rank too low
             if (sendReturnMsg) {
-                player.sendFailMsg(Messages.getMsg("commands.guild rank too low", player, null, util.formatEnum(permission)));
+                player.sendFailMsg(Messages.getMsg("commands.guild rank too low", permMinRank));
             }
             return false;
         }
@@ -35,14 +35,14 @@ public class gUtil {
         // Check if guild name is too long
         int guildNameCharacterLimit = Config.get().getInt("max characters in guild name");
         if (guildName.toCharArray().length > guildNameCharacterLimit) {
-            player.sendFailMsg(Messages.getMsg("guild naming.name too long", player, null, guildName));
+            player.sendFailMsg(Messages.getMsg("guild naming.name too long", guildName));
             return false;
         }
 
         // Check if the guild name exists already
         for (Guild guild : Guilds.getAllGuilds()) {
             if (guild.getName().equalsIgnoreCase(guildName)) {
-                player.sendFailMsg(Messages.getMsg("guild naming.name exists", player, null, guildName));
+                player.sendFailMsg(Messages.getMsg("guild naming.name exists", guildName));
                 return false;
             }
         }
@@ -51,7 +51,7 @@ public class gUtil {
         List<Character> legalGuildNameCharacters = Config.get().getCharacterList("valid guild name characters");
         for (Character character : guildName.toCharArray()) {
             if (!legalGuildNameCharacters.contains(character)) {
-                player.sendFailMsg(Messages.getMsg("guild naming.name contains not legal character", player, null, guildName));
+                player.sendFailMsg(Messages.getMsg("guild naming.name contains not legal character", character));
                 return false;
             }
         }
@@ -59,7 +59,7 @@ public class gUtil {
         // Check if the name is a blacklisted guild name
         List<String> blackListedGuildNames = Config.get().getStringList("blacklisted guild names");
         if (blackListedGuildNames.contains(guildName)) {
-            player.sendFailMsg(Messages.getMsg("guild naming.name blacklisted", player, null, guildName));
+            player.sendFailMsg(Messages.getMsg("guild naming.name blacklisted"));
             return false;
         }
 

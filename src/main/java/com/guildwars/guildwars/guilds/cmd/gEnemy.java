@@ -25,7 +25,7 @@ public class gEnemy extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -37,26 +37,26 @@ public class gEnemy extends gCommand{
         gPlayer possiblePlayerToEnemy = gPlayers.get(args[0]);
         if (possiblePlayerToEnemy != null) { // Player using player name to enemy guild
             if (!possiblePlayerToEnemy.isInGuild()) {
-                player.sendFailMsg(Messages.getMsg("commands.enemy.player not in guild", player, possiblePlayerToEnemy, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.enemy.player not in guild", possiblePlayerToEnemy));
                 return;
             }
             guildToEnemy = possiblePlayerToEnemy.getGuild();
         } else { //Player using guild name to enemy guild
             guildToEnemy = Guilds.get(args[0]);
             if (guildToEnemy == null) {
-                player.sendFailMsg(Messages.getMsg("commands.enemy.not a guild or player", player, null, String.join(" ", args)));
+                player.sendFailMsg(Messages.getMsg("commands.enemy.not a guild or player", args[0]));
                 return;
             }
         }
 
         Guild playerGuild = player.getGuild();
         if (playerGuild.isEnemied(guildToEnemy)) {
-            player.sendFailMsg(Messages.getMsg("commands.enemy.already enemied", player, possiblePlayerToEnemy, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.enemy.already enemied", guildToEnemy));
             return;
         }
 
         if (playerGuild == guildToEnemy) {
-            player.sendFailMsg(Messages.getMsg("commands.enemy.cannot enemy own guild", player, possiblePlayerToEnemy, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.enemy.cannot enemy own guild"));
             return;
         }
 
@@ -64,6 +64,6 @@ public class gEnemy extends gCommand{
         playerGuild.enemy(player, guildToEnemy);
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.enemy.successfully enemied", player, possiblePlayerToEnemy, String.join(" ", args)));
+        player.sendSuccessMsg(Messages.getMsg("commands.enemy.successfully enemied", guildToEnemy));
     }
 }

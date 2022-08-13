@@ -28,12 +28,12 @@ public class gLeave extends gCommand{
 
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
         if (player.getGuildRank() == GuildRank.LEADER) {
-            player.sendFailMsg(Messages.getMsg("commands.leave.is leader", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.leave.is leader"));
             return;
         }
 
@@ -45,6 +45,6 @@ public class gLeave extends gCommand{
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, null, PlayerGuildChangeEvent.Reason.LEAVE));
 
         // Inform player
-        player.sendSuccessMsg(Messages.getMsg("commands.leave.successfully left", player, null, String.join(" ", args)));
+        player.sendSuccessMsg(Messages.getMsg("commands.leave.successfully left", guild));
     }
 }

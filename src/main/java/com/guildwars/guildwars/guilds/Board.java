@@ -164,7 +164,7 @@ public class Board {
                     guildsList = guildsList.concat(Messages.getMsg("commands.map.map construction.guilds list delimiter"));
                 }
             }
-            mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.footer with guilds", null, null, guildsList));
+            mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.footer with guilds", guildsList));
         }
 
         return mapMsg;

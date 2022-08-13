@@ -28,7 +28,7 @@ public class gPromote extends gCommand{
     public void perform(gPlayer promoter, String[] args) {
         // Checks
         if (!promoter.isInGuild()) {
-            promoter.sendFailMsg(Messages.getMsg("commands.not in guild", promoter, null, String.join(" ", args)));
+            promoter.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -37,7 +37,7 @@ public class gPromote extends gCommand{
         gPlayer promotee = guild.getPlayer(args[0]);
 
         if (promotee == null) {
-            promoter.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", promoter, null, String.join(" ", args)));
+            promoter.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", args[0]));
             return;
         }
 
@@ -45,9 +45,9 @@ public class gPromote extends gCommand{
         GuildRank promoteeGuildRank = guild.getGuildRank(promotee);
         if (GuildRank.higherByAmount(promoterGuildRank, promoteeGuildRank) < 2) {
             if (promoterGuildRank != GuildRank.LEADER) {
-                promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough", promoter, promotee, String.join(" ", args)));
+                promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough", promotee));
             } else { // Tried to promote member to GuildRank: Leader
-                promoter.sendFailMsg(Messages.getMsg("commands.promote.tried to make leader", promoter, promotee, String.join(" ", args)));
+                promoter.sendFailMsg(Messages.getMsg("commands.promote.tried to make leader"));
             }
             return;
         }
@@ -63,9 +63,9 @@ public class gPromote extends gCommand{
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(promotee, newGuildRank));
 
         // Inform promotee
-        promotee.sendNotifyMsg(Messages.getMsg("commands.promote.promotee promoted msg", promoter, promotee, String.join(" ", args)));
+        promotee.sendNotifyMsg(Messages.getMsg("commands.promote.promotee promoted msg", newGuildRank));
 
         // Inform promoter
-        promoter.sendSuccessMsg(Messages.getMsg("commands.promote.successfully promoted", promoter, promotee, String.join(" ", args)));
+        promoter.sendSuccessMsg(Messages.getMsg("commands.promote.successfully promoted", promotee, newGuildRank));
     }
 }

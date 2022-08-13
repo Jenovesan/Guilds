@@ -30,7 +30,7 @@ public class gChat extends gCommand{
 
         // Checks
         if (!gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.not in guild", gPlayer, null, String.join(" ", args)));
+            gPlayer.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -47,13 +47,13 @@ public class gChat extends gCommand{
             if (playerChatChannel != ChatChannel.GUILD) {
                 ChatChannels.setPlayerChatChannel(player, ChatChannel.GUILD);
                 // Inform
-                gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.joined guild chat", gPlayer, null, String.join(" ", args)));
+                gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.joined guild chat"));
             }
             // Leave Guild chat
             else {
                 ChatChannels.setPlayerChatChannel(player, null);
                 // Inform
-                gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.left guild chat", gPlayer, null, String.join(" ", args)));
+                gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.left guild chat"));
             }
         }
         // Send a message in guild chat

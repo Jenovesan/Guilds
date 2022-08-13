@@ -32,7 +32,7 @@ public class gDemote extends gCommand{
     public void perform(gPlayer demoter, String[] args) {
         // Checks
         if (!demoter.isInGuild()) {
-            demoter.sendFailMsg(Messages.getMsg("commands.not in guild", demoter, null, String.join(" ", args)));
+            demoter.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -41,19 +41,19 @@ public class gDemote extends gCommand{
         gPlayer demotee = guild.getPlayer(args[0]);
 
         if (demotee == null) {
-            demoter.sendFailMsg(Messages.getMsg("commands.demote.demotee not found", demoter, null, String.join(" ", args)));
+            demoter.sendFailMsg(Messages.getMsg("commands.demote.demotee not found", args[0]));
             return;
         }
 
         GuildRank demoterGuildRank = demoter.getGuildRank();
         GuildRank demoteeGuildRank = guild.getGuildRank(demotee);
         if (GuildRank.higherByAmount(demoterGuildRank, demoteeGuildRank) < 1) {
-            demoter.sendFailMsg(Messages.getMsg("commands.demote.rank not high enough", demoter, demotee, String.join(" ", args)));
+            demoter.sendFailMsg(Messages.getMsg("commands.demote.rank not high enough", demotee));
             return;
         }
 
         if (demoteeGuildRank.level == 1) {
-            demoter.sendFailMsg(Messages.getMsg("commands.demote.cannot demote any further", demoter, demotee, String.join(" ", args)));
+            demoter.sendFailMsg(Messages.getMsg("commands.demote.cannot demote any further", demotee));
             return;
         }
 
@@ -68,9 +68,9 @@ public class gDemote extends gCommand{
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(demotee, newGuildRank));
 
         // Inform demotee
-        demotee.sendNotifyMsg(Messages.getMsg("commands.demote.demotee demoted msg", demoter, demotee, String.join(" ", args)));
+        demotee.sendNotifyMsg(Messages.getMsg("commands.demote.demotee demoted msg", newGuildRank));
 
         // Inform demoter
-        demoter.sendSuccessMsg(Messages.getMsg("commands.demote.successfully demoted", demoter, demotee, String.join(" ", args)));
+        demoter.sendSuccessMsg(Messages.getMsg("commands.demote.successfully demoted", demotee, newGuildRank));
     }
 }

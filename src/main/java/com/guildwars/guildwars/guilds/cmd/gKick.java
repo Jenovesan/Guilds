@@ -29,7 +29,7 @@ public class gKick extends gCommand{
 
         // Checks
         if (!kicker.isInGuild()) {
-            kicker.sendFailMsg(Messages.getMsg("commands.invite.invitee not found", kicker, null, String.join(" ", args)));
+            kicker.sendFailMsg(Messages.getMsg("commands.invite.invitee not found"));
             return;
         }
 
@@ -38,7 +38,7 @@ public class gKick extends gCommand{
         gPlayer kickee = gPlayers.get(args[0]);
 
         if (kickee == null) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.kickee not found", kicker, null, String.join(" ", args)));
+            kicker.sendFailMsg(Messages.getMsg("commands.kick.kickee not found", args[0]));
             return;
         }
 
@@ -49,7 +49,7 @@ public class gKick extends gCommand{
         GuildRank kickerRank = guild.getRank(kicker);
         GuildRank kickeeRank = guild.getRank(kickee);
         if (kickerRank.level <= kickeeRank.level) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher", kicker, kickee, String.join(" ", args)));
+            kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher"));
             return;
         }
 
@@ -60,9 +60,9 @@ public class gKick extends gCommand{
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(kickee, null, PlayerGuildChangeEvent.Reason.KICKED));
 
         // Inform kickee
-        kickee.sendNotifyMsg(Messages.getMsg("commands.kick.kickee kicked msg", kicker, kickee, String.join(" ", args)));
+        kickee.sendNotifyMsg(Messages.getMsg("commands.kick.kickee kicked msg", guild));
 
         // Inform kicker
-        kicker.sendSuccessMsg(Messages.getMsg("commands.kick.successfully kicked", kicker, kickee, String.join(" ", args)));
+        kicker.sendSuccessMsg(Messages.getMsg("commands.kick.successfully kicked", kickee));
     }
 }

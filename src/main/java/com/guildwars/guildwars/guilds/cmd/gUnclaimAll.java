@@ -25,7 +25,7 @@ public class gUnclaimAll extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild", player, null, String.join(" ", args)));
+            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
             return;
         }
 
@@ -37,6 +37,6 @@ public class gUnclaimAll extends gCommand{
         player.getGuild().unclaimAll(player);
 
         // Inform player
-        player.sendSuccessMsg(Messages.getMsg("commands.unclaimall.successfully unclaimed all", player, null, null));
+        player.sendSuccessMsg(Messages.getMsg("commands.unclaimall.successfully unclaimed all"));
     }
 }

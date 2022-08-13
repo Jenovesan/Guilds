@@ -22,12 +22,12 @@ public class MapAuto {
 
     public static void addPlayer(gPlayer player) {
         getPlayers().put(player, player.getPlayer().getLocation().getChunk());
-        player.sendSuccessMsg(Messages.getMsg("map auto.enabled", player, null, null));
+        player.sendSuccessMsg(Messages.getMsg("map auto.enabled"));
     }
 
     public static void removePlayer(gPlayer player) {
         getPlayers().remove(player);
-        player.sendNotifyMsg(Messages.getMsg("map auto.disabled", player, null, null));
+        player.sendNotifyMsg(Messages.getMsg("map auto.disabled", player));
     }
 
     public static boolean isPlayer(gPlayer player) {
