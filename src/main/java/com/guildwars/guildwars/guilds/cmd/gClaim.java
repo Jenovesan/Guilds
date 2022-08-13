@@ -56,8 +56,8 @@ public class gClaim extends gCommand{
                 int successfulClaims = 0;
 
                 // Iterate through chunks in given radius and try to claim them
-                for (int z = playerChunkZ + radius - 1; z >= playerChunkZ - radius + 1; z--) {
-                    for (int x = playerChunkX + radius - 1; x >= playerChunkX - radius + 1; x--) {
+                for (int z = playerChunkZ - radius + 1; z <= playerChunkZ + radius - 1; z++) {
+                    for (int x = playerChunkX - radius + 1; x <= playerChunkX + radius - 1; x++) {
 
                         // Check if guild can claim
                         if (!guild.canClaim()) {

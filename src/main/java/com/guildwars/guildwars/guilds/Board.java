@@ -87,7 +87,7 @@ public class Board {
         String claimSymbol = Messages.getMsg("commands.map.map construction.claim symbol");
         String[] guildColors = Messages.getStringArray("commands.map.map construction.guild colors");
 
-        for (int z = playerChunkZ + gMapSize; z >= playerChunkZ - gMapSize; z--) {
+        for (int z = playerChunkZ - gMapSize; z <= playerChunkZ + gMapSize; z++) {
             mapMsg = mapMsg.concat("\n" + ChatColor.RESET);
 
             if (z == playerChunkZ) { // Center of the map (z-axis)
@@ -96,7 +96,7 @@ public class Board {
                 mapMsg = mapMsg.concat("  ");
             }
 
-            for (int x = playerChunkX + gMapSize; x >= playerChunkX - gMapSize; x--) {
+            for (int x = playerChunkX - gMapSize; x <= playerChunkX + gMapSize; x++) {
 
                 Guild guildAtChunk = Board.getBoard()[Board.getChunkCord(x)][Board.getChunkCord(z)].getGuild();
 
