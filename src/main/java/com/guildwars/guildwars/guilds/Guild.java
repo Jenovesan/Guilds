@@ -408,6 +408,10 @@ public class Guild {
     public int getExcessPower() {
         return this.getPower() - this.getNumberOfClaims();
     }
+
+    public boolean isOverclaimable() {
+        return this.getNumberOfClaims() > this.getPower();
+    }
 }
 
 

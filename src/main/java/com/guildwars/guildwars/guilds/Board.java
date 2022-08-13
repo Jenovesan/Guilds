@@ -43,7 +43,7 @@ public class Board {
         if (chunkCord > 0) {
             return worldClaimRadius + chunkCord;
         } else {
-            return chunkCord * -1;
+            return worldClaimRadius - (chunkCord * -1);
         }
     }
 
@@ -76,8 +76,8 @@ public class Board {
     public static String getMap(gPlayer player) {
         Guild playerGuild = player.getGuild();
 
-        int playerChunkX = player.getPlayer().getLocation().getChunk().getX();
-        int playerChunkZ = player.getPlayer().getLocation().getChunk().getZ();
+        int playerChunkX = getChunkCord(player.getPlayer().getLocation().getChunk().getX());
+        int playerChunkZ = getChunkCord(player.getPlayer().getLocation().getChunk().getZ());
 
         // Create map
         HashMap<Guild, String> guildsOnMap = new HashMap<>();
@@ -88,21 +88,21 @@ public class Board {
         String claimSymbol = Messages.getMsg("commands.map.map construction.claim symbol");
         String[] guildColors = Messages.getStringArray("commands.map.map construction.guild colors");
 
-        for (int z = playerChunkZ - gMapSize; z <= playerChunkZ + gMapSize; z++) {
+        for (int z = -gMapSize; z <= gMapSize; z++) {
             mapMsg = mapMsg.concat("\n" + ChatColor.RESET);
 
-            if (z == playerChunkZ) { // Center of the map (z-axis)
+            if (z == 0) { // Center of the map (z-axis)
                 mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.west") + wildernessClaimPrefix + "|");
             } else {
                 mapMsg = mapMsg.concat("  ");
             }
 
-            for (int x = playerChunkX - gMapSize; x <= playerChunkX + gMapSize; x++) {
+            for (int x = -gMapSize; x <= gMapSize; x++) {
 
-                Guild guildAtChunk = Board.getBoard()[Board.getChunkCord(x)][Board.getChunkCord(z)].getGuild();
+                Guild guildAtChunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z].getGuild();
 
                 // Add player symbol at center of map
-                if (x == playerChunkX && z == playerChunkZ) {
+                if (x == 0 && z == 0) {
                     mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.player symbol"));
                     if (guildAtChunk == playerGuild) {
                         guildsOnMap.put(playerGuild, playerClaimPrefix); // So player's claim shows up on Guild's list
@@ -141,7 +141,7 @@ public class Board {
                     mapMsg = mapMsg.concat(newGuildPrefix + claimSymbol);
                 }
             }
-            if (z == playerChunkX) { // Center of the map (z-axis)
+            if (z == 0) { // Center of the map (z-axis)
                 mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.east"));
             }
         }

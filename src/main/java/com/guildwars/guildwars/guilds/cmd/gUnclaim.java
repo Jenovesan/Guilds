@@ -51,16 +51,16 @@ public class gUnclaim extends gCommand{
                     return;
                 }
 
-                int playerChunkX = player.getPlayer().getLocation().getChunk().getX();
-                int playerChunkZ = player.getPlayer().getLocation().getChunk().getZ();
+                int playerChunkX = Board.getChunkCord(player.getPlayer().getLocation().getChunk().getX());
+                int playerChunkZ = Board.getChunkCord(player.getPlayer().getLocation().getChunk().getZ());
                 int successfulUnclaims = 0;
 
                 // Iterate through chunks in given radius and try to claim them
-                for (int z = playerChunkZ - radius + 1; z <= playerChunkZ + radius - 1; z++) {
-                    for (int x = playerChunkX - radius + 1; x <= playerChunkX + radius - 1; x++) {
+                for (int z = -radius + 1; z <= radius - 1; z++) {
+                    for (int x = -radius + 1; x <= radius - 1; x++) {
 
                         // Get chunk
-                        GuildChunk chunk = Board.getBoard()[Board.getChunkCord(x)][Board.getChunkCord(z)];
+                        GuildChunk chunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z];
 
                         // Check if chunk is owned by the player's guild
                         if (chunk.getGuild() != guild) {

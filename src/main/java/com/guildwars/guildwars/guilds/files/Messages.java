@@ -182,6 +182,7 @@ public class Messages {
             commandsSection.addDefault("claim.invalid radius", "&4%INPUT% &cis not a valid radius");
             commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%INPUT% &achunks for your guild");
             commandsSection.addDefault("claim.will not have enough power", "&cYour guild will not have enough power to claim that many chunks");
+            commandsSection.addDefault("claim.cannot overclaim because claim surrounded", "&cYou can only overclaim land that is not completely surrounded by the guild's claims");
             // unclaim
             commandsSection.addDefault("unclaim.description", "&2Unclaim a chunk from your guild");
             commandsSection.addDefault("unclaim.usage", "&2/g unclaim <?radius?>");
