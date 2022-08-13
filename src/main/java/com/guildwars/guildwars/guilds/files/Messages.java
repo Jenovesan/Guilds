@@ -223,6 +223,7 @@ public class Messages {
             guildAnnouncementsSection.addDefault("claimed land", "&2&l%PLAYER_DISPLAY_NAME% &a&lhas claimed land");
             guildAnnouncementsSection.addDefault("unclaimed land", "&4&l%PLAYER_DISPLAY_NAME% &c&lhas unclaimed land");
             guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER_DISPLAY_NAME% &c&lhas unclaimed all your guild's land");
+            guildAnnouncementsSection.addDefault("overclaimed", "&4&l%PLAYER_GUILD_NAME% &c&lhas overclaimed some of your land");
 
 
         // Guild Naming

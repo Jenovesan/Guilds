@@ -7,10 +7,11 @@ public class GuildChunk {
     private final int[] boardLocation;
 
     public void claim(Guild hostGuild) {
-        this.guild = hostGuild;
-        if (hostGuild != null) {
-            this.guildId = hostGuild.getId();
+        if (this.guild != null) {
+            getGuild().removeClaim(this);
         }
+        this.guild = hostGuild;
+        this.guildId = hostGuild.getId();
     }
 
     public Guild getGuild() {

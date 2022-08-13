@@ -412,33 +412,8 @@ public class Guild {
     public boolean isOverclaimable() {
         return this.getNumberOfClaims() > this.getPower();
     }
+
+    public void removeClaim(GuildChunk chunk) {
+        this.getClaimLocations().remove(chunk.getBoardLocation());
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
