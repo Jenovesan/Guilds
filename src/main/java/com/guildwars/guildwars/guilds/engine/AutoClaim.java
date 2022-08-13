@@ -11,7 +11,6 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -30,8 +29,10 @@ public class AutoClaim implements Listener {
     }
 
     public static void removePlayer(gPlayer player) {
-        getPlayers().remove(player);
-        player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled", player, null, null));
+        if (getPlayers().containsKey(player)) {
+            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled", player, null, null));
+            getPlayers().remove(player);
+        }
     }
 
     public static boolean isPlayer(gPlayer player) {
