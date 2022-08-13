@@ -52,6 +52,7 @@ public class Config {
         configFile.addDefault("online player power regen time (min)", 60);
         configFile.addDefault("offline player power regen time (min)", 180);
         configFile.addDefault("autoclaim update time (ticks)", 20);
+        configFile.addDefault("map-auto update time (ticks)", 20);
 
         //default permissions
         configFile.createSection("default permissions");

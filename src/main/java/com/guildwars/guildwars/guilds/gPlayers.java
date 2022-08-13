@@ -1,6 +1,9 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.guilds.event.GPlayerLeaveEvent;
+import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -77,14 +80,17 @@ public class gPlayers implements Listener {
         // Set their gPlayer's player
         gPlayer.setPlayer(player);
 
-
         // Update gPlayer name in case they changed their name
         get(player).setName(player.getName());
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        gPlayer player = get(event.getPlayer());
+
         // Remove player from gPlayer
-        get(event.getPlayer()).setPlayer(null);
+        player.setPlayer(null);
+        // Call event
+        Bukkit.getServer().getPluginManager().callEvent(new GPlayerLeaveEvent(player));
     }
 }

@@ -155,7 +155,8 @@ public class Messages {
             commandsSection.addDefault("leader.old leader success msg", "&aYou gave &4%TARGET_DISPLAY_NAME% &aleadership of your guild");
             // map
             commandsSection.addDefault("map.description", "&2Displays a map of nearby guild claims");
-            commandsSection.addDefault("map.usage", "&2/g map <?radius?>");
+            commandsSection.addDefault("map.usage", "&2/g map <?auto|on|off?>");
+            commandsSection.addDefault("map.invalid syntax", "&cInvalid syntax. Use /g map <?auto?>");
             commandsSection.addDefault("map.map construction.header", "&7&l |-=-=-=-=- &6&lN &7&l-=-=-=-=-|");
             commandsSection.addDefault("map.map construction.west", "&6W");
             commandsSection.addDefault("map.map construction.east", "&6E");
@@ -238,6 +239,13 @@ public class Messages {
         assert autoclaimingSection != null;
         autoclaimingSection.addDefault("enabled", "&aYou have &2enabled &aautoclaiming");
         autoclaimingSection.addDefault("disabled", "&cYou have &4disabled &cautoclaiming");
+
+        // Map auto
+        messagesFile.createSection("map auto");
+        ConfigurationSection mapAutoSection = messagesFile.getConfigurationSection("map auto");
+        assert mapAutoSection != null;
+        mapAutoSection.addDefault("enabled", "&aYou have &2enabled &amap auto updating");
+        mapAutoSection.addDefault("disabled", "&cYou have &4disabled &cmap auto updating");
     }
 
     public static FileConfiguration get() {

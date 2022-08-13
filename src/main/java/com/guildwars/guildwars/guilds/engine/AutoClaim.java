@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.event.GPlayerLeaveEvent;
 import com.guildwars.guildwars.guilds.event.GuildPermissionChangeEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
@@ -10,6 +11,7 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -50,27 +52,25 @@ public class AutoClaim implements Listener {
 
                         // Checks
                         if (!guild.canClaim()) {
-                            player.sendMessage(Messages.getMsg("commands.claim.not enough power", player, null, null));
+                            player.sendFailMsg(Messages.getMsg("commands.claim.not enough power", player, null, null));
                             continue;
                         }
 
                         GuildChunk guildChunk = Board.getChunk(newChunk);
 
                         if (!guildChunk.isClaimable()) {
-                            player.sendMessage(Messages.getMsg("commands.claim.not overclaimable", player, null, guildChunk.getGuild().getName()));
+                            player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", player, null, guildChunk.getGuild().getName()));
                             continue;
                         }
 
                         // Claim chunk
                         guild.claim(player, guildChunk);
 
-                        // Update player chunk.
-                        // Only executed if chunk claiming is successful encase player GuildRank changes or chunk claim changes while player remains in the same chunk
-                        getPlayers().put(player, newChunk);
-
                         // Inform player
                         player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk", player, null, String.valueOf(player.getPlayer().getLocation())));
                     }
+                    // Update player chunk.
+                    getPlayers().put(player, newChunk);
                 }
             }
         }.runTaskTimerAsynchronously(GuildWars.getInstance(), 0, Config.get().getInt("autoclaim update time (ticks)"));
@@ -110,6 +110,11 @@ public class AutoClaim implements Listener {
                 removePlayer(player);
             }
         }
+    }
+
+    @EventHandler
+    public void removePlayerOnLogout(GPlayerLeaveEvent event) {
+        removePlayer(event.getGPlayer());
     }
 
 }

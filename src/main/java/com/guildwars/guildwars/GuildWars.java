@@ -6,6 +6,7 @@ import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.GuildsFastData;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
 import com.guildwars.guildwars.guilds.engine.AutoClaim;
+import com.guildwars.guildwars.guilds.engine.MapAuto;
 import com.guildwars.guildwars.guilds.engine.Power;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayers;
@@ -51,6 +52,7 @@ public final class GuildWars extends JavaPlugin {
 
         // Start Runnables
         AutoClaim.perform();
+        MapAuto.perform();
     }
 
     public void unloadGuilds() {
