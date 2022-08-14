@@ -49,32 +49,13 @@ public class AutoClaim implements Listener {
                     Chunk newChunk = player.getPlayer().getLocation().getChunk();
                     // Player moved into new chunk
                     if (oldChunk != newChunk) {
-                        Guild guild = player.getGuild();
 
-                        // Checks
-                        if (!guild.canClaim()) {
-                            player.sendFailMsg(Messages.getMsg("commands.claim.not enough power"));
-                            continue;
+                        boolean claimed = player.tryClaim(Board.getChunk(newChunk));
+
+                        if (claimed) {
+                            // Inform player
+                            player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
                         }
-
-                        GuildChunk guildChunk = Board.getChunk(newChunk);
-
-                        if (!guildChunk.isClaimable()) {
-                            player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", guildChunk.getGuild()));
-                            continue;
-                        }
-
-                        // Claim chunk
-                        guildChunk.claim(guild);
-
-                        // Claim chunk for Guild
-                        guild.claim(guildChunk);
-
-                        // Send Guild announcement
-                        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", player));
-
-                        // Inform player
-                        player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
                     }
                     // Update player chunk.
                     getPlayers().put(player, newChunk);

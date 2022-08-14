@@ -79,7 +79,7 @@ public class Messages {
             // disband
             commandsSection.addDefault("disband.description", "&2Disbands your guild");
             commandsSection.addDefault("disband.usage", "&2/g disband");
-            commandsSection.addDefault("disband.successfully disbanded", "&aYou disbanded your &4%GUILD%");
+            commandsSection.addDefault("disband.successfully disbanded", "&aYou disbanded your guild &2%GUILD%");
             // join
             commandsSection.addDefault("join.description", "&2Joins a guild");
             commandsSection.addDefault("join.usage", "&2/g join <guild | player>");
@@ -170,14 +170,10 @@ public class Messages {
             commandsSection.addDefault("claim.description", "&2Claim a chunk for your guild");
             commandsSection.addDefault("claim.usage", "&2/g claim <?radius?>");
             commandsSection.addDefault("claim.cannot claim in world", "&cYou cannot claim land in this world");
-            commandsSection.addDefault("claim.not enough power", "&cYour guild does not have enough power to claim more land");
-            commandsSection.addDefault("claim.not overclaimable", "&4%GUILD% &cis not overclaimable");
             commandsSection.addDefault("claim.successfully claimed single chunk", "&aYou claimed land for your guild");
             commandsSection.addDefault("claim.invalid radius", "&4%INPUT% &cis not a valid radius");
             commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%AMOUNT% &achunks for your guild");
             commandsSection.addDefault("claim.will not have enough power", "&cYour guild will not have enough power to claim that many chunks");
-            commandsSection.addDefault("claim.cannot overclaim because claim surrounded", "&cYou can only overclaim land that is not completely surrounded by the guild's claims");
-            commandsSection.addDefault("claim.claiming own land", "&cYour guild already owns this land");
             // unclaim
             commandsSection.addDefault("unclaim.description", "&2Unclaim a chunk from your guild");
             commandsSection.addDefault("unclaim.usage", "&2/g unclaim <?radius?>");
@@ -243,6 +239,16 @@ public class Messages {
         assert mapAutoSection != null;
         mapAutoSection.addDefault("enabled", "&aYou have &2enabled &amap auto updating");
         mapAutoSection.addDefault("disabled", "&cYou have &4disabled &cmap auto updating");
+
+        // Claiming
+        messagesFile.createSection("claiming");
+        ConfigurationSection claimingSection = messagesFile.getConfigurationSection("claiming");
+        assert claimingSection != null;
+        claimingSection.addDefault("not enough power", "&cYour guild does not have enough power to claim more land");
+        claimingSection.addDefault("claiming own land", "&cYour guild already owns this land");
+        claimingSection.addDefault("cannot overclaim because claim surrounded", "&cYou can only overclaim land that is not completely surrounded by the guild's claims");
+        claimingSection.addDefault("not overclaimable", "&4%GUILD% &cis not overclaimable");
+        claimingSection.addDefault("no connecting claim", "&cYou can only claim land that is connected to your land");
     }
 
     public static FileConfiguration get() {

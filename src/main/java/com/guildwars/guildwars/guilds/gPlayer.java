@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.entity.Player;
 
@@ -125,5 +126,49 @@ public class gPlayer {
     public void leftGuild() {
         this.setGuild(null);
         this.setGuildRank(null);
+    }
+
+    public boolean tryClaim(GuildChunk chunk) {
+
+        // Checks
+        Guild guild = getGuild();
+        // Check if guild can claim
+        if (!guild.canClaim()) {
+            this.sendFailMsg(Messages.getMsg("claiming.not enough power"));
+            return false;
+        }
+
+        // Check if it's claimable
+        if (!chunk.isClaimable()) {
+            // Player is trying to claim their own chunk
+            if (chunk.getGuild() == guild) {
+                this.sendFailMsg(Messages.getMsg("claiming.claiming own land"));
+            }
+            // Player is trying to overclaim land that is surrounded by the guild's claims
+            else if (chunk.getGuild().isOverclaimable()) {
+                this.sendFailMsg(Messages.getMsg("claiming.cannot overclaim because claim surrounded"));
+            }
+            else {
+                this.sendFailMsg(Messages.getMsg("claiming.not overclaimable", chunk.getGuild()));
+            }
+            return false;
+        }
+
+        // If it is not the guild's first claim, check if it has a connecting claim
+        if (guild.getNumberOfClaims() > 0 && !chunk.hasConnectingClaim(guild)) {
+            this.sendFailMsg(Messages.getMsg("claiming.no connecting claim"));
+            return false;
+        }
+
+        // Claim chunk
+        chunk.claim(guild);
+
+        // Claim chunk for Guild
+        guild.claim(chunk);
+
+        // Send Guild announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", this));
+
+        return true;
     }
 }

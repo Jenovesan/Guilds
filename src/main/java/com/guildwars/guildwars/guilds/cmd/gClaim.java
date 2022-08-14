@@ -62,7 +62,7 @@ public class gClaim extends gCommand{
                         GuildChunk chunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z];
 
                         // Try to claim
-                        boolean claimed = tryToClaim(player, guild, chunk);
+                        boolean claimed = player.tryClaim(chunk);
 
                         if (claimed) {
                             // Track successful claim
@@ -84,47 +84,12 @@ public class gClaim extends gCommand{
             GuildChunk chunk = Board.getGuildChunkAt(player.getPlayer().getLocation());
 
             // Try to claim
-            boolean claimed = tryToClaim(player, guild, chunk);
+            boolean claimed = player.tryClaim(chunk);
 
             if (claimed) {
                 // Inform plauer
                 player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
             }
         }
-    }
-
-    private static boolean tryToClaim(gPlayer player, Guild guild,GuildChunk chunk) {
-        // Check if guild can claim
-        if (!guild.canClaim()) {
-            player.sendFailMsg(Messages.getMsg("commands.claim.not enough power"));
-            return false;
-        }
-
-        // Check if it's claimable
-        if (!chunk.isClaimable()) {
-            // Player is trying to claim their own chunk
-            if (chunk.getGuild() == guild) {
-                player.sendFailMsg(Messages.getMsg("commands.claim.claiming own land"));
-            }
-            // Player is trying to overclaim land that is surrounded by the guild's claims
-            else if (chunk.getGuild().isOverclaimable()) {
-                player.sendFailMsg(Messages.getMsg("commands.claim.cannot overclaim because claim surrounded"));
-            }
-            else {
-                player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", chunk.getGuild()));
-            }
-            return false;
-        }
-
-        // Claim chunk
-        chunk.claim(guild);
-
-        // Claim chunk for Guild
-        guild.claim(chunk);
-
-        // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", player));
-
-        return true;
     }
 }
