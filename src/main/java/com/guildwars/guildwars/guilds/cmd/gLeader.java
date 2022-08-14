@@ -55,7 +55,7 @@ public class gLeader extends gCommand{
         }
 
         if (newLeader.getGuild() != guild) {
-            oldLeader.sendFailMsg(Messages.getMsg("commands.leader.new leader is not in guild", newLeader));
+            oldLeader.sendFailMsg(Messages.getMsg("commands.player not in your guild", newLeader));
             return;
         }
 

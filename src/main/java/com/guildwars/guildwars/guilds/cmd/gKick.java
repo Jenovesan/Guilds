@@ -38,11 +38,16 @@ public class gKick extends gCommand{
         gPlayer kickee = gPlayers.get(args[0]);
 
         if (kickee == null) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.kickee not found", args[0]));
+            kicker.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));
             return;
         }
 
         if (!gUtil.checkPermission(kicker, GuildPermission.INVITE, true)) {
+            return;
+        }
+
+        if (kickee.getGuild() != guild) {
+            kicker.sendFailMsg(Messages.getMsg("commands.player not in your guild", kickee));
             return;
         }
 

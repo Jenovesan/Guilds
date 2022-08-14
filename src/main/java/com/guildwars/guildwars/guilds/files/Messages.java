@@ -46,6 +46,9 @@ public class Messages {
             commandsSection.addDefault("too few arguments given", "&cToo few arguments were given. Try /g help for command usage");
             commandsSection.addDefault("guild rank too low", "&cYou must be at least &4%RANK% &cto perform this command");
             commandsSection.addDefault("not in guild", "&cYou must be in a guild to perform this command");
+            commandsSection.addDefault("player not found", "&cNo player &4%INPUT% &ccould be found");
+            commandsSection.addDefault("player not in your guild", "&4%PLAYER% &cis not in your guild");
+            commandsSection.addDefault("not a guild or player", "&4%INPUT% &cis not a guild or player");
             //create
             commandsSection.addDefault("create.description", "&2Creates your own guild");
             commandsSection.addDefault("create.usage", "&2/g create <name> <description>");
@@ -60,7 +63,6 @@ public class Messages {
             //invite
             commandsSection.addDefault("invite.description", "&2/Invite a player to your guild");
             commandsSection.addDefault("invite.usage", "&2/g invite <name>");
-            commandsSection.addDefault("invite.invitee not found", "&4%INPUT% &cis not a player");
             commandsSection.addDefault("invite.inviter rank to low", "&cYou Guild Rank is too low");
             commandsSection.addDefault("invite.invite expired", "&cYour invite to &4%GUILD% &chas expired");
             commandsSection.addDefault("invite.invitee in guild", "&4%PLAYER% &cis in a guild");
@@ -71,8 +73,7 @@ public class Messages {
             //deinvite
             commandsSection.addDefault("deinvite.description", "&2Remove a player from your guild's invite list");
             commandsSection.addDefault("deinvite.usage", "&2/g deinvite <name>");
-            commandsSection.addDefault("deinvite.deinvitee not found", "&4%INPUT% &cis not a player");
-            commandsSection.addDefault("deinvite.not invited", "&4%INPUT% &cis not invited to your guild");
+            commandsSection.addDefault("deinvite.not invited", "&4%PLAYER% &cis not invited to your guild");
             commandsSection.addDefault("deinvite.successfully deinvited", "&aYou deinvited &2%PLAYER% &afrom your guild");
             commandsSection.addDefault("deinvite.deinvitee deinvited msg", "&cYour invite to &4%GUILD% &chas been revoked");
             // disband
@@ -83,7 +84,6 @@ public class Messages {
             commandsSection.addDefault("join.description", "&2Joins a guild");
             commandsSection.addDefault("join.usage", "&2/g join <guild | player>");
             commandsSection.addDefault("join.in guild", "&cYou must leave your guild to create your own");
-            commandsSection.addDefault("join.not a guild or player", "&4%INPUT% &cis not a guild or player");
             commandsSection.addDefault("join.not invited", "&cYou are not invited to &4%GUILD%");
             commandsSection.addDefault("join.guild is full", "&4%GUILD% &cis full");
             commandsSection.addDefault("joiner.player not in guild", "&4%PLAYER% &cis not in a guild");
@@ -96,14 +96,12 @@ public class Messages {
             // kick
             commandsSection.addDefault("kick.description", "&2Kick a player from your guild");
             commandsSection.addDefault("kick.usage", "&2/g kick <name>");
-            commandsSection.addDefault("kick.kickee not found", "&4%INPUT% &cis not in your guild");
             commandsSection.addDefault("kick.guild rank not higher", "&cYour guild rank must be higher than the person you are kicking");
             commandsSection.addDefault("kick.kickee kicked msg", "&cYou have been kicked from &4%GUILD%");
             commandsSection.addDefault("kick.successfully kicked", "&aYou kicked &2%PLAYER%&a from your guild");
             // promote
             commandsSection.addDefault("promote.description", "&2Promotes a player in your guild");
             commandsSection.addDefault("promote.usage", "&2/g promote <name>");
-            commandsSection.addDefault("promote.promotee not found", "&4%INPUT% &cis not in your guild");
             commandsSection.addDefault("promote.rank not high enough", "&cYour rank is not high enough to promote &4%PLAYER%");
             commandsSection.addDefault("promote.promotee promoted msg", "&aYou were promoted to &2%RANK%");
             commandsSection.addDefault("promote.successfully promoted", "&aYou promoted &2%PLAYER% &ato &2%RANK%");
@@ -111,7 +109,6 @@ public class Messages {
             // demote
             commandsSection.addDefault("demote.description", "&2Demotes a player in your guild");
             commandsSection.addDefault("demote.usage", "&2/g demote <name>");
-            commandsSection.addDefault("demote.demotee not found", "&4%INPUT% &cis not in your guild");
             commandsSection.addDefault("demote.rank not high enough", "&cYour rank is not high enough to demote &4%PLAYER%");
             commandsSection.addDefault("demote.demotee demoted msg", "&cYou were demoted to &4%RANK%");
             commandsSection.addDefault("demote.successfully demoted", "&aYou demoted &2%PLAYER% &ato &2%RANK%");
@@ -133,7 +130,6 @@ public class Messages {
             commandsSection.addDefault("enemy.description", "&2Enemies a guild");
             commandsSection.addDefault("enemy.usage", "&2/g enemy <guild | player>");
             commandsSection.addDefault("enemy.player not in guild", "&4%PLAYER% &cis not in a guild");
-            commandsSection.addDefault("enemy.not a guild or player", "&4%INPUT% &cis not a guild or player");
             commandsSection.addDefault("enemy.already enemied", "&cYour guild is already enemied with &4%GUILD%");
             commandsSection.addDefault("enemy.cannot enemy own guild", "&cYou cannot enemy your own guild");
             commandsSection.addDefault("enemy.successfully enemied", "&cYou enemied &4%GUILD%");
@@ -141,7 +137,6 @@ public class Messages {
             commandsSection.addDefault("truce.description", "&2Truces a guild you are enemied with");
             commandsSection.addDefault("truce.usage", "&2/g truce <guild | player>");
             commandsSection.addDefault("truce.player not in guild", "&4%PLAYER% &cis not in a guild");
-            commandsSection.addDefault("truce.not a guild or player", "&4%INPUT% &cis not a guild or player");
             commandsSection.addDefault("truce.not enemied", "&cYour guild is not enemied with &4%GUILD%");
             commandsSection.addDefault("truce.successfully truced", "&aYou truced &2%GUILD%");
             commandsSection.addDefault("truce.successfully sent truce request", "&aYou sent a truce request to &2%GUILD%");
@@ -152,7 +147,6 @@ public class Messages {
             commandsSection.addDefault("leader.new leader success msg", "&aYou have been given leadership of &2%GUILD%");
             commandsSection.addDefault("leader.old leader success msg", "&aYou gave &4%PLAYER% &aleadership of %GUILD%");
             commandsSection.addDefault("leader.new leader is sender", "&cYou are already the leader of your guild");
-            commandsSection.addDefault("leader.new leader is not in guild", "&4%PLAYER% &cis not in your guild");
             // map
             commandsSection.addDefault("map.description", "&2Displays a map of nearby guild claims");
             commandsSection.addDefault("map.usage", "&2/g map <?auto|on|off?>");

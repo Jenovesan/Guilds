@@ -33,11 +33,15 @@ public class gDeInvite extends gCommand{
             return;
         }
 
-        String deInviteeName = args[0];
-        gPlayer deInvitee = deInviterGuild.getInvitedPlayer(deInviteeName);
+        gPlayer deInvitee = gPlayers.get(args[0]);
 
         if (deInvitee == null) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.deinvite.not invited", args[0]));
+            deInviter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));
+            return;
+        }
+
+        if (deInviterGuild.isInvited(deInvitee)) {
+            deInviter.sendFailMsg(Messages.getMsg("commands.not invited", deInvitee));
             return;
         }
 

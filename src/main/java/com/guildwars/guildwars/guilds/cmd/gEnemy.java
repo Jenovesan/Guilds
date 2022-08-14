@@ -44,7 +44,7 @@ public class gEnemy extends gCommand{
         } else { //Player using guild name to enemy guild
             guildToEnemy = Guilds.get(args[0]);
             if (guildToEnemy == null) {
-                player.sendFailMsg(Messages.getMsg("commands.enemy.not a guild or player", args[0]));
+                player.sendFailMsg(Messages.getMsg("commands.not a guild or player", args[0]));
                 return;
             }
         }

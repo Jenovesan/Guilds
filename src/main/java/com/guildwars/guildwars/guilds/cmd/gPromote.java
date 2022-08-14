@@ -32,12 +32,17 @@ public class gPromote extends gCommand{
             return;
         }
 
-        Guild guild = promoter.getGuild();
-
-        gPlayer promotee = guild.getPlayer(args[0]);
+        gPlayer promotee = gPlayers.get(args[0]);
 
         if (promotee == null) {
-            promoter.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", args[0]));
+            promoter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));
+            return;
+        }
+
+        Guild guild = promoter.getGuild();
+
+        if (promotee.getGuild() != guild) {
+            promoter.sendFailMsg(Messages.getMsg("commands.player not in your guild", promotee));
             return;
         }
 

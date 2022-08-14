@@ -36,12 +36,17 @@ public class gDemote extends gCommand{
             return;
         }
 
-        Guild guild = demoter.getGuild();
-
-        gPlayer demotee = guild.getPlayer(args[0]);
+        gPlayer demotee = gPlayers.get(args[0]);
 
         if (demotee == null) {
-            demoter.sendFailMsg(Messages.getMsg("commands.demote.demotee not found", args[0]));
+            demoter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));
+            return;
+        }
+
+        Guild guild = demoter.getGuild();
+
+        if (demotee.getGuild() != guild) {
+            demoter.sendFailMsg(Messages.getMsg("commands.player not in your guild", demotee));
             return;
         }
 
