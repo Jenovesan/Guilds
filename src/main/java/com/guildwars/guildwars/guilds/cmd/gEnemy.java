@@ -61,9 +61,18 @@ public class gEnemy extends gCommand{
         }
 
         // Enemy guild
-        playerGuild.enemy(player, guildToEnemy);
+        playerGuild.enemy(guildToEnemy);
 
-        // Inform
+        // Have guildToEnemy enemy playerGuild
+        guildToEnemy.enemy(playerGuild);
+
+        // Inform playerGuild
+        playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.enemied guild", guildToEnemy));
+
+        // Inform enemyGuild
+        guildToEnemy.sendAnnouncement(Messages.getMsg("guild announcements.guild has enemied your guild", playerGuild));
+
+        // Inform player
         player.sendSuccessMsg(Messages.getMsg("commands.enemy.successfully enemied", guildToEnemy));
     }
 }

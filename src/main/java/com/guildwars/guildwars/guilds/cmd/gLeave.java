@@ -41,6 +41,12 @@ public class gLeave extends gCommand{
         Guild guild = player.getGuild();
         guild.removePlayer(player);
 
+        // Update gPlayer
+        player.leftGuild();
+
+        // Send Guild Announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.player leave", player));
+
         // Call event
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, null, PlayerGuildChangeEvent.Reason.LEAVE));
 

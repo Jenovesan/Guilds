@@ -1,9 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.GuildPermission;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
 
 public class gUnclaimAll extends gCommand{
     @Override
@@ -34,7 +32,18 @@ public class gUnclaimAll extends gCommand{
         }
 
         // Unclaim all
-        player.getGuild().unclaimAll(player);
+        Guild guild = player.getGuild();
+
+        // Update Board
+        for (int[] claimBoardLocation : guild.getClaimLocations()) {
+            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
+        }
+
+        // Update guild
+        guild.unclaimAll();
+
+        // Send Guild announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", player));
 
         // Inform player
         player.sendSuccessMsg(Messages.getMsg("commands.unclaimall.successfully unclaimed all"));

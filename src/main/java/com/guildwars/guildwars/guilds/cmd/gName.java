@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
@@ -40,7 +41,11 @@ public class gName extends gCommand{
         }
 
         // Set Guild name
-        player.getGuild().setName(player, newGuildName);
+        Guild guild = player.getGuild();
+        guild.setName(newGuildName);
+
+        // Send Guild announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.name changed", player, newGuildName));
 
         // Inform
         player.sendSuccessMsg(Messages.getMsg("commands.name.successfully set name", args[0]));

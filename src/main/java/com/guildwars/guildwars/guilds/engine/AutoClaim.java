@@ -65,7 +65,13 @@ public class AutoClaim implements Listener {
                         }
 
                         // Claim chunk
-                        guild.claim(player, guildChunk);
+                        guildChunk.claim(guild);
+
+                        // Claim chunk for Guild
+                        guild.claim(guildChunk);
+
+                        // Send Guild announcement
+                        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", player));
 
                         // Inform player
                         player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));

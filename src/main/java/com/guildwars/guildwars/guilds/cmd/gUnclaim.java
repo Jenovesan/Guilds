@@ -62,16 +62,12 @@ public class gUnclaim extends gCommand{
                         // Get chunk
                         GuildChunk chunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z];
 
-                        // Check if chunk is owned by the player's guild
-                        if (chunk.getGuild() != guild) {
-                            continue;
+                        boolean claimed = tryUnclaim(player, guild, chunk);
+
+                        if (claimed) {
+                            // Track successful claim
+                            successfulUnclaims++;
                         }
-
-                        // Unclaim chunk
-                        guild.unclaim(player, chunk);
-
-                        // Track successful claim
-                        successfulUnclaims++;
                     }
                 }
 
@@ -87,17 +83,31 @@ public class gUnclaim extends gCommand{
             // Get chunk
             GuildChunk chunk = Board.getGuildChunkAt(player.getPlayer().getLocation());
 
-            // Check if chunk is owned by the player's guild
-            if (chunk.getGuild() != guild) {
-                player.sendFailMsg(Messages.getMsg("commands.unclaim.chunk not owned by guild"));
-                return;
+            boolean claimed = tryUnclaim(player, guild, chunk);
+
+            if (claimed) {
+                // Inform player
+                player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed single chunk"));
             }
-
-            // Unclaim chunk
-            guild.unclaim(player, chunk);
-
-            // Inform player
-            player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed single chunk"));
         }
+    }
+
+    private boolean tryUnclaim(gPlayer player, Guild guild, GuildChunk chunk) {
+        // Check if chunk is owned by the player's guild
+        if (chunk.getGuild() != guild) {
+            player.sendFailMsg(Messages.getMsg("commands.unclaim.chunk not owned by guild"));
+            return false;
+        }
+
+        // Unclaim chunk
+        guild.unclaim(chunk);
+
+        // Unclaim chunk on Board
+        chunk.setWilderness();
+
+        // Send Guild announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", player));
+
+        return true;
     }
 }

@@ -42,7 +42,7 @@ public class gDeInvite extends gCommand{
         }
 
         // Deinvite player
-        deInviterGuild.deInvite(deInvitee);
+        deInviterGuild.removeInvite(deInvitee);
 
         // Inform deinvitee
         deInvitee.sendNotifyMsg(Messages.getMsg("commands.deinvite.deinvitee deinvited msg", deInviterGuild));

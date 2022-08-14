@@ -37,7 +37,10 @@ public class gDesc extends gCommand{
         // Set Guild Description
         String description = String.join(" ", args);
         Guild guild = player.getGuild();
-        guild.setDescription(player, description);
+        guild.setDescription(description);
+
+        // Send Guild announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.description changed", player, description));
 
         // Inform
         player.sendSuccessMsg(Messages.getMsg("commands.desc.successfully set desc", String.join(" ", args)));

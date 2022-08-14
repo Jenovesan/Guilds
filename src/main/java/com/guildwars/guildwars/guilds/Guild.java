@@ -1,12 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.GuildWars;
-import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Config;
-import com.guildwars.guildwars.guilds.files.Messages;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -96,14 +91,12 @@ public class Guild {
         this.permissions.put(GuildPermission.UNCLAIM_ALL, GuildRank.valueOf(Config.get().getString("default permissions.unclaim_all")));
     }
 
-    public void setName(gPlayer changer, String newName) {
+    public void setName(String newName) {
         this.name = newName;
-        this.sendAnnouncement(Messages.getMsg("guild announcements.name changed", changer, newName));
     }
 
-    public void setDescription(gPlayer changer, String desc) {
+    public void setDescription(String desc) {
         this.description = desc;
-        this.sendAnnouncement(Messages.getMsg("guild announcements.description changed", changer, desc));
     }
 
     public void setLeader(gPlayer oldLeader, gPlayer newLeader) {
@@ -112,78 +105,27 @@ public class Guild {
 
         // Set the old leader to coleader
         this.getPlayers().replace(oldLeader, GuildRank.COLEADER);
-        // Inform guild
-        this.sendAnnouncement(Messages.getMsg("guild announcements.gave leadership", oldLeader, newLeader));
     }
 
-    public void invite(gPlayer inviter, gPlayer invitee) {
-
-        // Convert player to offline player
-
-        // Invite invitee
+    public void invite(gPlayer invitee) {
         getInvites().add(invitee);
-
-        // Remove player invitation later
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                // Check if invitee still has an invitation
-                if (!isInvited(invitee)) {
-                    return;
-                }
-
-                // Remove player invitation
-                getInvites().remove(invitee);
-
-                // Notify player if they're online
-                if (invitee.getPlayer() != null) {
-                    invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invite expired", get()));
-                }
-            }
-        }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("invite expire time (s)") * 20L);
     }
 
-    public void deInvite(gPlayer invitee) {
+    public void removeInvite(gPlayer invitee) {
         getInvites().remove(invitee);
     }
 
     public void addPlayer(gPlayer newPlayer) {
-
         GuildRank playerNewGuidRank = GuildRank.valueOf(Config.get().getString("join guild at rank"));
-
-        // Send Guild Announcement
-        // This is done first because if it was done after the player was added to the guild, the new player would receive this announcement
-        this.sendAnnouncement(Messages.getMsg("guild announcements.player join", newPlayer));
-
-        // Update Guild's player list
         this.getPlayers().put(newPlayer, playerNewGuidRank);
-
-        // Update gPlayer
-        newPlayer.joinedNewGuild(this);
     }
 
     public void removePlayer(gPlayer player) {
-
-        // Update Guild's player list
         this.getPlayers().remove(player);
-
-        // Update gPlayer
-        player.leftGuild();
-
-        // Send Guild Announcement
-        this.sendAnnouncement(Messages.getMsg("guild announcements.player leave", player));
     }
 
-    public void kickPlayer(gPlayer kicker, gPlayer kickee) {
-
-        // Remove player from Guild
+    public void kickPlayer(gPlayer kickee) {
         this.getPlayers().remove(kickee);
-
-        // Update gPlayer if kickee is online
-        kickee.leftGuild();
-
-        // Send Guild Announcement
-        this.sendAnnouncement(Messages.getMsg("guild announcements.player kicked", kicker, kickee));
     }
 
     public GuildRank getRank(gPlayer player) {
@@ -218,31 +160,6 @@ public class Guild {
             }
         }
         return onlinePlayers;
-    }
-
-    public void disband() {
-
-        // Remove Guild from Guilds
-        Guilds.removeGuild(this);
-
-        // Remove Guild Data
-        Guilds.removeGuildData(this.getId());
-
-        // Update gPlayers & call event
-        for (gPlayer onlineGuildMember : this.getOnlinePlayers()) {
-            // Update gPlayer
-            onlineGuildMember.leftGuild();
-            // Call PlayerGuildChangeEvents
-            Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(onlineGuildMember, null, PlayerGuildChangeEvent.Reason.DISBAND));
-        }
-
-        // Update board
-        for (int[] claimBoardLocation : this.getClaimLocations()) {
-            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
-        }
-
-        // Send Guild Announcement
-        sendAnnouncement(Messages.getMsg("guild announcements.disband"));
     }
 
     public boolean isInvited(gPlayer player) {
@@ -282,55 +199,20 @@ public class Guild {
         return this.getEnemies().contains(guild.getId());
     }
 
-    public void enemy(gPlayer player, Guild enemyGuild) {
-        // Add enemyGuild to this enemy list
+    public void enemy(Guild enemyGuild) {
         this.getEnemies().add(enemyGuild.getId());
-
-        // Add this guild to enemyGuild enemy list
-        enemyGuild.getEnemies().add(this.getId());
-
-        // Inform this guild
-        this.sendAnnouncement(Messages.getMsg("guild announcements.enemied guild", enemyGuild));
-
-        // Inform enemyGuild
-        enemyGuild.sendAnnouncement(Messages.getMsg("guild announcements.guild has enemied your guild", this));
     }
 
     public void truce(Guild enemyGuild) {
-        // Remove enemyGuild from this enemy list
         this.getEnemies().remove(enemyGuild.getId());
-
-        // Remove this guild from enemyGuild enemy list
-        enemyGuild.getEnemies().remove(this.getId());
-
-        // Inform this guild
-        this.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", enemyGuild));
-
-        // Inform enemyGuild
-        enemyGuild.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", enemyGuild));
-
-        // Remove enemyGuild's truce request with this guild
-        enemyGuild.getTruceRequests().remove(this.getId());
     }
 
-    public void sendTruceRequest(gPlayer player, Guild guildToTruce) {
-        // Add to truce requests
+    public void removeTruceRequest(Guild guild) {
+        this.getTruceRequests().remove(guild.getId());
+    }
+
+    public void sendTruceRequest(Guild guildToTruce) {
         this.getTruceRequests().add(guildToTruce.getId());
-
-        // Inform Guild to truce
-        guildToTruce.sendAnnouncement(Messages.getMsg("guild announcements.received truce request", this));
-
-        // Inform this guild
-        this.sendAnnouncement(Messages.getMsg("guild announcements.sent truce request", player, guildToTruce));
-
-        // Remove truce request later
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                // Remove truce request
-                getTruceRequests().remove(guildToTruce.getId());
-            }
-        }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("truce request expire time (m)") * 1200L);
     }
 
     public boolean hasTruceRequestWith(Guild guild) {
@@ -370,39 +252,17 @@ public class Guild {
         return this.getPower() > this.getNumberOfClaims();
     }
 
-    public void claim(gPlayer claimer, GuildChunk chunk) {
-        // Claim chunk on Board
-        chunk.claim(this);
-
+    public void claim(GuildChunk chunk) {
         // Add chunk to this Guild's claim locations list
         this.getClaimLocations().add(chunk.getBoardLocation());
-
-        // Send Guild announcement
-        this.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", claimer));
     }
 
-    public void unclaim(gPlayer unclaimer, GuildChunk chunk) {
-        // Unclaim chunk on Board
-        chunk.setWilderness();
-
-        // Remove chunk from this Guild's claim locations list
+    public void unclaim(GuildChunk chunk) {
         this.getClaimLocations().remove(chunk.getBoardLocation());
-
-        // Send Guild announcement
-        this.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", unclaimer));
     }
 
-    public void unclaimAll(gPlayer unclaimer) {
-        // Update Board
-        for (int[] claimBoardLocation : this.getClaimLocations()) {
-            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
-        }
-
-        // Remove chunks from this Guild's claim locations list
+    public void unclaimAll() {
         this.getClaimLocations().clear();
-
-        // Send Guild announcement
-        this.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", unclaimer));
     }
 
     public int getExcessPower() {

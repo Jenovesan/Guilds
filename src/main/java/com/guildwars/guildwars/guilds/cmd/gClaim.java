@@ -58,36 +58,16 @@ public class gClaim extends gCommand{
                 // Iterate through chunks in given radius and try to claim them
                 for (int z = -radius + 1; z <= radius - 1; z++) {
                     for (int x = -radius + 1; x <= radius - 1; x++) {
-
-                        // Check if guild can claim
-                        if (!guild.canClaim()) {
-                            player.sendFailMsg(Messages.getMsg("commands.claim.not enough power"));
-                            return;
-                        }
-
                         // Get the chunk
                         GuildChunk chunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z];
-                        // Check if it is claimable
-                        if (!chunk.isClaimable()) {
-                            // Player is trying to claim their own chunk
-                            if (chunk.getGuild() == guild) {
-                                player.sendFailMsg(Messages.getMsg("commands.claim.claiming own land"));
-                            }
-                            // Player is trying to overclaim land that is surrounded by the guild's claims
-                            else if (chunk.getGuild().isOverclaimable()) {
-                                player.sendFailMsg(Messages.getMsg("commands.claim.cannot overclaim because claim surrounded"));
-                            }
-                            else {
-                                player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", guild));
-                            }
-                            continue;
+
+                        // Try to claim
+                        boolean claimed = tryToClaim(player, guild, chunk);
+
+                        if (claimed) {
+                            // Track successful claim
+                            successfulClaims++;
                         }
-
-                        // Claim chunk
-                        guild.claim(player, chunk);
-
-                        // Track successful claim
-                        successfulClaims++;
                     }
                 }
 
@@ -100,37 +80,51 @@ public class gClaim extends gCommand{
         }
         // Player is claiming a single chunk
         else {
-
-            // Check if guild can claim
-            if (!guild.canClaim()) {
-                player.sendFailMsg(Messages.getMsg("commands.claim.not enough power"));
-                return;
-            }
-
             // Get chunk
             GuildChunk chunk = Board.getGuildChunkAt(player.getPlayer().getLocation());
 
-            // Check if it's claimable
-            if (!chunk.isClaimable()) {
-                // Player is trying to claim their own chunk
-                if (chunk.getGuild() == guild) {
-                    player.sendFailMsg(Messages.getMsg("commands.claim.claiming own land"));
-                }
-                // Player is trying to overclaim land that is surrounded by the guild's claims
-                else if (chunk.getGuild().isOverclaimable()) {
-                    player.sendFailMsg(Messages.getMsg("commands.claim.cannot overclaim because claim surrounded"));
-                }
-                else {
-                    player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", chunk.getGuild()));
-                }
-                return;
+            // Try to claim
+            boolean claimed = tryToClaim(player, guild, chunk);
+
+            if (claimed) {
+                // Inform plauer
+                player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
             }
-
-            // Claim chunk
-            guild.claim(player, chunk);
-
-            // Inform plauer
-            player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
         }
+    }
+
+    private static boolean tryToClaim(gPlayer player, Guild guild,GuildChunk chunk) {
+        // Check if guild can claim
+        if (!guild.canClaim()) {
+            player.sendFailMsg(Messages.getMsg("commands.claim.not enough power"));
+            return false;
+        }
+
+        // Check if it's claimable
+        if (!chunk.isClaimable()) {
+            // Player is trying to claim their own chunk
+            if (chunk.getGuild() == guild) {
+                player.sendFailMsg(Messages.getMsg("commands.claim.claiming own land"));
+            }
+            // Player is trying to overclaim land that is surrounded by the guild's claims
+            else if (chunk.getGuild().isOverclaimable()) {
+                player.sendFailMsg(Messages.getMsg("commands.claim.cannot overclaim because claim surrounded"));
+            }
+            else {
+                player.sendFailMsg(Messages.getMsg("commands.claim.not overclaimable", chunk.getGuild()));
+            }
+            return false;
+        }
+
+        // Claim chunk
+        chunk.claim(guild);
+
+        // Claim chunk for Guild
+        guild.claim(chunk);
+
+        // Send Guild announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", player));
+
+        return true;
     }
 }

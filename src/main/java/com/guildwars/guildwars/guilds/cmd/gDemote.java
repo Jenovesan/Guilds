@@ -61,7 +61,7 @@ public class gDemote extends gCommand{
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(demoteeGuildRank.level - 1);
         guild.changeGuildRank(demotee, newGuildRank);
 
-        // Update gPlayer & Inform demotee if online
+        // Update gPlayer
         demotee.setGuildRank(newGuildRank);
 
         // Call Event

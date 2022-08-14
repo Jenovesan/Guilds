@@ -1,11 +1,13 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class gInvite extends gCommand{
     @Override
@@ -63,7 +65,26 @@ public class gInvite extends gCommand{
         }
 
         // Invite player
-        inviterGuild.invite(inviter, invitee);
+        inviterGuild.invite(invitee);
+
+        // Remove player invitation later
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // Check if invitee still has an invitation
+                if (!inviterGuild.isInvited(invitee)) {
+                    return;
+                }
+
+                // Remove player invitation
+                inviterGuild.removeInvite(invitee);
+
+                // Notify player if they're online
+                if (invitee.getPlayer() != null) {
+                    invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invite expired", inviterGuild));
+                }
+            }
+        }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("invite expire time (s)") * 20L);
 
         // Inform invitee
         invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invitee invite msg", inviterGuild));

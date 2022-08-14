@@ -59,6 +59,9 @@ public class gLeader extends gCommand{
         // Call Event
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(newLeader, GuildRank.LEADER));
 
+        // Inform guild
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.gave leadership", oldLeader, newLeader));
+
         // Inform newLeader
         newLeader.sendNotifyMsg(Messages.getMsg("commands.leader.new leader success msg", guild));
 

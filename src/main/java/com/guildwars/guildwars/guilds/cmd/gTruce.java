@@ -1,9 +1,12 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class gTruce extends gCommand{
     @Override
@@ -62,16 +65,45 @@ public class gTruce extends gCommand{
 
         // Send a truce request
         if (!guildToTruce.hasTruceRequestWith(playerGuild)) {
-            playerGuild.sendTruceRequest(player, guildToTruce);
+            // Add to truce request list
+            playerGuild.sendTruceRequest(guildToTruce);
+
+            // Inform GuildToTruce
+            guildToTruce.sendAnnouncement(Messages.getMsg("guild announcements.received truce request", playerGuild));
+
+            // Inform playerGuild
+            playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.sent truce request", player, guildToTruce));
+
+            // Remove truce request later
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    // Remove truce request
+                    playerGuild.removeTruceRequest(guildToTruce);
+                }
+            }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("truce request expire time (m)") * 1200L);
 
             // Inform
             player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully sent truce request", guildToTruce));
         }
         // Truce guild
         else {
+            // Have playerGuild truce guildToTruce
             playerGuild.truce(guildToTruce);
 
-            // Inform
+            // Have guildToTruce truce playerGuild
+            guildToTruce.truce(playerGuild);
+
+            // Inform playerGuild
+            playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", guildToTruce));
+
+            // Inform guildToTruce
+            guildToTruce.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", playerGuild));
+
+            // Remove guildToTruce's truce request with this guild
+            guildToTruce.removeTruceRequest(playerGuild);
+
+            // Inform player
             player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully truced", guildToTruce));
         }
     }

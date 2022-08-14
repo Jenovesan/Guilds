@@ -2,10 +2,8 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class gJoin extends gCommand{
     @Override
@@ -60,13 +58,21 @@ public class gJoin extends gCommand{
         }
 
         // Join guild
+
+        // Send Guild Announcement
+        // This is done first because if it was done after the player was added to the guild, the new player would receive this announcement
+        guildToJoin.sendAnnouncement(Messages.getMsg("guild announcements.player join", player));
+
         guildToJoin.addPlayer(player);
+
+        // Update gPlayer
+        player.joinedNewGuild(guildToJoin);
 
         // Call event
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, guildToJoin, PlayerGuildChangeEvent.Reason.JOIN));
 
         // Remove invite
-        guildToJoin.deInvite(player);
+        guildToJoin.removeInvite(player);
 
         // Inform player
         player.sendSuccessMsg(Messages.getMsg("commands.join.successfully joined", guildToJoin));
