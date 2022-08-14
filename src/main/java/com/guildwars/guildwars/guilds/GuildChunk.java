@@ -1,5 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.guilds.files.Messages;
+
 public class GuildChunk {
 
     private Guild guild;
@@ -9,6 +11,7 @@ public class GuildChunk {
     public void claim(Guild hostGuild) {
         if (this.guild != null) {
             getGuild().removeClaim(this);
+            getGuild().sendAnnouncement(Messages.getMsg("guild announcements.overclaimed", hostGuild));
         }
         this.guild = hostGuild;
         this.guildId = hostGuild.getId();
