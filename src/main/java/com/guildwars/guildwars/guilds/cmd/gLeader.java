@@ -49,6 +49,11 @@ public class gLeader extends gCommand{
             return;
         }
 
+        if (newLeader == oldLeader) {
+            oldLeader.sendFailMsg(Messages.getMsg("commands.leader.new leader is sender"));
+            return;
+        }
+
         // Set newLeader to leader
         guild.setLeader(oldLeader, newLeader);
 

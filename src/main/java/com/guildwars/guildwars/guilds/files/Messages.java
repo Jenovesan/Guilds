@@ -151,6 +151,7 @@ public class Messages {
             commandsSection.addDefault("leader.usage", "&2/g leader <name>");
             commandsSection.addDefault("leader.new leader success msg", "&aYou have been given leadership of &2%GUILD%");
             commandsSection.addDefault("leader.old leader success msg", "&aYou gave &4%PLAYER% &aleadership of %GUILD%");
+            commandsSection.addDefault("leader.new leader is sender", "&cYou are already the leader of your guild");
             // map
             commandsSection.addDefault("map.description", "&2Displays a map of nearby guild claims");
             commandsSection.addDefault("map.usage", "&2/g map <?auto|on|off?>");
