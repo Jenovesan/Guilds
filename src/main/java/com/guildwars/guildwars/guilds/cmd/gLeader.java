@@ -54,6 +54,11 @@ public class gLeader extends gCommand{
             return;
         }
 
+        if (newLeader.getGuild() != guild) {
+            oldLeader.sendFailMsg(Messages.getMsg("commands.leader.new leader is not in guild", newLeader));
+            return;
+        }
+
         // Set newLeader to leader
         guild.setLeader(oldLeader, newLeader);
 
