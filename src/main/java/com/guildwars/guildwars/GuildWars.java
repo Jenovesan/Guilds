@@ -47,12 +47,16 @@ public final class GuildWars extends JavaPlugin {
         // Load Board
         Board.fillBoard();
 
+        // Load power
+        Power.load();
+
         // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
 
         // Start Runnables
         AutoClaim.perform();
         MapAuto.perform();
+        Power.run();
     }
 
     public void unloadGuilds() {

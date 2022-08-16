@@ -16,6 +16,7 @@ public class gPlayer {
     private GuildRank guildRank;
     private String name;
     private int power = Config.get().getInt("player max power");
+    private long powerChangeTime;
 
     public Player getPlayer() {
         return this.player;
@@ -43,6 +44,10 @@ public class gPlayer {
 
     public int getPower() {
         return this.power;
+    }
+
+    public long getPowerChangeTime() {
+        return this.powerChangeTime;
     }
 
     public void setGuild(Guild guild) {
@@ -77,13 +82,13 @@ public class gPlayer {
     }
 
     // For loading gPlayer from data
-    public gPlayer(UUID uuid, int guildId, GuildRank guildRank, String name, int power) {
+    public gPlayer(UUID uuid, int guildId, GuildRank guildRank, String name, int power, long powerChangeTime) {
         this.uuid = uuid;
-        this.guild = guild;
         this.guildId = guildId;
         this.guildRank = guildRank;
         this.name = name;
         this.power = power;
+        this.powerChangeTime = powerChangeTime;
     }
 
     // For creating a gPlayer for the first time
@@ -202,5 +207,13 @@ public class gPlayer {
         guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", this));
 
         return true;
+    }
+
+    public void setPowerChangeTime(long time) {
+        this.powerChangeTime = time;
+    }
+
+    public boolean isOnline() {
+        return player != null;
     }
 }

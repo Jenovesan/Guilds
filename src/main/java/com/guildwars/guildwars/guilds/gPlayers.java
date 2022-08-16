@@ -27,8 +27,9 @@ public class gPlayers implements Listener {
             GuildRank guildRank = playerSection.getString("guildRank") != null ? GuildRank.valueOf(playerSection.getString("guildRank")) : null;
             String name = playerSection.getString("name");
             int power = playerSection.getInt("power");
+            long powerChangedTime = playerSection.getLong("powerChangeTime");
 
-            getGPlayers().put(uuid, new gPlayer(uuid, guildId, guildRank, name, power));
+            getGPlayers().put(uuid, new gPlayer(uuid, guildId, guildRank, name, power, powerChangedTime));
         }
     }
 
