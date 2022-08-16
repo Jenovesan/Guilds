@@ -38,33 +38,7 @@ public class GuildChunk {
     }
 
     public boolean isClaimable() {
-        // Chunk is claimable if no guild owns it, or the guild that owns it has less power than claims (overclaimable)
-        if (this.isWilderness()) {
-            return true;
-        }
-        // Trying to overclaim
-        else {
-
-            if (this.getGuild().isOverclaimable()) {
-                // Check if this claim is not totally surrounded by the guild's claims
-                int x = boardLocation[0];
-                int z = boardLocation[1];
-
-                if (Board.getBoard()[x][z + 1].getGuildId() != this.getGuildId()) {
-                    return true;
-                }
-                if (Board.getBoard()[x][z - 1].getGuildId() != this.getGuildId()) {
-                    return true;
-                }
-                if (Board.getBoard()[x + 1][z].getGuildId() != this.getGuildId()) {
-                    return true;
-                }
-                if (Board.getBoard()[x - 1][z].getGuildId() != this.getGuildId()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return this.isWilderness();
     }
 
     public boolean hasConnectingClaim(Guild guild) {
