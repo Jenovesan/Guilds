@@ -16,6 +16,8 @@ public class Guild {
     private HashSet<Integer> enemies = new HashSet<>();
     private HashSet<Integer> truceRequests = new HashSet<>();
     private HashSet<int[]> claimLocations = new HashSet<>();
+    private boolean adminGuild;
+    private String color;
 
     public int getId() {
         return id;
@@ -53,14 +55,20 @@ public class Guild {
         return claimLocations;
     }
 
+    public String getColor() {
+        return color;
+    }
+
     // Creating a new guild
     public Guild(gPlayer creator, String name, String description) {
         this.id = Guilds.getNewGuildId();
         this.name = name;
         this.description = description;
-        this.getPlayers().put(creator, GuildRank.LEADER);
+        if (creator != null) {
+            this.getPlayers().put(creator, GuildRank.LEADER);
+        }
+        this.adminGuild = false;
         loadDefaults();
-        Guilds.addGuild(this);
     }
 
     // Loading an existing guild on startup
@@ -69,14 +77,15 @@ public class Guild {
                  String description,
                  HashMap<gPlayer, GuildRank> players,
                  HashMap<GuildPermission, GuildRank> permissions,
-                 HashSet<Integer> enemies) {
+                 HashSet<Integer> enemies,
+                 boolean adminGuild) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.players = players;
         this.permissions = permissions;
         this.enemies = enemies;
-        Guilds.addGuild(this);
+        this.adminGuild = adminGuild;
     }
 
     public void loadDefaults() {
@@ -270,10 +279,19 @@ public class Guild {
     }
 
     public boolean isOverclaimable() {
-        return this.getNumberOfClaims() > this.getPower();
+        return this.getNumberOfClaims() > this.getPower() || this.isAdminGuild();
     }
 
     public void removeClaim(GuildChunk chunk) {
         this.getClaimLocations().remove(chunk.getBoardLocation());
+    }
+
+    public boolean isAdminGuild() {
+        return adminGuild;
+    }
+
+    public void setAdminGuild(String color) {
+        this.adminGuild = true;
+        this.color = color;
     }
 }

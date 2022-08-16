@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.utils;
 
+import com.guildwars.guildwars.guilds.cmd.gCommand;
 import net.md_5.bungee.api.ChatColor;
 
 import java.awt.*;

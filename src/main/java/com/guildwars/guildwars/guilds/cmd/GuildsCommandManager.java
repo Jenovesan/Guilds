@@ -64,7 +64,7 @@ public class GuildsCommandManager implements CommandExecutor {
         Map.entry("power", powerCommand),
         Map.entry("unclaim", unclaimCommand),
         Map.entry("unclaimall", unclaimAllCommand),
-            Map.entry("autoclaim", autoClaimCommand)
+        Map.entry("autoclaim", autoClaimCommand)
     );
     
     Set<String> gCommandNames = gCommands.keySet();

@@ -138,6 +138,11 @@ public class gPlayer {
             return false;
         }
 
+        // Is border
+        if (chunk == null) {
+            return false;
+        }
+
         // Check if it's claimable
         if (!chunk.isClaimable()) {
             // Player is trying to claim their own chunk
@@ -168,6 +173,33 @@ public class gPlayer {
 
         // Send Guild announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", this));
+
+        return true;
+    }
+
+    public boolean tryUnclaim(GuildChunk chunk) {
+
+        // Is border
+        if (chunk == null) {
+            return false;
+        }
+
+        Guild guild = getGuild();
+
+        // Check if chunk is owned by the player's guild
+        if (chunk.getGuild() != guild) {
+            this.sendFailMsg(Messages.getMsg("commands.unclaim.chunk not owned by guild"));
+            return false;
+        }
+
+        // Unclaim chunk
+        guild.unclaim(chunk);
+
+        // Unclaim chunk on Board
+        chunk.setWilderness();
+
+        // Send Guild announcement
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", this));
 
         return true;
     }

@@ -51,25 +51,20 @@ public class gUnclaim extends gCommand{
                     return;
                 }
 
-                int playerChunkX = Board.getChunkCord(player.getPlayer().getLocation().getChunk().getX());
-                int playerChunkZ = Board.getChunkCord(player.getPlayer().getLocation().getChunk().getZ());
                 int successfulUnclaims = 0;
 
-                // Iterate through chunks in given radius and try to claim them
-                for (int z = -radius + 1; z <= radius - 1; z++) {
-                    for (int x = -radius + 1; x <= radius - 1; x++) {
+                GuildChunk[] guildChunksToUnclaim = Board.getNearbyChunks(player.getPlayer().getLocation(), radius);
 
-                        // Get chunk
-                        GuildChunk chunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z];
+                for (GuildChunk chunk : guildChunksToUnclaim) {
+                    // Try to claim
+                    boolean unclaimed = player.tryUnclaim(chunk);
 
-                        boolean claimed = tryUnclaim(player, guild, chunk);
-
-                        if (claimed) {
-                            // Track successful claim
-                            successfulUnclaims++;
-                        }
+                    if (unclaimed) {
+                        // Track successful claim
+                        successfulUnclaims++;
                     }
                 }
+
 
                 // Inform plauer
                 player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", String.valueOf(successfulUnclaims)));
@@ -83,31 +78,12 @@ public class gUnclaim extends gCommand{
             // Get chunk
             GuildChunk chunk = Board.getGuildChunkAt(player.getPlayer().getLocation());
 
-            boolean claimed = tryUnclaim(player, guild, chunk);
+            boolean unclaimed = player.tryUnclaim(chunk);
 
-            if (claimed) {
+            if (unclaimed) {
                 // Inform player
                 player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed single chunk"));
             }
         }
-    }
-
-    private boolean tryUnclaim(gPlayer player, Guild guild, GuildChunk chunk) {
-        // Check if chunk is owned by the player's guild
-        if (chunk.getGuild() != guild) {
-            player.sendFailMsg(Messages.getMsg("commands.unclaim.chunk not owned by guild"));
-            return false;
-        }
-
-        // Unclaim chunk
-        guild.unclaim(chunk);
-
-        // Unclaim chunk on Board
-        chunk.setWilderness();
-
-        // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", player));
-
-        return true;
     }
 }

@@ -37,37 +37,36 @@ public class gClaim extends gCommand{
             return;
         }
 
-        Guild guild = player.getGuild();
-
         // Claim chunk(s)
         // Player is claiming a radius
         if (args.length > 0) {
             try {
-                int radius = Integer.parseInt(args[0]);
+                // Subtracting by 1 because that is how the original factions-plugin did it.
+                // Want to keep it familiar for players.
+                int radius = Integer.parseInt(args[0]) - 1;
+
+                if (radius < 1) {
+                    player.sendFailMsg(Messages.getMsg("commands.claim.invalid radius", args[0]));
+                    return;
+                }
 
                 // Check if Guild will have enough power
-                if ((radius + 1) * (radius + 1) > guild.getExcessPower()) {
+                if (((radius * 2) + 1) * ((radius * 2) + 1) > player.getGuild().getExcessPower()) {
                     player.sendFailMsg(Messages.getMsg("commands.claim.will not have enough power"));
                     return;
                 }
 
-                int playerChunkX = Board.getChunkCord(player.getPlayer().getLocation().getChunk().getX());
-                int playerChunkZ = Board.getChunkCord(player.getPlayer().getLocation().getChunk().getZ());
                 int successfulClaims = 0;
 
-                // Iterate through chunks in given radius and try to claim them
-                for (int z = -radius + 1; z <= radius - 1; z++) {
-                    for (int x = -radius + 1; x <= radius - 1; x++) {
-                        // Get the chunk
-                        GuildChunk chunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z];
+                GuildChunk[] guildChunksToClaim = Board.getNearbyChunks(player.getPlayer().getLocation(), radius);
 
-                        // Try to claim
-                        boolean claimed = player.tryClaim(chunk);
+                for (GuildChunk chunk : guildChunksToClaim) {
+                    // Try to claim
+                    boolean claimed = player.tryClaim(chunk);
 
-                        if (claimed) {
-                            // Track successful claim
-                            successfulClaims++;
-                        }
+                    if (claimed) {
+                        // Track successful claim
+                        successfulClaims++;
                     }
                 }
 

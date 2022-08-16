@@ -152,7 +152,7 @@ public class Messages {
             commandsSection.addDefault("map.usage", "&2/g map <?auto|on|off?>");
             commandsSection.addDefault("map.invalid syntax", "&cInvalid syntax. Use /g map <?auto?>");
             commandsSection.addDefault("map.map construction.header", "&7&l |-=-=-=-=- &6&lN &7&l-=-=-=-=-|");
-            commandsSection.addDefault("map.map construction.west", "&6W");
+            commandsSection.addDefault("map.map construction.west", "&6W&7|");
             commandsSection.addDefault("map.map construction.east", "&6E");
             commandsSection.addDefault("map.map construction.claim symbol", "■ ");
             commandsSection.addDefault("map.map construction.player symbol", "&a♦ ");
@@ -211,7 +211,7 @@ public class Messages {
             guildAnnouncementsSection.addDefault("received truce request", "&2&l%GUILD% &a&lhas requested to truce with your guild!");
             guildAnnouncementsSection.addDefault("gave leadership", "&2&l%PLAYER1% &a&lhas given leadership to the guild to &2&l%PLAYER2%!");
             guildAnnouncementsSection.addDefault("claimed land", "&2&l%PLAYER% &a&lhas claimed land!");
-            guildAnnouncementsSection.addDefault("unclaimed land", "&4&l%PLAYERE% &c&lhas unclaimed land!");
+            guildAnnouncementsSection.addDefault("unclaimed land", "&4&l%PLAYER% &c&lhas unclaimed land!");
             guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER% &c&lhas unclaimed all your guild's land!");
             guildAnnouncementsSection.addDefault("overclaimed", "&4&l%GUILD% &c&lhas overclaimed some of your land!");
 

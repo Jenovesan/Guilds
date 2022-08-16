@@ -70,16 +70,16 @@ public class GuildChunk {
     public boolean hasConnectingClaim(Guild guild) {
         int x = boardLocation[0];
         int z = boardLocation[1];
-        if (Board.getBoard()[x][z + 1].getGuild() == guild) {
+        if (Board.getBoard()[x][z + 1].getGuild() != null && Board.getBoard()[x][z + 1].getGuild() == guild) {
             return true;
         }
-        if (Board.getBoard()[x][z - 1].getGuild() == guild) {
+        if (Board.getBoard()[x][z - 1].getGuild()  != null && Board.getBoard()[x][z - 1].getGuild() == guild) {
             return true;
         }
-        if (Board.getBoard()[x + 1][z].getGuild() == guild) {
+        if (Board.getBoard()[x + 1][z].getGuild() != null && Board.getBoard()[x + 1][z].getGuild() == guild) {
             return true;
         }
-        if (Board.getBoard()[x - 1][z].getGuild() == guild) {
+        if (Board.getBoard()[x - 1][z].getGuild() != null && Board.getBoard()[x - 1][z].getGuild() == guild) {
             return true;
         }
         return false;

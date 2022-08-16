@@ -41,6 +41,11 @@ public class gCreate extends gCommand {
         String guildDesc = args.length == 2 ? args[1] : "None";
 
         Guild newGuild = new Guild(player, guildName, guildDesc);
+
+        // Add guild to guilds
+        Guilds.addGuild(newGuild);
+
+        // Save guild
         Guilds.saveGuildData(newGuild);
 
         // Update gPlayer

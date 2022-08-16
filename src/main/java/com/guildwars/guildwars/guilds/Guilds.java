@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,7 +36,29 @@ public class Guilds implements Listener {
 
             HashSet<Integer> enemies = new HashSet<>(guildData.getIntegerList("enemies"));
 
-            new Guild(id, name, description, players, permissions, enemies);
+            boolean adminGuild = guildData.getBoolean("adminGuild");
+
+            Guild loadedGuild = new Guild(id, name, description, players, permissions, enemies, adminGuild);
+            addGuild(loadedGuild);
+        }
+
+        createAdminGuilds();
+    }
+
+    private static Guild border;
+
+    public static Guild getBorder() {
+        return border;
+    }
+
+    private static void createAdminGuilds() {
+        // Make sure border guild exists
+        if (get("border") == null) {
+            //Create guild for border
+            Guild borderGuild = new Guild(null, "Border", "None");
+            borderGuild.setAdminGuild(Config.get().getString("border guild color"));
+            addGuild(borderGuild);
+            border = borderGuild;
         }
     }
 
@@ -64,6 +87,7 @@ public class Guilds implements Listener {
         guildSection.set("players", players);
         guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
         guildSection.set("enemies", List.copyOf(guild.getEnemies()));
+        guildSection.set("adminGuild", guild.isAdminGuild());
         GuildData.save();
     }
 

@@ -7,8 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Board {
 
@@ -56,13 +55,19 @@ public class Board {
     }
 
     public static Guild getGuildAt(Location location) {
-        int[] chunkBoardLocation = getChunkBoardLocation(location.getChunk());
-        return getBoard()[chunkBoardLocation[0]][chunkBoardLocation[1]].getGuild();
+        int chunkX = getChunkCord(location.getChunk().getX());
+        int chunkZ = getChunkCord(location.getChunk().getZ());
+        if (chunkX < 0 || chunkX > worldClaimRadius * 2 || chunkZ < 0 || chunkZ > worldClaimRadius * 2) {
+            return Guilds.getBorder();
+        }
+        return getBoard()[chunkX][chunkZ].getGuild();
     }
 
-    public static int getGuildIdAt(Location location) {
-        int[] chunkBoardLocation = getChunkBoardLocation(location.getChunk());
-        return getBoard()[chunkBoardLocation[0]][chunkBoardLocation[1]].getGuildId();
+    public static Guild getGuildAt(int boardChunkX, int boardChunkZ) {
+        if (boardChunkX < 0 || boardChunkX >= worldClaimRadius * 2 || boardChunkZ < 0 || boardChunkZ >= worldClaimRadius * 2) {
+            return Guilds.getBorder();
+        }
+        return getBoard()[boardChunkX][boardChunkZ].getGuild();
     }
 
     public static GuildChunk getGuildChunkAt(Location location) {
@@ -71,13 +76,25 @@ public class Board {
         return getBoard()[chunkX][chunkZ];
     }
 
+    private static GuildChunk getGuildChunkAt(int xRaw, int zRaw) {
+//        System.out.println("raw: " + xRaw + " " + zRaw);
+        int x = getChunkCord(xRaw);
+        int z = getChunkCord(zRaw);
+//        System.out.println(x + " " + z);
+        if (x < 0 || x >= worldClaimRadius * 2 || z < 0 || z >= worldClaimRadius * 2) {
+            return null;
+        }
+        return getBoard()[x][z];
+    }
+
+
     static final int gMapSize = Config.get().getInt("g map radius (chunks)");
 
     public static String getMap(gPlayer player) {
         Guild playerGuild = player.getGuild();
 
-        int playerChunkX = getChunkCord(player.getPlayer().getLocation().getChunk().getX());
-        int playerChunkZ = getChunkCord(player.getPlayer().getLocation().getChunk().getZ());
+        int playerChunkX = player.getPlayer().getLocation().getChunk().getX();
+        int playerChunkZ = player.getPlayer().getLocation().getChunk().getZ();
 
         // Create map
         HashMap<Guild, String> guildsOnMap = new HashMap<>();
@@ -92,23 +109,30 @@ public class Board {
             mapMsg = mapMsg.concat("\n" + ChatColor.RESET);
 
             if (z == 0) { // Center of the map (z-axis)
-                mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.west") + wildernessClaimPrefix + "|");
+                mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.west"));
             } else {
                 mapMsg = mapMsg.concat("  ");
             }
 
             for (int x = -gMapSize; x <= gMapSize; x++) {
 
-                Guild guildAtChunk = Board.getBoard()[playerChunkX + x][playerChunkZ + z].getGuild();
-
+                GuildChunk chunk = getGuildChunkAt(playerChunkX + x, playerChunkZ + z);
                 // Add player symbol at center of map
                 if (x == 0 && z == 0) {
                     mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.player symbol"));
-                    if (guildAtChunk == playerGuild) {
+                    if (chunk != null && chunk.getGuild() == playerGuild) {
                         guildsOnMap.put(playerGuild, playerClaimPrefix); // So player's claim shows up on Guild's list
                     }
                     continue;
                 }
+
+                // Is border
+                if (chunk == null) {
+                    mapMsg = mapMsg.concat(ChatColor.translateAlternateColorCodes('&', Guilds.getBorder().getColor()) + claimSymbol);
+                    continue;
+                }
+
+                Guild guildAtChunk = chunk.getGuild();
 
                 // Wilderness claim
                 if (guildAtChunk == null) {
@@ -170,4 +194,40 @@ public class Board {
         return mapMsg;
 
     }
+
+
+    public static GuildChunk[] getNearbyChunks(Location center, int radius) {
+        // Uses a reverse-spiral matrix algorithm so claims will be connected while claiming in a radius
+
+        // Get starting position
+        int x = center.getChunk().getX();
+        int z = center.getChunk().getZ();
+
+        // Create variables
+        int diameter = (radius * 2) + 1;
+        int size = diameter * diameter;
+        GuildChunk[] nearbyChunks = new GuildChunk[size];
+
+        // Create variables for reverse-spiral
+        int len = 0;
+        int d = 0;
+        int[] directions = new int[]{0, 1, 0, -1, 0};
+
+        // Reverse-spiral
+        for (int i = 0; i < size;) {
+            if (d == 0 || d == 2) {
+                len++;
+            }
+            for (int k = 0; k < len; k++) {
+                nearbyChunks[i++] = getGuildChunkAt(x, z);
+                x += directions[d];
+                z += directions[d + 1];
+            }
+
+            d = ++d % 4;
+        }
+        return nearbyChunks;
+    }
+
+
 }
