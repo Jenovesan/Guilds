@@ -71,7 +71,13 @@ public class gClaim extends gCommand{
                 }
 
                 // Inform plauer
-                player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed multiple chunks", successfulClaims));
+                if (successfulClaims > 0) {
+                    player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed multiple chunks", successfulClaims));
+                }
+                // Player did not claim any chunks
+                else {
+                    player.sendNotifyMsg(Messages.getMsg("commands.claim.successfully claimed multiple chunks", successfulClaims));
+                }
 
             } catch (NumberFormatException e) {
                 player.sendFailMsg(Messages.getMsg("commands.claim.invalid radius", args[0]));
@@ -81,6 +87,12 @@ public class gClaim extends gCommand{
         else {
             // Get chunk
             GuildChunk chunk = Board.getGuildChunkAt(player.getPlayer().getLocation());
+
+            // Claiming in outlands
+            if (chunk == null) {
+                player.sendFailMsg(Messages.getMsg("claiming.claiming in outlands"));
+                return;
+            }
 
             // Try to claim
             boolean claimed = player.tryClaim(chunk);

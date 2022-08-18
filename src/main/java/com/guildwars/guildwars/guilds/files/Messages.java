@@ -249,6 +249,7 @@ public class Messages {
         claimingSection.addDefault("cannot overclaim because claim surrounded", "&cYou can only overclaim land that is not completely surrounded by the guild's claims");
         claimingSection.addDefault("not overclaimable", "&4%GUILD% &cis not overclaimable");
         claimingSection.addDefault("no connecting claim", "&cYou can only claim land that is connected to your land");
+        claimingSection.addDefault("claiming in outlands", "&cYou cannot claim in the outlands");
     }
 
     public static FileConfiguration get() {

@@ -71,16 +71,12 @@ public class Board {
     }
 
     public static GuildChunk getGuildChunkAt(Location location) {
-        int chunkX = getChunkCord(location.getChunk().getX());
-        int chunkZ = getChunkCord(location.getChunk().getZ());
-        return getBoard()[chunkX][chunkZ];
+        return getGuildChunkAt(location.getChunk().getX(), location.getChunk().getZ());
     }
 
     private static GuildChunk getGuildChunkAt(int xRaw, int zRaw) {
-//        System.out.println("raw: " + xRaw + " " + zRaw);
         int x = getChunkCord(xRaw);
         int z = getChunkCord(zRaw);
-//        System.out.println(x + " " + z);
         if (x < 0 || x >= worldClaimRadius * 2 || z < 0 || z >= worldClaimRadius * 2) {
             return null;
         }
