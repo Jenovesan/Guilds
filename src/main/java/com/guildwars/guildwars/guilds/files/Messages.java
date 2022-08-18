@@ -123,7 +123,7 @@ public class Messages {
             commandsSection.addDefault("name.successfully set name", "&aYou set your guild's name to &2%INPUT%");
             // chat
             commandsSection.addDefault("chat.description", "&2Joins or leaves your guild's chat channel");
-            commandsSection.addDefault("chat.usage", "&2/g chat || /g chat <message>");
+            commandsSection.addDefault("chat.usage", "&2/g chat <?g|p|on|off|message?>");
             commandsSection.addDefault("chat.joined guild chat", "&aYou joined your guild's chat");
             commandsSection.addDefault("chat.left guild chat", "&aYou left your guild's chat");
             // enemy

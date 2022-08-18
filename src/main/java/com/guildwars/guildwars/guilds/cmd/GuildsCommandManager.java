@@ -55,6 +55,7 @@ public class GuildsCommandManager implements CommandExecutor {
         Map.entry("name", nameCommand),
         Map.entry("setname", nameCommand),
         Map.entry("chat", chatCommand),
+        Map.entry("c", chatCommand),
         Map.entry("enemy", enemyCommand),
         Map.entry("truce", truceCommand),
         Map.entry("leader", leaderCommand),

@@ -45,16 +45,18 @@ public class gChat extends gCommand{
         if (args.length == 0) {
             // Join Guild chat
             if (playerChatChannel != ChatChannel.GUILD) {
-                ChatChannels.setPlayerChatChannel(player, ChatChannel.GUILD);
-                // Inform
-                gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.joined guild chat"));
+                joinGuildChat(gPlayer, player);
             }
             // Leave Guild chat
             else {
-                ChatChannels.setPlayerChatChannel(player, null);
-                // Inform
-                gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.left guild chat"));
+                leaveGuildChat(gPlayer, player);
             }
+        }
+        else if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("g")) {
+            joinGuildChat(gPlayer, player);
+        }
+        else if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("p")) {
+            leaveGuildChat(gPlayer, player);
         }
         // Send a message in guild chat
         else {
@@ -63,5 +65,17 @@ public class gChat extends gCommand{
             player.chat(chatMsg);
             ChatChannels.setPlayerChatChannel(player, playerChatChannel);
         }
+    }
+
+    private void joinGuildChat(gPlayer gPlayer, Player player) {
+        ChatChannels.setPlayerChatChannel(player, ChatChannel.GUILD);
+        // Inform
+        gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.joined guild chat"));
+    }
+
+    private void leaveGuildChat(gPlayer gPlayer, Player player) {
+        ChatChannels.setPlayerChatChannel(player, null);
+        // Inform
+        gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.left guild chat"));
     }
 }
