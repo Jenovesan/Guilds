@@ -158,6 +158,7 @@ public class Messages {
             commandsSection.addDefault("map.map construction.player symbol", "&a♦ ");
             commandsSection.addDefault("map.map construction.wilderness claim prefix", "&7");
             commandsSection.addDefault("map.map construction.player guild claim prefix", "&a");
+            commandsSection.addDefault("map.map construction.outlands prefix", "&0");
             commandsSection.addDefault("map.map construction.guild colors", List.of("&9", "&c", "&d", "&e", "&b", "&6", "&f", "&2", "&3", "&5", "&1", "&8"));
             commandsSection.addDefault("map.map construction.footer with guilds", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|\n&7Guilds: %INPUT%");
             commandsSection.addDefault("map.map construction.footer without guilds", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|");
@@ -173,7 +174,7 @@ public class Messages {
             commandsSection.addDefault("claim.successfully claimed single chunk", "&aYou claimed land for your guild");
             commandsSection.addDefault("claim.invalid radius", "&4%INPUT% &cis not a valid radius");
             commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%AMOUNT% &achunks for your guild");
-            commandsSection.addDefault("claim.will not have enough power", "&cYour guild will not have enough power to claim that many chunks");
+            commandsSection.addDefault("claim.radius too big", "&4%INPUT% &cis too big of a claim radius");
             // unclaim
             commandsSection.addDefault("unclaim.description", "&2Unclaim a chunk from your guild");
             commandsSection.addDefault("unclaim.usage", "&2/g unclaim <?radius?>");

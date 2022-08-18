@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gClaim extends gCommand{
@@ -43,16 +44,17 @@ public class gClaim extends gCommand{
             try {
                 // Subtracting by 1 because that is how the original factions-plugin did it.
                 // Want to keep it familiar for players.
+                // Also makes it so g claim 1 claims just 1 chunk.
                 int radius = Integer.parseInt(args[0]) - 1;
 
-                if (radius < 1) {
-                    player.sendFailMsg(Messages.getMsg("commands.claim.invalid radius", args[0]));
+                // Check if radius is too big
+                if (radius > Config.get().getInt("max claim radius (chunks)")) {
+                    player.sendFailMsg(Messages.getMsg("commands.claim.radius too big", args[0]));
                     return;
                 }
 
-                // Check if Guild will have enough power
-                if (((radius * 2) + 1) * ((radius * 2) + 1) > player.getGuild().getExcessPower()) {
-                    player.sendFailMsg(Messages.getMsg("commands.claim.will not have enough power"));
+                if (radius < 0) {
+                    player.sendFailMsg(Messages.getMsg("commands.claim.invalid radius", args[0]));
                     return;
                 }
 

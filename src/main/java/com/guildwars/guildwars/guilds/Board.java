@@ -46,28 +46,8 @@ public class Board {
         }
     }
 
-    public static int[] getChunkBoardLocation(Chunk chunk) {
-        return new int[] {getChunkCord(chunk.getX()), getChunkCord(chunk.getZ())};
-    }
-
     public static GuildChunk getChunk(Chunk chunk) {
         return getBoard()[getChunkCord(chunk.getX())][getChunkCord(chunk.getZ())];
-    }
-
-    public static Guild getGuildAt(Location location) {
-        int chunkX = getChunkCord(location.getChunk().getX());
-        int chunkZ = getChunkCord(location.getChunk().getZ());
-        if (chunkX < 0 || chunkX > worldClaimRadius * 2 || chunkZ < 0 || chunkZ > worldClaimRadius * 2) {
-            return Guilds.getBorder();
-        }
-        return getBoard()[chunkX][chunkZ].getGuild();
-    }
-
-    public static Guild getGuildAt(int boardChunkX, int boardChunkZ) {
-        if (boardChunkX < 0 || boardChunkX >= worldClaimRadius * 2 || boardChunkZ < 0 || boardChunkZ >= worldClaimRadius * 2) {
-            return Guilds.getBorder();
-        }
-        return getBoard()[boardChunkX][boardChunkZ].getGuild();
     }
 
     public static GuildChunk getGuildChunkAt(Location location) {
@@ -77,6 +57,15 @@ public class Board {
     private static GuildChunk getGuildChunkAt(int xRaw, int zRaw) {
         int x = getChunkCord(xRaw);
         int z = getChunkCord(zRaw);
+        if (x < 0 || x >= worldClaimRadius * 2 || z < 0 || z >= worldClaimRadius * 2) {
+            return null;
+        }
+        return getBoard()[x][z];
+    }
+
+    public static GuildChunk getGuildChunkAt(int[] boardLocation) {
+        int x = boardLocation[0];
+        int z = boardLocation[1];
         if (x < 0 || x >= worldClaimRadius * 2 || z < 0 || z >= worldClaimRadius * 2) {
             return null;
         }
@@ -99,6 +88,7 @@ public class Board {
         String wildernessClaimPrefix = Messages.getMsg("commands.map.map construction.wilderness claim prefix");
         String playerClaimPrefix = Messages.getMsg("commands.map.map construction.player guild claim prefix");
         String claimSymbol = Messages.getMsg("commands.map.map construction.claim symbol");
+        String outlandsPrefix = Messages.getMsg("commands.map.map construction.outlands prefix");
         String[] guildColors = Messages.getStringArray("commands.map.map construction.guild colors");
 
         for (int z = -gMapSize; z <= gMapSize; z++) {
@@ -124,7 +114,7 @@ public class Board {
 
                 // Is border
                 if (chunk == null) {
-                    mapMsg = mapMsg.concat(ChatColor.translateAlternateColorCodes('&', Guilds.getBorder().getColor()) + claimSymbol);
+                    mapMsg = mapMsg.concat(outlandsPrefix + claimSymbol);
                     continue;
                 }
 

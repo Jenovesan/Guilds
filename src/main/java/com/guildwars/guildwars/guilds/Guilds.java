@@ -41,25 +41,6 @@ public class Guilds implements Listener {
             Guild loadedGuild = new Guild(id, name, description, players, permissions, enemies, adminGuild);
             addGuild(loadedGuild);
         }
-
-        createAdminGuilds();
-    }
-
-    private static Guild border;
-
-    public static Guild getBorder() {
-        return border;
-    }
-
-    private static void createAdminGuilds() {
-        // Make sure border guild exists
-        if (get("border") == null) {
-            //Create guild for border
-            Guild borderGuild = new Guild(null, "Border", "None");
-            borderGuild.setAdminGuild(Config.get().getString("border guild color"));
-            addGuild(borderGuild);
-            border = borderGuild;
-        }
     }
 
     public static Integer getNewGuildId() {

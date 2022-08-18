@@ -47,7 +47,12 @@ public class gUnclaim extends gCommand{
 
                 // Check if radius is too big
                 if (radius > Config.get().getInt("max unclaim radius (chunks)")) {
-                    player.sendFailMsg(Messages.getMsg("commands.unclaim.radius too big", String.valueOf(radius)));
+                    player.sendFailMsg(Messages.getMsg("commands.unclaim.radius too big", radius));
+                    return;
+                }
+
+                if (radius < 0) {
+                    player.sendFailMsg(Messages.getMsg("commands.unclaim.invalid radius", args[0]));
                     return;
                 }
 

@@ -45,6 +45,7 @@ public class Config {
         configFile.addDefault("player power regen amount", 1);
         configFile.addDefault("world name", "world");
         configFile.addDefault("max unclaim radius (chunks)", 10);
+        configFile.addDefault("max claim radius (chunks)", 3);
         configFile.addDefault("border guild color", "&0");
 
         // Restart server to update
