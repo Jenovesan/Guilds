@@ -31,6 +31,6 @@ public class gPower extends gCommand{
         int guildPower = player.getGuild().getPower();
         int maxGuildPower = player.getGuild().getMaxPower();
 
-        player.sendMessage(Messages.getMsg("commands.power.power msg", guildPower + "/" + maxGuildPower));
+        player.sendNotifyMsg(Messages.getMsg("commands.power.power msg", guildPower + "/" + maxGuildPower));
     }
 }
