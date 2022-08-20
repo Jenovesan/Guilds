@@ -1,27 +1,24 @@
 package com.guildwars.guildwars.guilds.engine;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.Board;
 import com.guildwars.guildwars.guilds.event.GPlayerLeaveEvent;
-import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
-import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.EventPriority;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 public class MapAuto {
-    private static HashMap<gPlayer, Chunk> players = new HashMap<>();
+    private static HashSet<gPlayer> players = new HashSet<>();
 
-    private static HashMap<gPlayer, Chunk> getPlayers() {
+    private static HashSet<gPlayer> getPlayers() {
         return players;
     }
 
     public static void addPlayer(gPlayer player) {
-        getPlayers().put(player, player.getPlayer().getLocation().getChunk());
+        getPlayers().add(player);
         player.sendSuccessMsg(Messages.getMsg("map auto.enabled"));
     }
 
@@ -31,27 +28,16 @@ public class MapAuto {
     }
 
     public static boolean isPlayer(gPlayer player) {
-        return getPlayers().containsKey(player);
+        return getPlayers().contains(player);
     }
 
-    public static void perform() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Map.Entry<gPlayer, Chunk> entry : players.entrySet()) {
-                    gPlayer player = entry.getKey();
-                    Chunk oldChunk = entry.getValue();
-                    Chunk newChunk = player.getPlayer().getLocation().getChunk();
-                    // Player moved into new chunk
-                    if (oldChunk != newChunk) {
-                        player.sendMessage(Board.getMap(player));
-                        // Update player chunk.
-                        getPlayers().put(player, newChunk);
-                    }
-                }
-            }
-        }.runTaskTimerAsynchronously(GuildWars.getInstance(), 0, Config.get().getInt("autoclaim update time (ticks)"));
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void sendMapOnPlayerChunkUpdate(PlayerChunkUpdateEvent event) {
+        if (event.isCancelled()) return;
 
+        gPlayer player = event.getPlayer();
+
+        player.sendMessage(Board.getMap(player));
     }
 
     @EventHandler

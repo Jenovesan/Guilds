@@ -53,11 +53,8 @@ public final class GuildWars extends JavaPlugin {
         getCommand("guild").setExecutor(new GuildsCommandManager());
 
         // Start Runnables
-        AutoClaim.perform();
-        MapAuto.perform();
         Power.run();
         Raiding.run();
-        Raiding.runAntiRaidInterferance();
     }
 
     public void unloadGuilds() {
