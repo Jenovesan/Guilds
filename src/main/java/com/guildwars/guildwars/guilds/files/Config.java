@@ -47,14 +47,13 @@ public class Config {
         configFile.addDefault("max unclaim radius (chunks)", 10);
         configFile.addDefault("max claim radius (chunks)", 3);
         configFile.addDefault("border guild color", "&0");
-
-        // Restart server to update
+        configFile.addDefault("raiding duration (min)", 60);
         configFile.addDefault("world claim radius (chunks)", 30);
         configFile.addDefault("g map radius (chunks)", 7);
         configFile.addDefault("online player power regen time (min)", 60);
         configFile.addDefault("offline player power regen time (min)", 180);
-        configFile.addDefault("autoclaim update time (ticks)", 20);
-        configFile.addDefault("map-auto update time (ticks)", 20);
+        configFile.addDefault("raiding kick non-raiders update (tick)", 20);
+        configFile.addDefault("player chunk update (ticks)", 20);
 
         //default permissions
         configFile.createSection("default permissions");
@@ -68,6 +67,14 @@ public class Config {
         defaultPermissionsSection.addDefault("claim", "MOD");
         defaultPermissionsSection.addDefault("unclaim", "MOD");
         defaultPermissionsSection.addDefault("unclaim_all", "COLEADER");
+
+        //default permissions
+        configFile.createSection("broadcasts");
+        ConfigurationSection broadcastTimings = configFile.getConfigurationSection("broadcasts");
+        assert broadcastTimings != null;
+        broadcastTimings.addDefault("fadeIn", 20);
+        broadcastTimings.addDefault("stay", 100);
+        broadcastTimings.addDefault("fadeOut", 40);
     }
 
     public static FileConfiguration get() {

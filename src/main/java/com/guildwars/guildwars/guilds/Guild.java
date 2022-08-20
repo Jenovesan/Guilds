@@ -16,8 +16,7 @@ public class Guild {
     private HashSet<Integer> enemies = new HashSet<>();
     private HashSet<Integer> truceRequests = new HashSet<>();
     private HashSet<int[]> claimLocations = new HashSet<>();
-    private boolean adminGuild;
-    private String color;
+    private HashMap<Integer, Long> raids = new HashMap<>(); // Guild they are raiding, When raid ends
 
     public int getId() {
         return id;
@@ -55,10 +54,6 @@ public class Guild {
         return claimLocations;
     }
 
-    public String getColor() {
-        return color;
-    }
-
     // Creating a new guild
     public Guild(gPlayer creator, String name, String description) {
         this.id = Guilds.getNewGuildId();
@@ -67,7 +62,6 @@ public class Guild {
         if (creator != null) {
             this.getPlayers().put(creator, GuildRank.LEADER);
         }
-        this.adminGuild = false;
         loadDefaults();
     }
 
@@ -78,14 +72,14 @@ public class Guild {
                  HashMap<gPlayer, GuildRank> players,
                  HashMap<GuildPermission, GuildRank> permissions,
                  HashSet<Integer> enemies,
-                 boolean adminGuild) {
+                 HashMap<Integer, Long> raids) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.players = players;
         this.permissions = permissions;
         this.enemies = enemies;
-        this.adminGuild = adminGuild;
+        this.raids = raids;
     }
 
     public void loadDefaults() {
@@ -174,16 +168,6 @@ public class Guild {
     public boolean isInvited(gPlayer player) {
         return this.getInvites().contains(player);
      }
-
-    public gPlayer getInvitedPlayer(String name) {
-        for (gPlayer player : this.getInvites()) {
-            String playerName = player.getName();
-            if (playerName.equalsIgnoreCase(name)) {
-                return player;
-            }
-        }
-        return null;
-    }
 
     public boolean isFull() {
         int maxPlayersInGuild = Config.get().getInt("max players in guild");
@@ -278,20 +262,26 @@ public class Guild {
         return this.getPower() - this.getNumberOfClaims();
     }
 
-    public boolean isOverclaimable() {
-        return this.getNumberOfClaims() > this.getPower() || this.isAdminGuild();
+    public HashMap<Integer, Long> getRaids() {
+        return this.raids;
+    }
+
+    public boolean isRaiding(int guildId) {
+        return this.getRaids().containsKey(guildId);
+    }
+
+    public boolean hasRaid() {
+        return !this.getRaids().isEmpty();
     }
 
     public void removeClaim(GuildChunk chunk) {
         this.getClaimLocations().remove(chunk.getBoardLocation());
     }
 
-    public boolean isAdminGuild() {
-        return adminGuild;
+    public void sendBroadcast(String title, String subtitle) {
+        for (gPlayer player : this.getOnlinePlayers()) {
+            player.getPlayer().sendTitle(title, Objects.requireNonNullElse(subtitle, ""), Config.get().getInt("broadcasts.fadeIn"), Config.get().getInt("broadcasts.stay"), Config.get().getInt("broadcasts.fadeOut"));
+        }
     }
 
-    public void setAdminGuild(String color) {
-        this.adminGuild = true;
-        this.color = color;
-    }
 }

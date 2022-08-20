@@ -1,10 +1,13 @@
 package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +36,6 @@ public class Power implements Listener {
                     gPlayer player = entry.getKey();
                     float timeLeftToRegenPower = entry.getValue();
                     if (player.isOnline()) {
-                        player.sendMessage(String.valueOf(playerPowerRegenTimes));
                         timeLeftToRegenPower -= 60F / onlinePlayerPowerRegenTime;
                     } else {
                         timeLeftToRegenPower -= 60F / offlinePlayerPowerRegenTime;
@@ -59,7 +61,7 @@ public class Power implements Listener {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(GuildWars.getInstance(), 12, 12);
+        }.runTaskTimerAsynchronously(GuildWars.getInstance(), 1200, 1200);
     }
 
     public static void load() {
@@ -85,20 +87,21 @@ public class Power implements Listener {
     @EventHandler
     public void losePowerOnDeath(PlayerDeathEvent event) {
         Player player = event.getEntity().getPlayer();
+        Player killer = event.getEntity().getKiller();
 
-        if (player == null) {
-            return;
-        }
+        if (player == null) return;
 
         gPlayer gPlayer = gPlayers.get(player);
+        gPlayer gKiller = killer != null ? gPlayers.get(killer) : null;
 
         int powerLossOnDeath = Config.get().getInt("power change on death");
 
         gPlayer.changePower(powerLossOnDeath);
         gPlayer.setPowerChangeTime(System.currentTimeMillis());
 
+        // Call Event
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerLosePowerEvent(gPlayer, gKiller));
+
         playerPowerRegenTimes.putIfAbsent(gPlayer, defaultPlayerRegenTime);
     }
-
-
 }

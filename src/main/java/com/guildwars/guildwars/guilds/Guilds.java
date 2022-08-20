@@ -1,7 +1,6 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
@@ -36,9 +35,13 @@ public class Guilds implements Listener {
 
             HashSet<Integer> enemies = new HashSet<>(guildData.getIntegerList("enemies"));
 
-            boolean adminGuild = guildData.getBoolean("adminGuild");
+            Map<String, Object> raidingData = guildData.getConfigurationSection("raids").getValues(false);
+            HashMap<Integer, Long> raids = new HashMap<>();
+            for (Map.Entry<String, Object> entry : raidingData.entrySet()) {
+                raids.put(Integer.parseInt(entry.getKey()), Long.parseLong((String) entry.getValue()));
+            }
 
-            Guild loadedGuild = new Guild(id, name, description, players, permissions, enemies, adminGuild);
+            Guild loadedGuild = new Guild(id, name, description, players, permissions, enemies, raids);
             addGuild(loadedGuild);
         }
     }
@@ -68,7 +71,7 @@ public class Guilds implements Listener {
         guildSection.set("players", players);
         guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
         guildSection.set("enemies", List.copyOf(guild.getEnemies()));
-        guildSection.set("adminGuild", guild.isAdminGuild());
+        guildSection.set("raids", util.hashMapToHashMapString(guild.getRaids()));
         GuildData.save();
     }
 

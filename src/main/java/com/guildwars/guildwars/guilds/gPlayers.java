@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.event.GPlayerLeaveEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -93,5 +94,14 @@ public class gPlayers implements Listener {
         player.setPlayer(null);
         // Call event
         Bukkit.getServer().getPluginManager().callEvent(new GPlayerLeaveEvent(player));
+    }
+
+    public static void sendServerAnnouncement(String msg) {
+        for (gPlayer gPlayer : getAllGPlayers()) {
+            Player player = gPlayer.getPlayer();
+            if (player != null) {
+                player.sendMessage(msg);
+            }
+        }
     }
 }

@@ -1,15 +1,13 @@
 package com.guildwars.guildwars;
 
 import com.guildwars.guildwars.core.ChatChannels;
-import com.guildwars.guildwars.guilds.Board;
-import com.guildwars.guildwars.guilds.Guilds;
-import com.guildwars.guildwars.guilds.GuildsFastData;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
 import com.guildwars.guildwars.guilds.engine.AutoClaim;
 import com.guildwars.guildwars.guilds.engine.MapAuto;
 import com.guildwars.guildwars.guilds.engine.Power;
+import com.guildwars.guildwars.guilds.engine.Raiding;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.guilds.gPlayers;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,6 +47,7 @@ public final class GuildWars extends JavaPlugin {
 
         // Load power
         Power.load();
+        Raiding.load();
 
         // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
@@ -57,6 +56,8 @@ public final class GuildWars extends JavaPlugin {
         AutoClaim.perform();
         MapAuto.perform();
         Power.run();
+        Raiding.run();
+        Raiding.runAntiRaidInterferance();
     }
 
     public void unloadGuilds() {
@@ -78,6 +79,8 @@ public final class GuildWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Guilds(), this);
         getServer().getPluginManager().registerEvents(new Power(), this);
         getServer().getPluginManager().registerEvents(new AutoClaim(), this);
+        getServer().getPluginManager().registerEvents(new Raiding(), this);
+        getServer().getPluginManager().registerEvents(new GuildsIndex(), this);
     }
 
     public static GuildWars getInstance(){

@@ -1,6 +1,5 @@
 package com.guildwars.guildwars.utils;
 
-import com.guildwars.guildwars.guilds.cmd.gCommand;
 import net.md_5.bungee.api.ChatColor;
 
 import java.awt.*;
@@ -39,5 +38,9 @@ public class util {
         int randB = gen.nextInt(0, 256);
 
         return ChatColor.of(new Color(randR, randG, randB));
+    }
+
+    public static long getTimeLater(int minutesLater) {
+        return System.currentTimeMillis() + (minutesLater * 60000L);
     }
 }

@@ -193,7 +193,7 @@ public class Messages {
             commandsSection.addDefault("autoclaim.usage", "&2/g autoclaim");
             commandsSection.addDefault("autoclaim.cannot claim in world", "&cYou cannot claim land in this world");
 
-        // Guilds
+        // Guild announcements
         messagesFile.createSection("guild announcements");
             ConfigurationSection guildAnnouncementsSection = messagesFile.getConfigurationSection("guild announcements");
             assert guildAnnouncementsSection != null;
@@ -215,6 +215,25 @@ public class Messages {
             guildAnnouncementsSection.addDefault("unclaimed land", "&4&l%PLAYER% &c&lhas unclaimed land!");
             guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER% &c&lhas unclaimed all your guild's land!");
             guildAnnouncementsSection.addDefault("overclaimed", "&4&l%GUILD% &c&lhas overclaimed some of your land!");
+
+    // Guild broadcasts
+    messagesFile.createSection("broadcasts");
+        ConfigurationSection broadcastsSection = messagesFile.getConfigurationSection("broadcasts");
+        assert broadcastsSection != null;
+        // broadcasts
+        broadcastsSection.addDefault("raidable title", "&4Now Raidable!");
+        broadcastsSection.addDefault("raidable subtitle", "&cYou must defend for %AMOUNT% minutes");
+        broadcastsSection.addDefault("raiding title", "&4Raiding: %GUILD%!");
+        broadcastsSection.addDefault("raiding subtitle", "&cYou have %AMOUNT% minutes to raid");
+        broadcastsSection.addDefault("no longer raidable title", "&4No Longer Raidable!");
+        broadcastsSection.addDefault("no longer raiding title", "&4Raid On %GUILD% Ended!");
+
+    // Guild broadcasts
+        messagesFile.createSection("server announcements");
+        ConfigurationSection serverAnnouncementsSection = messagesFile.getConfigurationSection("server announcements");
+        assert serverAnnouncementsSection != null;
+        // announcements
+        serverAnnouncementsSection.addDefault("guild raidable", "%GUILD% is now raidable!");
 
 
         // Guild Naming
@@ -247,8 +266,6 @@ public class Messages {
         assert claimingSection != null;
         claimingSection.addDefault("not enough power", "&cYour guild does not have enough power to claim more land");
         claimingSection.addDefault("claiming own land", "&cYour guild already owns this land");
-        claimingSection.addDefault("cannot overclaim because claim surrounded", "&cYou can only overclaim land that is not completely surrounded by the guild's claims");
-        claimingSection.addDefault("not overclaimable", "&4%GUILD% &cis not overclaimable");
         claimingSection.addDefault("no connecting claim", "&cYou can only claim land that is connected to your land");
         claimingSection.addDefault("claiming in outlands", "&cYou cannot claim in the outlands");
     }

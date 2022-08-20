@@ -154,13 +154,6 @@ public class gPlayer {
             if (chunk.getGuild() == guild) {
                 this.sendFailMsg(Messages.getMsg("claiming.claiming own land"));
             }
-            // Player is trying to overclaim land that is surrounded by the guild's claims
-            else if (chunk.getGuild().isOverclaimable()) {
-                this.sendFailMsg(Messages.getMsg("claiming.cannot overclaim because claim surrounded"));
-            }
-            else {
-                this.sendFailMsg(Messages.getMsg("claiming.not overclaimable", chunk.getGuild()));
-            }
             return false;
         }
 
