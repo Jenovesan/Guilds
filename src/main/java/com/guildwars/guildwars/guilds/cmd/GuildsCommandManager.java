@@ -3,6 +3,7 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
+import com.guildwars.guildwars.guilds.gPlayersIndex;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -99,7 +100,7 @@ public class GuildsCommandManager implements CommandExecutor {
                 sender.sendMessage(Messages.getMsg("commands.too few arguments given"));
                 return true;
             }
-            gPlayer gPlayer = gPlayers.get(player);
+            gPlayer gPlayer = gPlayersIndex.getgPlayerByPlayer(player);
 
             guildCommand.perform(gPlayer, modifiedArgs);
             return true;

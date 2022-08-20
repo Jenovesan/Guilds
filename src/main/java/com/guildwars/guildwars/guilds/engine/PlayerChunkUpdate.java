@@ -5,6 +5,7 @@ import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
+import com.guildwars.guildwars.guilds.gPlayersIndex;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -60,14 +61,14 @@ public class PlayerChunkUpdate implements Listener {
     @EventHandler
     public void addPlayerOnLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        gPlayer gPlayer = gPlayers.get(player);
+        gPlayer gPlayer = gPlayersIndex.getgPlayerByPlayer(player);
         getLastlastLocations().put(gPlayer, player.getLocation());
     }
 
     @EventHandler
     public void removePlayerOnLogout(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        gPlayer gPlayer = gPlayers.get(player);
+        gPlayer gPlayer = gPlayersIndex.getgPlayerByPlayer(player);
         getLastlastLocations().remove(gPlayer);
     }
 }

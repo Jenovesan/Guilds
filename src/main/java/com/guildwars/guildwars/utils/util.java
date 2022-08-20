@@ -43,4 +43,13 @@ public class util {
     public static long getTimeLater(int minutesLater) {
         return System.currentTimeMillis() + (minutesLater * 60000L);
     }
+
+    public static Object getSingleKeyByValue(HashMap<?, ?> hashMap, Object value) {
+        for (Map.Entry<?, ?> entry : hashMap.entrySet()) {
+            if (entry.getValue() == value) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 }

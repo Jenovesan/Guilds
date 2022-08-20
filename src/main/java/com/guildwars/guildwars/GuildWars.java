@@ -4,7 +4,6 @@ import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
 import com.guildwars.guildwars.guilds.engine.AutoClaim;
-import com.guildwars.guildwars.guilds.engine.MapAuto;
 import com.guildwars.guildwars.guilds.engine.Power;
 import com.guildwars.guildwars.guilds.engine.Raiding;
 import com.guildwars.guildwars.guilds.files.PlayerData;
@@ -39,8 +38,11 @@ public final class GuildWars extends JavaPlugin {
         // Fill gPlayers guilds
         gPlayers.loadGPlayersGuilds();
 
-        // Load fast guild data
-        GuildsFastData.loadPlayersGuildsIds();
+        // Load Guilds Index
+        GuildsIndex.load();
+
+        // Load gPlayers Index
+        gPlayersIndex.load();
 
         // Load Board
         Board.fillBoard();
@@ -71,7 +73,6 @@ public final class GuildWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatChannels(), this);
 
         // Guilds
-        getServer().getPluginManager().registerEvents(new GuildsFastData(), this);
         getServer().getPluginManager().registerEvents(new gPlayers(), this);
         getServer().getPluginManager().registerEvents(new Guilds(), this);
         getServer().getPluginManager().registerEvents(new Power(), this);

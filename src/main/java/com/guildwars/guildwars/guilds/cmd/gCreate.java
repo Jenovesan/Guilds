@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.event.GuildCreationEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Bukkit;
@@ -51,8 +52,9 @@ public class gCreate extends gCommand {
         // Update gPlayer
         player.joinedNewGuild(newGuild);
 
-        // Call Event
+        // Call Events
         Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, newGuild, PlayerGuildChangeEvent.Reason.CREATION));
+        Bukkit.getServer().getPluginManager().callEvent(new GuildCreationEvent(newGuild));
 
         // Inform
         player.sendSuccessMsg(Messages.getMsg("commands.create.creation", newGuild));

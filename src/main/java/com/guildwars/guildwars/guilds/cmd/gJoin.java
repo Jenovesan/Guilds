@@ -38,7 +38,7 @@ public class gJoin extends gCommand{
             }
             guildToJoin = possiblePlayerToJoin.getGuild();
         } else { //Player using guild name to join guild
-            guildToJoin = Guilds.get(args[0]);
+            guildToJoin = GuildsIndex.getGuildByName(args[0]);
             if (guildToJoin == null) {
                 player.sendFailMsg(Messages.getMsg("commands.not a guild or player", args[0]));
                 return;

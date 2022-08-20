@@ -50,8 +50,8 @@ public class Config {
         configFile.addDefault("raiding duration (min)", 60);
         configFile.addDefault("world claim radius (chunks)", 30);
         configFile.addDefault("g map radius (chunks)", 7);
-        configFile.addDefault("online player power regen time (min)", 60);
-        configFile.addDefault("offline player power regen time (min)", 180);
+        configFile.addDefault("online player power regen per min", 0.017);
+        configFile.addDefault("offline player power regen per min", 0.0055);
         configFile.addDefault("raiding kick non-raiders update (tick)", 20);
         configFile.addDefault("player chunk update (ticks)", 20);
 

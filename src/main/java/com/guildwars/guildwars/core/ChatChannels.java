@@ -1,10 +1,7 @@
 package com.guildwars.guildwars.core;
 
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.GuildPermission;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,7 +65,7 @@ public class ChatChannels implements Listener {
     public static Set<Player> getChannelRecipients(Player sender, ChatChannel channel) {
         switch (channel) {
             case GUILD:
-                gPlayer gSender = gPlayers.get(sender);
+                gPlayer gSender = gPlayersIndex.getgPlayerByPlayer(sender);
                 Guild senderGuild = gSender.getGuild();
                 return senderGuild.getOnlinePlayersThatHavePermission(GuildPermission.CHAT);
         }

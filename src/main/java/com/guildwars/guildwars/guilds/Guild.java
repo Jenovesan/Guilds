@@ -16,7 +16,8 @@ public class Guild {
     private HashSet<Integer> enemies = new HashSet<>();
     private HashSet<Integer> truceRequests = new HashSet<>();
     private HashSet<int[]> claimLocations = new HashSet<>();
-    private HashMap<Integer, Long> raids = new HashMap<>(); // Guild they are raiding, When raid ends
+    private int raid;
+    private long raidEndTime;
 
     public int getId() {
         return id;
@@ -54,6 +55,14 @@ public class Guild {
         return claimLocations;
     }
 
+    public int getRaid() {
+        return raid;
+    }
+
+    public long getRaidEndTime() {
+        return raidEndTime;
+    }
+
     // Creating a new guild
     public Guild(gPlayer creator, String name, String description) {
         this.id = Guilds.getNewGuildId();
@@ -72,14 +81,16 @@ public class Guild {
                  HashMap<gPlayer, GuildRank> players,
                  HashMap<GuildPermission, GuildRank> permissions,
                  HashSet<Integer> enemies,
-                 HashMap<Integer, Long> raids) {
+                 int raid,
+                 long raidEndTime) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.players = players;
         this.permissions = permissions;
         this.enemies = enemies;
-        this.raids = raids;
+        this.raid = raid;
+        this.raidEndTime = raidEndTime;
     }
 
     public void loadDefaults() {
@@ -262,16 +273,16 @@ public class Guild {
         return this.getPower() - this.getNumberOfClaims();
     }
 
-    public HashMap<Integer, Long> getRaids() {
-        return this.raids;
+    public void setRaid(int guildId) {
+        this.raid = guildId;
     }
 
-    public boolean isRaiding(int guildId) {
-        return this.getRaids().containsKey(guildId);
+    public void setRaidEndTime(long time) {
+        this.raidEndTime = time;
     }
 
-    public boolean hasRaid() {
-        return !this.getRaids().isEmpty();
+    public boolean isRaiding() {
+        return this.getRaid() != 0;
     }
 
     public void removeClaim(GuildChunk chunk) {

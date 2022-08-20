@@ -4,8 +4,6 @@ import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class gTruce extends gCommand{
@@ -45,7 +43,7 @@ public class gTruce extends gCommand{
             }
             guildToTruce = possiblePlayerToTruce.getGuild();
         } else { //Player using guild name to truce guild
-            guildToTruce = Guilds.get(args[0]);
+            guildToTruce = GuildsIndex.getGuildByName(args[0]);
             if (guildToTruce == null) {
                 player.sendFailMsg(Messages.getMsg("commands.not a guild or player", args[0]));
                 return;

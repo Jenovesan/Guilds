@@ -24,7 +24,12 @@ public class Guilds implements Listener {
             Map<String, Object> playersData = guildData.getConfigurationSection("players").getValues(false);
             HashMap<gPlayer, GuildRank> players = new HashMap<>();
             for (Map.Entry<String, Object> entry : playersData.entrySet()) {
-                players.put(gPlayers.get(UUID.fromString(entry.getKey())), GuildRank.valueOf((String) entry.getValue()));
+                UUID memberUUID = UUID.fromString(entry.getKey());
+                for (gPlayer player : gPlayers.getAllGPlayers()) {
+                    if (player.getUUID() == memberUUID) {
+                        players.put(player, GuildRank.valueOf((String) entry.getValue()));
+                    }
+                }
             }
 
             Map<String, Object> permissionsData = guildData.getConfigurationSection("permissions").getValues(false);
@@ -35,13 +40,10 @@ public class Guilds implements Listener {
 
             HashSet<Integer> enemies = new HashSet<>(guildData.getIntegerList("enemies"));
 
-            Map<String, Object> raidingData = guildData.getConfigurationSection("raids").getValues(false);
-            HashMap<Integer, Long> raids = new HashMap<>();
-            for (Map.Entry<String, Object> entry : raidingData.entrySet()) {
-                raids.put(Integer.parseInt(entry.getKey()), Long.parseLong((String) entry.getValue()));
-            }
+            int raid = guildData.getInt("raid");
+            long raidEndTime = guildData.getLong("raidEndTime");
 
-            Guild loadedGuild = new Guild(id, name, description, players, permissions, enemies, raids);
+            Guild loadedGuild = new Guild(id, name, description, players, permissions, enemies, raid, raidEndTime);
             addGuild(loadedGuild);
         }
     }
@@ -71,7 +73,8 @@ public class Guilds implements Listener {
         guildSection.set("players", players);
         guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
         guildSection.set("enemies", List.copyOf(guild.getEnemies()));
-        guildSection.set("raids", util.hashMapToHashMapString(guild.getRaids()));
+        guildSection.set("raid", guild.getRaid());
+        guildSection.set("raidEndTime", guild.getRaidEndTime());
         GuildData.save();
     }
 
@@ -90,24 +93,6 @@ public class Guilds implements Listener {
 
     public static void addGuild(Guild guild) {
         getAllGuilds().add(guild);
-    }
-
-    public static Guild get(int guildId) {
-        for (Guild guild : getAllGuilds()) {
-            if (guild.getId() == guildId) {
-                return guild;
-            }
-        }
-        return null;
-    }
-
-    public static Guild get(String guildName) {
-        for (Guild guild : getAllGuilds()) {
-            if (guild.getName().equalsIgnoreCase(guildName)) {
-                return guild;
-            }
-        }
-        return null;
     }
 
     @EventHandler

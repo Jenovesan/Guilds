@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.GuildsIndex;
@@ -15,9 +16,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
-import java.util.Map;
 
 public class Raiding implements Listener {
 
@@ -32,14 +33,14 @@ public class Raiding implements Listener {
         Guild killerGuild = killer.getGuild();
 
         if (playerGuild == null || killerGuild == null) return;
-        player.sendNotifyMsg(killerGuild.getRaids() + " " + playerGuild.getNumberOfClaims() + " " + playerGuild.getPower());
 
         // Guild has more claims than power
-        if (!killerGuild.isRaiding(playerGuild.getId()) && playerGuild.getNumberOfClaims() > playerGuild.getPower()) {
+        if (!killerGuild.isRaiding() && playerGuild.getNumberOfClaims() > playerGuild.getPower()) {
             int raidDuration = Config.get().getInt("raiding duration (min)");
 
             // Set raidable
-            killerGuild.getRaids().put(playerGuild.getId(), util.getTimeLater(raidDuration));
+            killerGuild.setRaid(playerGuild.getId());
+            killerGuild.setRaidEndTime(util.getTimeLater(raidDuration));
 
             // Add to raidableGuilds
             getRaidingGuilds().add(killerGuild);
@@ -55,42 +56,41 @@ public class Raiding implements Listener {
 
     private static HashSet<Guild> raidingGuilds = new HashSet<>();
 
-    private static HashSet<Guild> getRaidingGuilds() {
+    public static HashSet<Guild> getRaidingGuilds() {
         return raidingGuilds;
     }
 
     public static void run() {
-        long currentTime = System.currentTimeMillis();
-        for (Guild guild : getRaidingGuilds()) {
-            for (Map.Entry<Integer, Long> raid : guild.getRaids().entrySet()) {
-                long raidEndTime = raid.getValue();
-                int raidedGuildId = raid.getKey();
-                // Raid ends
-                if (currentTime >= raidEndTime) {
-                    // Remove raid
-                    guild.getRaids().remove(raidedGuildId);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+                for (Guild guild : getRaidingGuilds()) {
+                    long raidEndTime = guild.getRaidEndTime();
+                    int raidedGuildId = guild.getRaid();
+                    // Raid ends
+                    if (currentTime >= raidEndTime) {
+                        // Remove raid
+                        guild.setRaid(0);
+                        raidingGuilds.remove(guild);
 
-                    // Reset power
-                    Guild raidedGuild = Guilds.get(raidedGuildId);
-                    int playerMaxPower = Config.get().getInt("player max power");
-                    for (gPlayer player : raidedGuild.getPlayers().keySet()) {
-                        player.setPower(playerMaxPower);
-                    }
+                        // Reset power
+                        Guild raidedGuild = GuildsIndex.getGuildById(raidedGuildId);
+                        int playerMaxPower = Config.get().getInt("player max power");
+                        for (gPlayer player : raidedGuild.getPlayers().keySet()) {
+                            player.setPower(playerMaxPower);
+                        }
 
-                    // Call event
-                    Bukkit.getServer().getPluginManager().callEvent(new GuildRaidEndEvent(raidedGuild, guild));
+                        // Call event
+                        Bukkit.getServer().getPluginManager().callEvent(new GuildRaidEndEvent(raidedGuild, guild));
 
-                    // Send broadcasts
-                    raidedGuild.sendBroadcast(Messages.getMsg("broadcasts.no longer raidable title"), null);
-                    guild.sendBroadcast(Messages.getMsg("broadcasts.no longer raiding title", raidedGuild), null);
-
-                    // Remove this guild from raidingGuilds if guild no longer has a raid
-                    if (!guild.hasRaid()) {
-                        getRaidingGuilds().remove(guild);
+                        // Send broadcasts
+                        raidedGuild.sendBroadcast(Messages.getMsg("broadcasts.no longer raidable title"), null);
+                        guild.sendBroadcast(Messages.getMsg("broadcasts.no longer raiding title", raidedGuild), null);
                     }
                 }
             }
-        }
+        }.runTaskTimerAsynchronously(GuildWars.getInstance(), 1200, 1200);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -115,7 +115,7 @@ public class Raiding implements Listener {
 
     public static void load() {
         for (Guild guild : Guilds.getAllGuilds()) {
-            if (guild.hasRaid()) {
+            if (guild.isRaiding()) {
                 getRaidingGuilds().add(guild);
             }
         }

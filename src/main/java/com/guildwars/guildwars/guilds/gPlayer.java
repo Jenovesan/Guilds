@@ -15,8 +15,7 @@ public class gPlayer {
     private int guildId = 0;
     private GuildRank guildRank;
     private String name;
-    private int power = Config.get().getInt("player max power");
-    private long powerChangeTime;
+    private float power = Config.get().getInt("player max power");
 
     public Player getPlayer() {
         return this.player;
@@ -42,12 +41,8 @@ public class gPlayer {
         return this.name;
     }
 
-    public int getPower() {
+    public float getPower() {
         return this.power;
-    }
-
-    public long getPowerChangeTime() {
-        return this.powerChangeTime;
     }
 
     public void setGuild(Guild guild) {
@@ -75,27 +70,25 @@ public class gPlayer {
         this.player = player;
     }
 
-    public void changePower(int changeBy) {
+    public void changePower(float changeBy) {
         int playerMaxPower = Config.get().getInt("player max power");
         int playerMinPower = Config.get().getInt("player min power");
         this.power = Math.min(Math.max(this.power + changeBy, playerMinPower), playerMaxPower);
     }
 
     // For loading gPlayer from data
-    public gPlayer(UUID uuid, int guildId, GuildRank guildRank, String name, int power, long powerChangeTime) {
+    public gPlayer(UUID uuid, int guildId, GuildRank guildRank, String name, float power) {
         this.uuid = uuid;
         this.guildId = guildId;
         this.guildRank = guildRank;
         this.name = name;
         this.power = power;
-        this.powerChangeTime = powerChangeTime;
     }
 
     // For creating a gPlayer for the first time
     public gPlayer (Player player) {
         this.player = player;
-        UUID uuid = player.getUniqueId();
-        this.uuid = uuid;
+        this.uuid = player.getUniqueId();
         this.name = player.getName();
     }
 
@@ -200,10 +193,6 @@ public class gPlayer {
         guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", this));
 
         return true;
-    }
-
-    public void setPowerChangeTime(long time) {
-        this.powerChangeTime = time;
     }
 
     public boolean isOnline() {

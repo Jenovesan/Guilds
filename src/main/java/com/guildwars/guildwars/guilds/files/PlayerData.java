@@ -60,7 +60,6 @@ public class PlayerData {
             }
             playerSection.set("name", player.getName());
             playerSection.set("power", player.getPower());
-            playerSection.set("powerChangeTime", player.getPowerChangeTime());
         }
         save();
     }
