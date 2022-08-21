@@ -21,7 +21,7 @@ public class Board {
 
     public static void fillBoard() {
         // Fill board with Guilds' claims
-        for (Guild guild : Guilds.getAllGuilds()) {
+        for (Guild guild : Guilds.get().getAll()) {
             for (int[] claimLocation : guild.getClaimLocations()) {
                 getBoard()[claimLocation[0]][claimLocation[1]] = new GuildChunk(guild, claimLocation);
             }

@@ -49,6 +49,7 @@ public class Messages {
             commandsSection.addDefault("player not found", "&cNo player &4%INPUT% &ccould be found");
             commandsSection.addDefault("player not in your guild", "&4%PLAYER% &cis not in your guild");
             commandsSection.addDefault("not a guild or player", "&4%INPUT% &cis not a guild or player");
+            commandsSection.addDefault("raid interfering", "&4%GUILD% &cis being raided. You cannot interfere");
             //create
             commandsSection.addDefault("create.description", "&2Creates your own guild");
             commandsSection.addDefault("create.usage", "&2/g create <name> <description>");

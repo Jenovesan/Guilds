@@ -33,7 +33,7 @@ public class gDeInvite extends gCommand{
             return;
         }
 
-        gPlayer deInvitee = gPlayers.get(args[0]);
+        gPlayer deInvitee = gPlayersIndex.get().getByName(args[0]);
 
         if (deInvitee == null) {
             deInviter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));

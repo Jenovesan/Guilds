@@ -32,7 +32,7 @@ public class gPromote extends gCommand{
             return;
         }
 
-        gPlayer promotee = gPlayers.get(args[0]);
+        gPlayer promotee = gPlayersIndex.get().getByName(args[0]);
 
         if (promotee == null) {
             promoter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));

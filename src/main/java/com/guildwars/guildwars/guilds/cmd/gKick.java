@@ -35,7 +35,7 @@ public class gKick extends gCommand{
 
         Guild guild = kicker.getGuild();
 
-        gPlayer kickee = gPlayers.get(args[0]);
+        gPlayer kickee = gPlayersIndex.get().getByName(args[0]);
 
         if (kickee == null) {
             kicker.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));

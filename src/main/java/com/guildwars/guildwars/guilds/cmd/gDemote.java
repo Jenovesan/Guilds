@@ -1,12 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -36,7 +33,7 @@ public class gDemote extends gCommand{
             return;
         }
 
-        gPlayer demotee = gPlayers.get(args[0]);
+        gPlayer demotee = gPlayersIndex.get().getByName(args[0]);
 
         if (demotee == null) {
             demoter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));

@@ -7,19 +7,19 @@ import java.util.*;
 
 public class Guild {
 
-    private final int id;
+    private final String id;
     private String name;
     private String description;
     private HashMap<gPlayer, GuildRank> players = new HashMap<>();
     private HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
     private HashSet<gPlayer> invites = new HashSet<>();
-    private HashSet<Integer> enemies = new HashSet<>();
-    private HashSet<Integer> truceRequests = new HashSet<>();
+    private HashSet<Guild> enemies = new HashSet<>();
+    private HashSet<Guild> truceRequests = new HashSet<>();
     private HashSet<int[]> claimLocations = new HashSet<>();
-    private int raid;
+    private Guild raidedBy;
     private long raidEndTime;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -43,11 +43,11 @@ public class Guild {
         return invites;
     }
 
-    public HashSet<Integer> getEnemies() {
+    public HashSet<Guild> getEnemies() {
         return enemies;
     }
 
-    public HashSet<Integer> getTruceRequests() {
+    public HashSet<Guild> getTruceRequests() {
         return truceRequests;
     }
 
@@ -55,8 +55,8 @@ public class Guild {
         return claimLocations;
     }
 
-    public int getRaid() {
-        return raid;
+    public Guild getRaidedBy() {
+        return raidedBy;
     }
 
     public long getRaidEndTime() {
@@ -65,7 +65,7 @@ public class Guild {
 
     // Creating a new guild
     public Guild(gPlayer creator, String name, String description) {
-        this.id = Guilds.getNewGuildId();
+        this.id = gUtil.getNewUUID();
         this.name = name;
         this.description = description;
         if (creator != null) {
@@ -75,21 +75,17 @@ public class Guild {
     }
 
     // Loading an existing guild on startup
-    public Guild(Integer id,
+    public Guild(String id,
                  String name,
                  String description,
                  HashMap<gPlayer, GuildRank> players,
                  HashMap<GuildPermission, GuildRank> permissions,
-                 HashSet<Integer> enemies,
-                 int raid,
                  long raidEndTime) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.players = players;
         this.permissions = permissions;
-        this.enemies = enemies;
-        this.raid = raid;
         this.raidEndTime = raidEndTime;
     }
 
@@ -200,27 +196,27 @@ public class Guild {
     }
 
     public boolean isEnemied(Guild guild) {
-        return this.getEnemies().contains(guild.getId());
+        return this.getEnemies().contains(guild);
     }
 
-    public void enemy(Guild enemyGuild) {
-        this.getEnemies().add(enemyGuild.getId());
+    public void addEnemy(Guild enemyGuild) {
+        this.getEnemies().add(enemyGuild);
     }
 
     public void truce(Guild enemyGuild) {
-        this.getEnemies().remove(enemyGuild.getId());
+        this.getEnemies().remove(enemyGuild);
     }
 
     public void removeTruceRequest(Guild guild) {
-        this.getTruceRequests().remove(guild.getId());
+        this.getTruceRequests().remove(guild);
     }
 
     public void sendTruceRequest(Guild guildToTruce) {
-        this.getTruceRequests().add(guildToTruce.getId());
+        this.getTruceRequests().add(guildToTruce);
     }
 
     public boolean hasTruceRequestWith(Guild guild) {
-        return this.getTruceRequests().contains(guild.getId());
+        return this.getTruceRequests().contains(guild);
     }
 
     public Guild get() {
@@ -239,7 +235,7 @@ public class Guild {
     public int getPower() {
         int power = 0;
         for (gPlayer player : this.getPlayers().keySet()) {
-            power += player.getPower();
+            power += Math.floor(player.getPower());
         }
         return power;
     }
@@ -273,16 +269,16 @@ public class Guild {
         return this.getPower() - this.getNumberOfClaims();
     }
 
-    public void setRaid(int guildId) {
-        this.raid = guildId;
+    public void setRaidedBy(Guild guild) {
+        this.raidedBy = guild;
     }
 
     public void setRaidEndTime(long time) {
         this.raidEndTime = time;
     }
 
-    public boolean isRaiding() {
-        return this.getRaid() != 0;
+    public boolean isGettingRaided() {
+        return this.getRaidedBy() != null;
     }
 
     public void removeClaim(GuildChunk chunk) {
@@ -294,5 +290,4 @@ public class Guild {
             player.getPlayer().sendTitle(title, Objects.requireNonNullElse(subtitle, ""), Config.get().getInt("broadcasts.fadeIn"), Config.get().getInt("broadcasts.stay"), Config.get().getInt("broadcasts.fadeOut"));
         }
     }
-
 }

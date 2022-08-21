@@ -44,10 +44,10 @@ public class gDisband extends gCommand{
         Guild guild = player.getGuild();
 
         // Remove Guild from Guilds
-        Guilds.removeGuild(guild);
+        Guilds.get().remove(guild);
 
         // Remove Guild Data
-        Guilds.removeGuildData(guild.getId());
+        Guilds.get().removeGuildData(guild);
 
         // Update gPlayers & call event
         for (gPlayer onlineGuildMember : guild.getOnlinePlayers()) {

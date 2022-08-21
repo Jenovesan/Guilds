@@ -12,7 +12,7 @@ public class gPlayer {
     private Player player = null;
     private final UUID uuid;
     private Guild guild;
-    private int guildId = 0;
+    private String guildId;
     private GuildRank guildRank;
     private String name;
     private float power = Config.get().getInt("player max power");
@@ -29,7 +29,7 @@ public class gPlayer {
         return this.guild;
     }
 
-    public int getGuildId() {
+    public String getGuildId() {
         return this.guildId;
     }
 
@@ -47,11 +47,7 @@ public class gPlayer {
 
     public void setGuild(Guild guild) {
         this.guild = guild;
-        if (guild != null) {
-            this.guildId = guild.getId();
-        } else {
-            this.guildId = 0;
-        }
+        this.guildId = guild != null ? guild.getId() : null;
     }
 
     public void setGuildRank(GuildRank rank) {
@@ -77,10 +73,8 @@ public class gPlayer {
     }
 
     // For loading gPlayer from data
-    public gPlayer(UUID uuid, int guildId, GuildRank guildRank, String name, float power) {
+    public gPlayer(UUID uuid, String name, float power) {
         this.uuid = uuid;
-        this.guildId = guildId;
-        this.guildRank = guildRank;
         this.name = name;
         this.power = power;
     }
@@ -197,5 +191,9 @@ public class gPlayer {
 
     public boolean isOnline() {
         return player != null;
+    }
+
+    public void setGuildId(String id) {
+        this.guildId = id;
     }
 }

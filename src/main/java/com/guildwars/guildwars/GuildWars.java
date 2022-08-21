@@ -4,6 +4,7 @@ import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
 import com.guildwars.guildwars.guilds.engine.AutoClaim;
+import com.guildwars.guildwars.guilds.engine.PlayerChunkUpdate;
 import com.guildwars.guildwars.guilds.engine.Power;
 import com.guildwars.guildwars.guilds.engine.Raiding;
 import com.guildwars.guildwars.guilds.files.PlayerData;
@@ -30,26 +31,29 @@ public final class GuildWars extends JavaPlugin {
         com.guildwars.guildwars.guilds.files.FileManager.setupFiles();
 
         // Load gPlayers
-        gPlayers.loadGPlayers();
+        gPlayers.getgInstance().load();
 
         // Load Guilds
-        Guilds.loadGuilds();
+        Guilds.get().load();
 
         // Fill gPlayers guilds
-        gPlayers.loadGPlayersGuilds();
+        gPlayers.getgInstance().loadGuilds();
+
+        // Fill Guilds guilds
+        Guilds.get().loadGuilds();
 
         // Load Guilds Index
-        GuildsIndex.load();
+        GuildsIndex.get().load();
 
         // Load gPlayers Index
-        gPlayersIndex.load();
+        gPlayersIndex.get().load();
 
         // Load Board
         Board.fillBoard();
 
         // Load power
         Power.load();
-        Raiding.load();
+        Raiding.get().load();
 
         // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
@@ -57,6 +61,7 @@ public final class GuildWars extends JavaPlugin {
         // Start Runnables
         Power.run();
         Raiding.run();
+        PlayerChunkUpdate.run();
     }
 
     public void unloadGuilds() {

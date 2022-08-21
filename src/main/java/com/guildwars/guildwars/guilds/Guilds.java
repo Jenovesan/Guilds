@@ -8,16 +8,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class Guilds implements Listener {
+public class Guilds extends Coll<Guild> implements Listener {
 
-    public static Set<Guild> guilds = new HashSet<>();
+    public static Guilds i = new Guilds();
+    public static Guilds get() {
+        return i;
+    }
 
-    public static void loadGuilds() {
+    @Override
+    public void load() {
         for (String guildId : GuildData.get().getKeys(false)) {
             ConfigurationSection guildData = GuildData.get().getConfigurationSection(guildId);
-            assert guildData != null;
-            Integer id = Integer.parseInt(guildId);
             String name = guildData.getString("name");
             String description = guildData.getString("description");
 
@@ -25,7 +28,7 @@ public class Guilds implements Listener {
             HashMap<gPlayer, GuildRank> players = new HashMap<>();
             for (Map.Entry<String, Object> entry : playersData.entrySet()) {
                 UUID memberUUID = UUID.fromString(entry.getKey());
-                for (gPlayer player : gPlayers.getAllGPlayers()) {
+                for (gPlayer player : gPlayers.getgInstance().getAll()) {
                     if (player.getUUID() == memberUUID) {
                         players.put(player, GuildRank.valueOf((String) entry.getValue()));
                     }
@@ -38,29 +41,32 @@ public class Guilds implements Listener {
                 permissions.put(GuildPermission.valueOf(entry.getKey()), GuildRank.valueOf((String) entry.getValue()));
             }
 
-            HashSet<Integer> enemies = new HashSet<>(guildData.getIntegerList("enemies"));
-
-            int raid = guildData.getInt("raid");
             long raidEndTime = guildData.getLong("raidEndTime");
 
-            Guild loadedGuild = new Guild(id, name, description, players, permissions, enemies, raid, raidEndTime);
-            addGuild(loadedGuild);
+            Guild loadedGuild = new Guild(guildId, name, description, players, permissions, raidEndTime);
+            add(loadedGuild);
         }
     }
 
-    public static Integer getNewGuildId() {
-        int newestGuildId = 0;
-        for (Guild guild : getAllGuilds()) {
-            int guildId = guild.getId();
-            System.out.println(guildId);
-            if (guildId > newestGuildId) {
-                newestGuildId = guildId;
+    @Override
+    public void loadGuilds() {
+        for (Guild guild : getAll()) {
+            ConfigurationSection guildData = GuildData.get().getConfigurationSection(guild.getId().toString());
+
+            // Enemies
+            List<String> enemiesIds = guildData.getStringList("enemies");
+            for (String id : enemiesIds) {
+                guild.addEnemy((GuildsIndex.get().getById(id)));
             }
+
+            // RaidedBy
+            String raidedById = guildData.getString("raidedBy");
+            guild.setRaidedBy(GuildsIndex.get().getById(raidedById));
         }
-        return newestGuildId + 1;
     }
 
-    public static void saveGuildData(Guild guild) {
+    @Override
+    public void save(Guild guild) {
         GuildData.get().createSection(String.valueOf(guild.getId()));
         ConfigurationSection guildSection = GuildData.get().getConfigurationSection(String.valueOf(guild.getId()));
         assert guildSection != null;
@@ -72,34 +78,22 @@ public class Guilds implements Listener {
         }
         guildSection.set("players", players);
         guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
-        guildSection.set("enemies", List.copyOf(guild.getEnemies()));
-        guildSection.set("raid", guild.getRaid());
+        guildSection.set("enemies", guild.getEnemies().stream().map(Guild::getId).collect(Collectors.toList()));
+        guildSection.set("raidedBy", guild.getRaidedBy().getId());
         guildSection.set("raidEndTime", guild.getRaidEndTime());
         GuildData.save();
     }
 
-    public static void removeGuildData(int guildId) {
-        GuildData.get().set(String.valueOf(guildId), null);
+    public void removeGuildData(Guild guild) {
+        GuildData.get().set(guild.getId(), null);
         GuildData.save();
-    }
-
-    public static Set<Guild> getAllGuilds() {
-        return guilds;
-    }
-
-    public static void removeGuild(Guild guild) {
-        getAllGuilds().remove(guild);
-    }
-
-    public static void addGuild(Guild guild) {
-        getAllGuilds().add(guild);
     }
 
     @EventHandler
     public void updateGuildEnemiesOnGuildDisband(GuildDisbandEvent event) {
-        Integer disbandedGuildId = event.getGuild().getId();
-        for (Guild guild : getAllGuilds()) {
-            guild.getEnemies().remove(disbandedGuildId);
+        Guild disbandedGuild = event.getGuild();
+        for (Guild guild : getAll()) {
+            guild.getEnemies().remove(disbandedGuild);
         }
     }
 }

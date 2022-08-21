@@ -32,7 +32,7 @@ public class gInvite extends gCommand{
             return;
         }
 
-        gPlayer invitee = gPlayers.get(args[0]);
+        gPlayer invitee = gPlayersIndex.get().getByName(args[0]);
 
         if (invitee == null) {
             inviter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));

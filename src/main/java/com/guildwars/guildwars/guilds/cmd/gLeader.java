@@ -1,11 +1,8 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -42,7 +39,7 @@ public class gLeader extends gCommand{
         }
 
         Guild guild = oldLeader.getGuild();
-        gPlayer newLeader = gPlayers.get(args[0]);
+        gPlayer newLeader = gPlayersIndex.get().getByName(args[0]);
 
         if (newLeader == null) {
             oldLeader.sendFailMsg(Messages.getMsg("commands.promote.promotee not found", args[0]));

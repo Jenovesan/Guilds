@@ -2,10 +2,12 @@ package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Messages;
 
+import java.util.UUID;
+
 public class GuildChunk {
 
     private Guild guild;
-    private int guildId;
+    private String guildId;
     private final int[] boardLocation;
 
     public void claim(Guild hostGuild) {
@@ -14,14 +16,14 @@ public class GuildChunk {
             getGuild().sendAnnouncement(Messages.getMsg("guild announcements.overclaimed", hostGuild));
         }
         this.guild = hostGuild;
-        this.guildId = hostGuild.getId();
+        this.guildId = hostGuild != null ? hostGuild.getId() : null;
     }
 
     public Guild getGuild() {
         return guild;
     }
 
-    public int getGuildId() {
+    public String getGuildId() {
         return guildId;
     }
 
@@ -68,12 +70,12 @@ public class GuildChunk {
     }
 
     public boolean isWilderness() {
-        return this.getGuildId() == 0;
+        return this.getGuildId() == null;
     }
 
     public void setWilderness() {
         this.guild = null;
-        this.guildId = 0;
+        this.guildId = null;
     }
 
 }

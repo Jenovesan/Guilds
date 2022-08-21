@@ -30,7 +30,7 @@ public class gJoin extends gCommand{
         }
 
         Guild guildToJoin;
-        gPlayer possiblePlayerToJoin = gPlayers.get(args[0]);
+        gPlayer possiblePlayerToJoin = gPlayersIndex.get().getByName(args[0]);
         if (possiblePlayerToJoin != null) { // Player using player name to join guild
             if (!possiblePlayerToJoin.isInGuild()) {
                 player.sendFailMsg(Messages.getMsg("commands.join.player not in guild", possiblePlayerToJoin));
@@ -38,7 +38,7 @@ public class gJoin extends gCommand{
             }
             guildToJoin = possiblePlayerToJoin.getGuild();
         } else { //Player using guild name to join guild
-            guildToJoin = GuildsIndex.getGuildByName(args[0]);
+            guildToJoin = GuildsIndex.get().getByName(args[0]);
             if (guildToJoin == null) {
                 player.sendFailMsg(Messages.getMsg("commands.not a guild or player", args[0]));
                 return;

@@ -65,7 +65,7 @@ public class ChatChannels implements Listener {
     public static Set<Player> getChannelRecipients(Player sender, ChatChannel channel) {
         switch (channel) {
             case GUILD:
-                gPlayer gSender = gPlayersIndex.getgPlayerByPlayer(sender);
+                gPlayer gSender = gPlayersIndex.get().getByPlayer(sender);
                 Guild senderGuild = gSender.getGuild();
                 return senderGuild.getOnlinePlayersThatHavePermission(GuildPermission.CHAT);
         }

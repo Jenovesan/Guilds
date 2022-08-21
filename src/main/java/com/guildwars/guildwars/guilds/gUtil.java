@@ -9,15 +9,6 @@ import java.util.UUID;
 
 public class gUtil {
 
-    public static Guild getOfflinePlayerGuild(UUID playerUUID) {
-        for (Guild guild : Guilds.getAllGuilds()) {
-            if (guild.getPlayers().containsKey(playerUUID)) {
-                return guild;
-            }
-        }
-        return null;
-    }
-
     public static boolean checkPermission(gPlayer player, GuildPermission permission, boolean sendReturnMsg) {
         GuildRank guildRank = player.getGuildRank();
         GuildRank permMinRank = player.getGuild().getPermissions().get(permission);
@@ -40,7 +31,7 @@ public class gUtil {
         }
 
         // Check if the guild name exists already
-        for (Guild guild : Guilds.getAllGuilds()) {
+        for (Guild guild : Guilds.get().getAll()) {
             if (guild.getName().equalsIgnoreCase(guildName)) {
                 player.sendFailMsg(Messages.getMsg("guild naming.name exists", guildName));
                 return false;
@@ -70,5 +61,9 @@ public class gUtil {
 
     public static boolean isInMainWorld(gPlayer player) {
         return player.getPlayer().getWorld().getName().equals(Config.get().getString("world name"));
+    }
+
+    public static String getNewUUID() {
+        return UUID.randomUUID().toString();
     }
 }

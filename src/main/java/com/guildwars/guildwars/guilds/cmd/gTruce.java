@@ -35,7 +35,7 @@ public class gTruce extends gCommand{
         }
 
         Guild guildToTruce;
-        gPlayer possiblePlayerToTruce = gPlayers.get(args[0]);
+        gPlayer possiblePlayerToTruce = gPlayersIndex.get().getByName(args[0]);
         if (possiblePlayerToTruce != null) { // Player using player name to truce guild
             if (!possiblePlayerToTruce.isInGuild()) {
                 player.sendFailMsg(Messages.getMsg("commands.truce.player not in guild", possiblePlayerToTruce));
@@ -43,7 +43,7 @@ public class gTruce extends gCommand{
             }
             guildToTruce = possiblePlayerToTruce.getGuild();
         } else { //Player using guild name to truce guild
-            guildToTruce = GuildsIndex.getGuildByName(args[0]);
+            guildToTruce = GuildsIndex.get().getByName(args[0]);
             if (guildToTruce == null) {
                 player.sendFailMsg(Messages.getMsg("commands.not a guild or player", args[0]));
                 return;

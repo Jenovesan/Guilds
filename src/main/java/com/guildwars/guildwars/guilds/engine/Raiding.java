@@ -3,16 +3,12 @@ package com.guildwars.guildwars.guilds.engine;
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.Guilds;
-import com.guildwars.guildwars.guilds.GuildsIndex;
-import com.guildwars.guildwars.guilds.event.GuildRaidEndEvent;
-import com.guildwars.guildwars.guilds.event.GuildRaidStartEvent;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.utils.util;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,6 +17,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 
 public class Raiding implements Listener {
+
+    private static Raiding i = new Raiding();
+    public static Raiding get() { return i; }
 
     @EventHandler
     public void checkIfGuildBecomesRaidable(PlayerLosePowerEvent event) {
@@ -35,18 +34,15 @@ public class Raiding implements Listener {
         if (playerGuild == null || killerGuild == null) return;
 
         // Guild has more claims than power
-        if (!killerGuild.isRaiding() && playerGuild.getNumberOfClaims() > playerGuild.getPower()) {
+        if (!playerGuild.isGettingRaided() && playerGuild.getNumberOfClaims() > playerGuild.getPower()) {
             int raidDuration = Config.get().getInt("raiding duration (min)");
 
             // Set raidable
-            killerGuild.setRaid(playerGuild.getId());
-            killerGuild.setRaidEndTime(util.getTimeLater(raidDuration));
+            playerGuild.setRaidedBy(killerGuild);
+            playerGuild.setRaidEndTime(util.getTimeLater(raidDuration));
 
             // Add to raidableGuilds
-            getRaidingGuilds().add(killerGuild);
-
-            // Call event
-            Bukkit.getServer().getPluginManager().callEvent(new GuildRaidStartEvent(playerGuild, killerGuild));
+            getRaidedGuilds().add(playerGuild);
 
             // Broadcasts
             playerGuild.sendBroadcast(Messages.getMsg("broadcasts.raidable title"), Messages.getMsg("broadcasts.raidable subtitle", raidDuration));
@@ -54,10 +50,10 @@ public class Raiding implements Listener {
         }
     }
 
-    private static HashSet<Guild> raidingGuilds = new HashSet<>();
+    private static HashSet<Guild> raidedGuilds = new HashSet<>();
 
-    public static HashSet<Guild> getRaidingGuilds() {
-        return raidingGuilds;
+    public static HashSet<Guild> getRaidedGuilds() {
+        return raidedGuilds;
     }
 
     public static void run() {
@@ -65,28 +61,24 @@ public class Raiding implements Listener {
             @Override
             public void run() {
                 long currentTime = System.currentTimeMillis();
-                for (Guild guild : getRaidingGuilds()) {
+                for (Guild guild : getRaidedGuilds()) {
                     long raidEndTime = guild.getRaidEndTime();
-                    int raidedGuildId = guild.getRaid();
+                    Guild raidingGuild = guild.getRaidedBy();
                     // Raid ends
                     if (currentTime >= raidEndTime) {
                         // Remove raid
-                        guild.setRaid(0);
-                        raidingGuilds.remove(guild);
+                        guild.setRaidedBy(null);
+                        raidedGuilds.remove(guild);
 
                         // Reset power
-                        Guild raidedGuild = GuildsIndex.getGuildById(raidedGuildId);
                         int playerMaxPower = Config.get().getInt("player max power");
-                        for (gPlayer player : raidedGuild.getPlayers().keySet()) {
+                        for (gPlayer player : guild.getPlayers().keySet()) {
                             player.setPower(playerMaxPower);
                         }
 
-                        // Call event
-                        Bukkit.getServer().getPluginManager().callEvent(new GuildRaidEndEvent(raidedGuild, guild));
-
                         // Send broadcasts
-                        raidedGuild.sendBroadcast(Messages.getMsg("broadcasts.no longer raidable title"), null);
-                        guild.sendBroadcast(Messages.getMsg("broadcasts.no longer raiding title", raidedGuild), null);
+                        guild.sendBroadcast(Messages.getMsg("broadcasts.no longer raidable title"), null);
+                        raidingGuild.sendBroadcast(Messages.getMsg("broadcasts.no longer raiding title", guild), null);
                     }
                 }
             }
@@ -95,28 +87,22 @@ public class Raiding implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void cancelPlayerChunkUpdateIfRaidInterfering(PlayerChunkUpdateEvent event) {
-        int newChunkHostId = event.getNewGuildChunk().getGuild().getId();
+        gPlayer player = event.getPlayer();
+        Guild chunkHost = event.getNewGuildChunk().getGuild();
 
-        if (newChunkHostId == 0) return;
+        if (chunkHost == null) return;
 
-        int playerGuildId = event.getPlayer().getGuildId();
-
-        if (playerGuildId == newChunkHostId) return;
-
-        Integer newChunkHostRaider = GuildsIndex.getRaids().get(newChunkHostId);
-        // Chunk Host is being raided
-        if (newChunkHostRaider != null) {
-            // Chunk host is being raided by a different guild
-            if (newChunkHostRaider != playerGuildId) {
-                event.setCancelled(true);
-            }
+        // Chunk host is being raided and the player's guild is not raiding them
+        if (chunkHost.getRaidedBy() != null && chunkHost.getRaidedBy() != event.getPlayer().getGuild()) {
+            event.setCancelled(true);
+            player.sendFailMsg(Messages.getMsg("raid interfering", chunkHost));
         }
     }
 
-    public static void load() {
-        for (Guild guild : Guilds.getAllGuilds()) {
-            if (guild.isRaiding()) {
-                getRaidingGuilds().add(guild);
+    public void load() {
+        for (Guild guild : Guilds.get().getAll()) {
+            if (guild.isGettingRaided()) {
+                getRaidedGuilds().add(guild);
             }
         }
     }

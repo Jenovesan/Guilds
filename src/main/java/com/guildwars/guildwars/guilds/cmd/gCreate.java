@@ -44,10 +44,10 @@ public class gCreate extends gCommand {
         Guild newGuild = new Guild(player, guildName, guildDesc);
 
         // Add guild to guilds
-        Guilds.addGuild(newGuild);
+        Guilds.get().add(newGuild);
 
         // Save guild
-        Guilds.saveGuildData(newGuild);
+        Guilds.get().save(newGuild);
 
         // Update gPlayer
         player.joinedNewGuild(newGuild);

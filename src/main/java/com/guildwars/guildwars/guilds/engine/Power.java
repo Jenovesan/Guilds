@@ -48,7 +48,7 @@ public class Power implements Listener {
 
     public static void load() {
         int maxPower = Config.get().getInt("player max power");
-        for (gPlayer player : gPlayers.getAllGPlayers()) {
+        for (gPlayer player : gPlayers.getgInstance().getAll()) {
             // Player is at max power
             if (player.getPower() == maxPower) continue;
 
@@ -68,8 +68,8 @@ public class Power implements Listener {
 
         if (player == null) return;
 
-        gPlayer gPlayer = gPlayersIndex.getgPlayerByPlayer(player);
-        gPlayer gKiller = killer != null ? gPlayersIndex.getgPlayerByPlayer(killer) : null;
+        gPlayer gPlayer = gPlayersIndex.get().getByPlayer(player);
+        gPlayer gKiller = killer != null ? gPlayersIndex.get().getByPlayer(killer) : null;
 
         int powerLossOnDeath = Config.get().getInt("power change on death");
 

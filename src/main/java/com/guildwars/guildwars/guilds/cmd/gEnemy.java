@@ -2,8 +2,6 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Messages;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class gEnemy extends gCommand{
     @Override
@@ -34,7 +32,7 @@ public class gEnemy extends gCommand{
         }
 
         Guild guildToEnemy;
-        gPlayer possiblePlayerToEnemy = gPlayers.get(args[0]);
+        gPlayer possiblePlayerToEnemy = gPlayersIndex.get().getByName(args[0]);
         if (possiblePlayerToEnemy != null) { // Player using player name to enemy guild
             if (!possiblePlayerToEnemy.isInGuild()) {
                 player.sendFailMsg(Messages.getMsg("commands.enemy.player not in guild", possiblePlayerToEnemy));
@@ -42,7 +40,7 @@ public class gEnemy extends gCommand{
             }
             guildToEnemy = possiblePlayerToEnemy.getGuild();
         } else { //Player using guild name to enemy guild
-            guildToEnemy = GuildsIndex.getGuildByName(args[0]);
+            guildToEnemy = GuildsIndex.get().getByName(args[0]);
             if (guildToEnemy == null) {
                 player.sendFailMsg(Messages.getMsg("commands.not a guild or player", args[0]));
                 return;
@@ -61,10 +59,10 @@ public class gEnemy extends gCommand{
         }
 
         // Enemy guild
-        playerGuild.enemy(guildToEnemy);
+        playerGuild.addEnemy(guildToEnemy);
 
         // Have guildToEnemy enemy playerGuild
-        guildToEnemy.enemy(playerGuild);
+        guildToEnemy.addEnemy(playerGuild);
 
         // Inform playerGuild
         playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.enemied guild", guildToEnemy));
