@@ -3,11 +3,8 @@ package com.guildwars.guildwars.guilds.event;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.GuildRank;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
-public class GuildPermissionChangeEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
+public class GuildPermissionChangeEvent extends GuildsEvent {
 
     private final Guild guild;
     private final GuildPermission permission;
@@ -35,14 +32,5 @@ public class GuildPermissionChangeEvent extends Event {
         this.permission = permission;
         this.oldGuildRank = oldGuildRank;
         this.newGuildRank = newGuildrank;
-    }
-
-
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

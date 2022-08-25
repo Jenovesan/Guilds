@@ -5,9 +5,7 @@ import com.guildwars.guildwars.guilds.gPlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PlayerGuildChangeEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
-
+public class PlayerGuildChangeEvent extends GuildsEvent {
     private final gPlayer player;
     private final Guild newGuild;
     private final Reason reason;
@@ -36,14 +34,5 @@ public class PlayerGuildChangeEvent extends Event {
         JOIN,
         LEAVE,
         KICKED
-    }
-
-
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

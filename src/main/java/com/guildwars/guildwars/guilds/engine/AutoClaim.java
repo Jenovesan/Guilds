@@ -7,38 +7,19 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 
-import java.util.HashSet;
+import java.util.Map;
 
-public class AutoClaim implements Listener {
-    private static HashSet<gPlayer> players = new HashSet<>();
-
-    private static HashSet<gPlayer> getPlayers() {
-        return players;
-    }
-
-    public static void addPlayer(gPlayer player) {
-        getPlayers().add(player);
-        player.sendSuccessMsg(Messages.getMsg("autoclaiming.enabled"));
-    }
-
-    public static void removePlayer(gPlayer player) {
-        if (getPlayers().contains(player)) {
-            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
-            getPlayers().remove(player);
-        }
-    }
-
-    public static boolean isPlayer(gPlayer player) {
-        return getPlayers().contains(player);
-    }
+public class AutoClaim extends Engine {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void claimOnChunkUpdate(PlayerChunkUpdateEvent event) {
         if (event.isCancelled()) return;
 
         gPlayer player = event.getPlayer();
+
+        if (!player.isAutoClaiming()) return;
+
         Chunk newChunk = event.getNewChunk();
         // Player moved into new chunk.
         // Try to claim.
@@ -54,41 +35,38 @@ public class AutoClaim implements Listener {
     public void updatePlayersOnGuildRankChange(PlayerGuildRankChangeEvent event) {
         gPlayer player = event.getPlayer();
         if (!gUtil.checkPermission(player, GuildPermission.CLAIM, false)) {
-            removePlayer(player);
+            player.setAutoClaiming(false);
+            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
         }
     }
 
     @EventHandler
     public void removePlayerOnGuildChangeEvent(PlayerGuildChangeEvent event) {
-        removePlayer(event.getPlayer());
+        gPlayer player = event.getPlayer();
+        player.setAutoClaiming(false);
+        player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
     }
 
     @EventHandler
     public void updatePlayersOnGuildPermissionChange(GuildPermissionChangeEvent event) {
-        if (event.getPermission() != GuildPermission.CLAIM) {
-            return;
-        }
+        if (event.getPermission() != GuildPermission.CLAIM) return;
 
-        // Only need to update players in GuildRank for claiming was moved higher
-        if (event.getNewGuildRank().level < event.getOldGuildRank().level) {
-            return;
-        }
+        // Only need to update players if GuildRank for claiming was moved higher
+        GuildRank newGuildRank = event.getNewGuildRank();
+        if (newGuildRank.level < event.getOldGuildRank().level) return;
 
         Guild guild = event.getGuild();
-        for (gPlayer player : getPlayers()) {
-            if (player.getGuild() != guild) {
-                continue;
+
+        for (Map.Entry<gPlayer, GuildRank> playerRank : guild.getPlayers().entrySet()) {
+            GuildRank rank = playerRank.getValue();
+
+            // Player's rank is below new guild rank
+            if (rank.level < newGuildRank.level) {
+                gPlayer player = playerRank.getKey();
+                player.setAutoClaiming(false);
+                player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
             }
-            // Player does not have permission to claim anymore
-            if (!gUtil.checkPermission(player, GuildPermission.CLAIM, false)) {
-                removePlayer(player);
-            }
+
         }
     }
-
-    @EventHandler
-    public void removePlayerOnLogout(GPlayerLeaveEvent event) {
-        removePlayer(event.getGPlayer());
-    }
-
 }

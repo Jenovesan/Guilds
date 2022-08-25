@@ -42,13 +42,15 @@ public class gAutoClaim extends gCommand{
         // Add play to autoclaim set
         // Player is already auto-claiming.
         // Remove them from autoclaiming
-        if (AutoClaim.isPlayer(player)) {
-            AutoClaim.removePlayer(player);
+        if (player.isAutoClaiming()) {
+            player.setAutoClaiming(false);
+            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
         }
         // Player is not auto-claiming.
         // Add them to autoclaiming
         else {
-            AutoClaim.addPlayer(player);
+            player.setAutoClaiming(true);
+            player.sendNotifyMsg(Messages.getMsg("autoclaiming.enabled"));
         }
         // Informing the player is handled in AutoClaim
     }

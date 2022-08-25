@@ -106,7 +106,7 @@ public class Board {
                 // Add player symbol at center of map
                 if (x == 0 && z == 0) {
                     mapMsg = mapMsg.concat(Messages.getMsg("commands.map.map construction.player symbol"));
-                    if (chunk != null && chunk.getGuild() == playerGuild) {
+                    if (chunk != null && player.isInGuild() && chunk.getGuild() == playerGuild) {
                         guildsOnMap.put(playerGuild, playerClaimPrefix); // So player's claim shows up on Guild's list
                     }
                     continue;

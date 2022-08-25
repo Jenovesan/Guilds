@@ -68,7 +68,8 @@ public class gKick extends gCommand{
         guild.sendAnnouncement(Messages.getMsg("guild announcements.player kicked", kicker, kickee));
 
         // Call event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(kickee, null, PlayerGuildChangeEvent.Reason.KICKED));
+        PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(kickee, null, PlayerGuildChangeEvent.Reason.KICKED);
+        playerGuildChangeEvent.run();
 
         // Inform kickee
         kickee.sendNotifyMsg(Messages.getMsg("commands.kick.kickee kicked msg", guild));

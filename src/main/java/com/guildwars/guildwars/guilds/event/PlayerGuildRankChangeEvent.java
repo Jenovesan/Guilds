@@ -2,11 +2,8 @@ package com.guildwars.guildwars.guilds.event;
 
 import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.gPlayer;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
-public class PlayerGuildRankChangeEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
+public class PlayerGuildRankChangeEvent extends GuildsEvent {
 
     private final gPlayer player;
     private final GuildRank newRank;
@@ -22,13 +19,5 @@ public class PlayerGuildRankChangeEvent extends Event {
     public PlayerGuildRankChangeEvent(gPlayer player, GuildRank newRank) {
         this.player = player;
         this.newRank = newRank;
-    }
-
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

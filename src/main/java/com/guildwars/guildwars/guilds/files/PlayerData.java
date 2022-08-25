@@ -49,7 +49,7 @@ public class PlayerData {
     }
 
     public static void saveAllPlayerData() {
-        for (gPlayer player : gPlayers.getgInstance().getAll()) {
+        for (gPlayer player : gPlayers.get().getAll()) {
             String uuid = String.valueOf(player.getUUID());
             get().createSection(uuid);
             ConfigurationSection playerSection = get().getConfigurationSection(uuid);

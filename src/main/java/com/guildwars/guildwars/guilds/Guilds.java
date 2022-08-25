@@ -1,16 +1,13 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Guilds extends Coll<Guild> implements Listener {
+public class Guilds extends Coll<Guild> {
 
     public static Guilds i = new Guilds();
     public static Guilds get() {
@@ -28,7 +25,7 @@ public class Guilds extends Coll<Guild> implements Listener {
             HashMap<gPlayer, GuildRank> players = new HashMap<>();
             for (Map.Entry<String, Object> entry : playersData.entrySet()) {
                 UUID memberUUID = UUID.fromString(entry.getKey());
-                for (gPlayer player : gPlayers.getgInstance().getAll()) {
+                for (gPlayer player : gPlayers.get().getAll()) {
                     if (player.getUUID() == memberUUID) {
                         players.put(player, GuildRank.valueOf((String) entry.getValue()));
                     }
@@ -51,7 +48,7 @@ public class Guilds extends Coll<Guild> implements Listener {
     @Override
     public void loadGuilds() {
         for (Guild guild : getAll()) {
-            ConfigurationSection guildData = GuildData.get().getConfigurationSection(guild.getId().toString());
+            ConfigurationSection guildData = GuildData.get().getConfigurationSection(guild.getId());
 
             // Enemies
             List<String> enemiesIds = guildData.getStringList("enemies");
@@ -79,21 +76,15 @@ public class Guilds extends Coll<Guild> implements Listener {
         guildSection.set("players", players);
         guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
         guildSection.set("enemies", guild.getEnemies().stream().map(Guild::getId).collect(Collectors.toList()));
-        guildSection.set("raidedBy", guild.getRaidedBy().getId());
+        if (guild.isGettingRaided()) {
+            guildSection.set("raidedBy", guild.getRaidedBy().getId());
+        }
         guildSection.set("raidEndTime", guild.getRaidEndTime());
         GuildData.save();
     }
 
-    public void removeGuildData(Guild guild) {
+    public void removeData(Guild guild) {
         GuildData.get().set(guild.getId(), null);
         GuildData.save();
-    }
-
-    @EventHandler
-    public void updateGuildEnemiesOnGuildDisband(GuildDisbandEvent event) {
-        Guild disbandedGuild = event.getGuild();
-        for (Guild guild : getAll()) {
-            guild.getEnemies().remove(disbandedGuild);
-        }
     }
 }

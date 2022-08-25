@@ -3,11 +3,8 @@ package com.guildwars.guildwars.guilds.event;
 import com.guildwars.guildwars.guilds.*;
 import org.bukkit.Chunk;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
-public class PlayerChunkUpdateEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public class PlayerChunkUpdateEvent extends GuildsEvent implements Cancellable {
 
     private final gPlayer player;
     private final Chunk newChunk;
@@ -29,15 +26,6 @@ public class PlayerChunkUpdateEvent extends Event implements Cancellable {
         this.player = player;
         this.newChunk = newChunk;
         this.newGuildChunk = Board.getChunk(newChunk);
-    }
-
-
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override

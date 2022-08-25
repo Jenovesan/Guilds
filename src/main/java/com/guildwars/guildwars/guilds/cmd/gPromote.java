@@ -65,7 +65,8 @@ public class gPromote extends gCommand{
         promotee.setGuildRank(newGuildRank);
 
         // Call Event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(promotee, newGuildRank));
+        PlayerGuildRankChangeEvent playerGuildRankChangeEvent = new PlayerGuildRankChangeEvent(promotee, newGuildRank);
+        playerGuildRankChangeEvent.run();
 
         // Inform promotee
         promotee.sendNotifyMsg(Messages.getMsg("commands.promote.promotee promoted msg", newGuildRank));

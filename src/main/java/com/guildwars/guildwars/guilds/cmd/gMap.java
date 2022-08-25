@@ -27,18 +27,22 @@ public class gMap extends gCommand {
             player.sendMessage(Board.getMap(player));
         } else if (args[0].equalsIgnoreCase("auto")){
             // Has gMap auto enabled, disable gMap auto
-            if (MapAuto.isPlayer(player)) {
-                MapAuto.removePlayer(player);
+            if (player.isAutoMapping()) {
+                player.setAutoMapping(false);
+                player.sendSuccessMsg(Messages.getMsg("map auto.disabled"));
             }
             // Has gMap auto disabled, enable gMap auto
             else {
-                MapAuto.addPlayer(player);
+                player.setAutoMapping(true);
+                player.sendSuccessMsg(Messages.getMsg("map auto.enabled"));
             }
 
         } else if (args[0].equalsIgnoreCase("on")) {
-            MapAuto.addPlayer(player);
+            player.setAutoMapping(true);
+            player.sendSuccessMsg(Messages.getMsg("map auto.enabled"));
         } else if (args[0].equalsIgnoreCase("off")) {
-            MapAuto.removePlayer(player);
+            player.setAutoMapping(false);
+            player.sendSuccessMsg(Messages.getMsg("map auto.disabled"));
         } else {
             player.sendFailMsg(Messages.getMsg("commands.map.invalid syntax"));
         }

@@ -16,6 +16,8 @@ public class gPlayer {
     private GuildRank guildRank;
     private String name;
     private float power = Config.get().getInt("player max power");
+    private boolean autoClaiming = false;
+    private boolean autoMapping = false;
 
     public Player getPlayer() {
         return this.player;
@@ -43,6 +45,14 @@ public class gPlayer {
 
     public float getPower() {
         return this.power;
+    }
+
+    public boolean isAutoClaiming() {
+        return this.autoClaiming;
+    }
+
+    public boolean isAutoMapping() {
+        return this.autoMapping;
     }
 
     public void setGuild(Guild guild) {
@@ -195,5 +205,13 @@ public class gPlayer {
 
     public void setGuildId(String id) {
         this.guildId = id;
+    }
+
+    public void setAutoClaiming(boolean autoClaiming) {
+        this.autoClaiming = autoClaiming;
+    }
+
+    public void setAutoMapping(boolean autoMapping) {
+        this.autoMapping = autoMapping;
     }
 }

@@ -19,4 +19,11 @@ public abstract class Index<T> {
     // -------------------------------------------- //
 
     public abstract void load();
+
+    // -------------------------------------------- //
+    // Keeping Indexes up-to-date
+    // -------------------------------------------- //
+    public abstract void add(T obj);
+
+    public abstract void updateName(T obj, String newName, String oldName);
 }

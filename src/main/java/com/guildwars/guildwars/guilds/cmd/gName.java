@@ -1,12 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.event.GuildNameChangeEvent;
+import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
-import org.bukkit.Bukkit;
 
 public class gName extends gCommand{
     @Override
@@ -47,8 +42,8 @@ public class gName extends gCommand{
         String oldGuildName = guild.getName();
         guild.setName(newGuildName);
 
-        // Call event
-        Bukkit.getServer().getPluginManager().callEvent(new GuildNameChangeEvent(guild, oldGuildName, newGuildName));
+        // Update index
+        GuildsIndex.get().updateName(guild, oldGuildName, newGuildName);
 
         // Send Guild announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.name changed", player, newGuildName));

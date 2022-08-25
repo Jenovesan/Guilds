@@ -52,9 +52,14 @@ public class gCreate extends gCommand {
         // Update gPlayer
         player.joinedNewGuild(newGuild);
 
+        // Add to index
+        GuildsIndex.get().add(newGuild);
+
         // Call Events
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, newGuild, PlayerGuildChangeEvent.Reason.CREATION));
-        Bukkit.getServer().getPluginManager().callEvent(new GuildCreationEvent(newGuild));
+        GuildCreationEvent guildCreationEvent = new GuildCreationEvent(newGuild);
+        guildCreationEvent.run();
+        PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(player, newGuild, PlayerGuildChangeEvent.Reason.CREATION);
+        playerGuildChangeEvent.run();
 
         // Inform
         player.sendSuccessMsg(Messages.getMsg("commands.create.creation", newGuild));

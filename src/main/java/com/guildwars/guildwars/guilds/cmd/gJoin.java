@@ -69,7 +69,8 @@ public class gJoin extends gCommand{
         player.joinedNewGuild(guildToJoin);
 
         // Call event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildChangeEvent(player, guildToJoin, PlayerGuildChangeEvent.Reason.JOIN));
+        PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(player, guildToJoin, PlayerGuildChangeEvent.Reason.JOIN);
+        playerGuildChangeEvent.run();
 
         // Remove invite
         guildToJoin.removeInvite(player);

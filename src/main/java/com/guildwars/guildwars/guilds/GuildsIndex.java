@@ -1,12 +1,8 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.guilds.event.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-
 import java.util.HashMap;
 
-public class GuildsIndex extends Index<Guild> implements Listener {
+public class GuildsIndex extends Index<Guild> {
 
     public static GuildsIndex i = new GuildsIndex();
     public static GuildsIndex get() {
@@ -25,23 +21,34 @@ public class GuildsIndex extends Index<Guild> implements Listener {
 
 
     // -------------------------------------------- //
+    // Update name on guild name change
+    // -------------------------------------------- //
+
+    public void updateGuildName(Guild guild, String oldName, String newName) {
+        name2Obj.remove(formatName(oldName));
+        name2Obj.put(formatName(newName), guild);
+    }
+
+
+    // -------------------------------------------- //
     // Remove Guild on Creation & Disband
     // -------------------------------------------- //
 
-    @EventHandler
-    public void onGuildCreation(GuildCreationEvent event) {
-        Guild guild = event.getGuild();
-
+    @Override
+    public void add(Guild guild) {
         id2Guild.put(guild.getId(), guild);
-        name2Obj.put(guild.getName(), guild);
+        name2Obj.put(formatName(guild.getName()), guild);
     }
 
-    @EventHandler
-    public void onGuildDisband(GuildDisbandEvent event) {
-        Guild guild = event.getGuild();
-
+    public void remove(Guild guild) {
         id2Guild.remove(guild.getId(), guild);
-        name2Obj.remove(guild.getName(), guild);
+        name2Obj.remove(formatName(guild.getName()), guild);
+    }
+
+    @Override
+    public void updateName(Guild guild, String newName, String oldName) {
+        name2Obj.remove(formatName(oldName));
+        name2Obj.put(formatName(newName), guild);
     }
 
     // -------------------------------------------- //
@@ -49,12 +56,15 @@ public class GuildsIndex extends Index<Guild> implements Listener {
     // -------------------------------------------- //
 
     public void load() {
-
         for (Guild guild : Guilds.get().getAll()) {
             // Id -> Guild
             id2Guild.put(guild.getId(), guild);
             // Name -> Guild
-            name2Obj.put(guild.getName(), guild);
+            name2Obj.put(formatName(guild.getName()), guild);
         }
+    }
+
+    private String formatName(String name) {
+        return name.toLowerCase();
     }
 }

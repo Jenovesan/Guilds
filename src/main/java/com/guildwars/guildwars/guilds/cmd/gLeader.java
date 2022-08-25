@@ -63,8 +63,11 @@ public class gLeader extends gCommand{
         oldLeader.setGuildRank(GuildRank.COLEADER);
         newLeader.setGuildRank(GuildRank.LEADER);
 
-        // Call Event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(newLeader, GuildRank.LEADER));
+        // Call Events
+        PlayerGuildRankChangeEvent newLeaderGuildRankChangeEvent = new PlayerGuildRankChangeEvent(newLeader, GuildRank.LEADER);
+        newLeaderGuildRankChangeEvent.run();
+        PlayerGuildRankChangeEvent oldLeaderGuildRankChangeEvent = new PlayerGuildRankChangeEvent(oldLeader, GuildRank.COLEADER);
+        oldLeaderGuildRankChangeEvent.run();
 
         // Inform guild
         guild.sendAnnouncement(Messages.getMsg("guild announcements.gave leadership", oldLeader, newLeader));

@@ -4,9 +4,8 @@ import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
 import com.guildwars.guildwars.guilds.engine.AutoClaim;
-import com.guildwars.guildwars.guilds.engine.PlayerChunkUpdate;
+import com.guildwars.guildwars.guilds.engine.EngineIntegration;
 import com.guildwars.guildwars.guilds.engine.Power;
-import com.guildwars.guildwars.guilds.engine.Raiding;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +21,7 @@ public final class GuildWars extends JavaPlugin {
 
         loadCore();
         loadGuilds();
+        activateEngines();
         registerListeners();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Guild Wars Successfully Enabled");
     }
@@ -31,13 +31,13 @@ public final class GuildWars extends JavaPlugin {
         com.guildwars.guildwars.guilds.files.FileManager.setupFiles();
 
         // Load gPlayers
-        gPlayers.getgInstance().load();
+        gPlayers.get().load();
 
         // Load Guilds
         Guilds.get().load();
 
         // Fill gPlayers guilds
-        gPlayers.getgInstance().loadGuilds();
+        gPlayers.get().loadGuilds();
 
         // Fill Guilds guilds
         Guilds.get().loadGuilds();
@@ -51,17 +51,8 @@ public final class GuildWars extends JavaPlugin {
         // Load Board
         Board.fillBoard();
 
-        // Load power
-        Power.load();
-        Raiding.get().load();
-
         // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
-
-        // Start Runnables
-        Power.run();
-        Raiding.run();
-        PlayerChunkUpdate.run();
     }
 
     public void unloadGuilds() {
@@ -73,17 +64,14 @@ public final class GuildWars extends JavaPlugin {
         com.guildwars.guildwars.core.files.FileManager.setupFiles();
     }
 
+    public void activateEngines() {
+        // Guilds
+        EngineIntegration.activateEngines();
+    }
+
     public void registerListeners() {
         // Core
         getServer().getPluginManager().registerEvents(new ChatChannels(), this);
-
-        // Guilds
-        getServer().getPluginManager().registerEvents(new gPlayers(), this);
-        getServer().getPluginManager().registerEvents(new Guilds(), this);
-        getServer().getPluginManager().registerEvents(new Power(), this);
-        getServer().getPluginManager().registerEvents(new AutoClaim(), this);
-        getServer().getPluginManager().registerEvents(new Raiding(), this);
-        getServer().getPluginManager().registerEvents(new GuildsIndex(), this);
     }
 
     public static GuildWars getInstance(){

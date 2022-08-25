@@ -1,10 +1,6 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.guilds.event.GPlayerLoginEvent;
-import com.guildwars.guildwars.utils.util;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -33,43 +29,36 @@ public class gPlayersIndex extends Index<gPlayer>{
 
     private HashMap<Player, gPlayer> player2gPlayer = new HashMap<>(); // Raidable, raiding
 
+    public HashMap<Player, gPlayer> getPlayer2Player() {
+        return player2gPlayer;
+    }
+
     public gPlayer getByPlayer(Player player) {
         return player2gPlayer.get(player);
     }
 
-
-    @EventHandler
-    public void updategPlayerOnLogout(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        player2gPlayer.remove(player);
-    }
-
     // -------------------------------------------- //
-    // On gPlayer Login
+    // Keeping Indexes up-to-date
     // -------------------------------------------- //
 
-    @EventHandler
-    public void updategPlayerNameOnLogin(GPlayerLoginEvent event) {
-        Player playerPlayer = event.getPlayer();
-        gPlayer player = event.getGPlayer();
-        String playerName = playerPlayer.getName().toLowerCase();
+    public void update(gPlayer player) {
+        Player playerPlayer = player.getPlayer();
 
         // Player -> gPlayer
         player2gPlayer.put(playerPlayer, player);
+    }
 
-        // New gPlayer is created
-        if (event.isNewPlayer()) {
-            id2gPlayer.put(player.getUUID(), player);
-            name2Obj.put(playerName, player);
-            return;
-        }
+    @Override
+    public void updateName(gPlayer player, String oldName, String newName) {
+        name2Obj.remove(oldName);
+        name2Obj.put(newName, player);
+    }
 
-        // If Player Name does not match the gPlayer.
-        if (name2Obj.get(playerName) != player) {
-            String oldName = (String) util.getSingleKeyByValue(name2Obj, player);
-            name2Obj.remove(oldName);
-            name2Obj.put(playerName, player);
-        }
+    @Override
+    public void add(gPlayer player) {
+        id2gPlayer.put(player.getUUID(), player);
+        name2Obj.put(player.getName(), player);
+        player2gPlayer.put(player.getPlayer(), player);
     }
 
     // -------------------------------------------- //
@@ -78,12 +67,11 @@ public class gPlayersIndex extends Index<gPlayer>{
 
     @Override
     public void load() {
-        for (gPlayer player : gPlayers.getgInstance().getAll()) {
+        for (gPlayer player : gPlayers.get().getAll()) {
             // UUID -> gPlayer
             id2gPlayer.put(player.getUUID(), player);
             // Name -> gPlayer
             name2Obj.put(player.getName().toLowerCase(), player);
         }
     }
-
 }

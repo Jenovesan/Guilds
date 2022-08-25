@@ -67,7 +67,8 @@ public class gDemote extends gCommand{
         demotee.setGuildRank(newGuildRank);
 
         // Call Event
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerGuildRankChangeEvent(demotee, newGuildRank));
+        PlayerGuildRankChangeEvent playerGuildRankChangeEvent = new PlayerGuildRankChangeEvent(demotee, newGuildRank);
+        playerGuildRankChangeEvent.run();
 
         // Inform demotee
         demotee.sendNotifyMsg(Messages.getMsg("commands.demote.demotee demoted msg", newGuildRank));
