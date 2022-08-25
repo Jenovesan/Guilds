@@ -43,8 +43,10 @@ public class AutoClaim extends Engine {
     @EventHandler
     public void removePlayerOnGuildChangeEvent(PlayerGuildChangeEvent event) {
         gPlayer player = event.getPlayer();
+        if (player.isAutoClaiming()) {
+            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
+        }
         player.setAutoClaiming(false);
-        player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
     }
 
     @EventHandler

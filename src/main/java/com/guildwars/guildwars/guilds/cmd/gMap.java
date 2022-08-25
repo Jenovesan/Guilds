@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Board;
+import com.guildwars.guildwars.guilds.BoardMap;
 import com.guildwars.guildwars.guilds.engine.MapAuto;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
@@ -24,7 +25,8 @@ public class gMap extends gCommand {
     @Override
     public void perform(gPlayer player, String[] args) {
         if (args.length == 0) {
-            player.sendMessage(Board.getMap(player));
+            BoardMap map = new BoardMap(player);
+            map.sendMap();
         } else if (args[0].equalsIgnoreCase("auto")){
             // Has gMap auto enabled, disable gMap auto
             if (player.isAutoMapping()) {

@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.engine;
 
-import com.guildwars.guildwars.guilds.Board;
+import com.guildwars.guildwars.guilds.BoardMap;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.gPlayer;
 import org.bukkit.event.EventHandler;
@@ -16,6 +16,7 @@ public class MapAuto extends Engine {
 
         if (!player.isAutoMapping()) return;
 
-        player.sendMessage(Board.getMap(player));
+        BoardMap map = new BoardMap(player);
+        map.sendMap();
     }
 }
