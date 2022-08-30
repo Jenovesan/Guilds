@@ -8,6 +8,7 @@ public class PlayerChunkUpdateEvent extends GuildsEvent implements Cancellable {
 
     private final gPlayer player;
     private final Chunk newChunk;
+    private final GuildChunk oldGuildChunk;
     private final GuildChunk newGuildChunk;
 
     public gPlayer getPlayer() {
@@ -22,10 +23,15 @@ public class PlayerChunkUpdateEvent extends GuildsEvent implements Cancellable {
         return newGuildChunk;
     }
 
-    public PlayerChunkUpdateEvent(gPlayer player, Chunk newChunk) {
+    public GuildChunk getOldGuildChunk() {
+        return oldGuildChunk;
+    }
+
+    public PlayerChunkUpdateEvent(gPlayer player, Chunk oldChunk, Chunk newChunk) {
         this.player = player;
         this.newChunk = newChunk;
         this.newGuildChunk = Board.getChunk(newChunk);
+        this.oldGuildChunk = Board.getChunk(oldChunk);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.GuildChunk;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
@@ -72,8 +73,13 @@ public class Raiding extends Engine {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void cancelPlayerChunkUpdateIfRaidInterfering(PlayerChunkUpdateEvent event) {
+
+        GuildChunk chunk = event.getNewGuildChunk();
+
+        if (chunk == null) return;
+
         gPlayer player = event.getPlayer();
-        Guild chunkHost = event.getNewGuildChunk().getGuild();
+        Guild chunkHost = chunk.getGuild();
 
         if (chunkHost == null) return;
 

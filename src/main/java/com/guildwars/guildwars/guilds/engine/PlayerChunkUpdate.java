@@ -37,7 +37,7 @@ public class PlayerChunkUpdate extends Engine {
             // Player moved into new chunk
 
             // Call event
-            PlayerChunkUpdateEvent playerChunkUpdateEvent = new PlayerChunkUpdateEvent(player, newChunk);
+            PlayerChunkUpdateEvent playerChunkUpdateEvent = new PlayerChunkUpdateEvent(player, lastChunk, newChunk);
             playerChunkUpdateEvent.run();
 
             if (playerChunkUpdateEvent.isCancelled()) {

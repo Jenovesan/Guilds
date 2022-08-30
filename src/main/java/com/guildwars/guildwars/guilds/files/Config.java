@@ -54,6 +54,12 @@ public class Config {
         configFile.addDefault("offline player power regen per min", 0.0055);
         configFile.addDefault("raiding kick non-raiders update (tick)", 20);
         configFile.addDefault("player chunk update (ticks)", 20);
+        configFile.addDefault("own guild name prefix", "&2");
+        configFile.addDefault("enemy guild name prefix", "&4");
+        configFile.addDefault("other guild name prefix", "&7");
+        configFile.addDefault("own guild desc prefix", "&a");
+        configFile.addDefault("enemy guild desc prefix", "&c");
+        configFile.addDefault("other guild desc prefix", "&f");
 
         //default permissions
         configFile.createSection("default permissions");
@@ -72,9 +78,12 @@ public class Config {
         configFile.createSection("broadcasts");
         ConfigurationSection broadcastTimings = configFile.getConfigurationSection("broadcasts");
         assert broadcastTimings != null;
-        broadcastTimings.addDefault("fadeIn", 20);
-        broadcastTimings.addDefault("stay", 100);
-        broadcastTimings.addDefault("fadeOut", 40);
+        broadcastTimings.addDefault("guilds.fadeIn", 20);
+        broadcastTimings.addDefault("guilds.stay", 100);
+        broadcastTimings.addDefault("guilds.fadeOut", 40);
+        broadcastTimings.addDefault("new territory.fadeIn", 10);
+        broadcastTimings.addDefault("new territory.stay", 20);
+        broadcastTimings.addDefault("new territory.fadeOut", 10);
     }
 
     public static FileConfiguration get() {

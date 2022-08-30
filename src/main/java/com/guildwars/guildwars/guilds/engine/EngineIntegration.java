@@ -9,5 +9,6 @@ public class EngineIntegration {
         new Power();
         new Raiding();
         new RegisterGPlayer();
+        new NewTerritoryInform();
     }
 }

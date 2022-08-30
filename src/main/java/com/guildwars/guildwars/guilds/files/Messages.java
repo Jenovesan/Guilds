@@ -41,14 +41,13 @@ public class Messages {
         // Commands
         messagesFile.createSection("commands");
             ConfigurationSection commandsSection = messagesFile.getConfigurationSection("commands");
-            assert commandsSection != null;
             commandsSection.addDefault("command does not exist", "&cCommand does not exist. Try /g help for a list of guild commands");
             commandsSection.addDefault("too few arguments given", "&cToo few arguments were given. Try /g help for command usage");
             commandsSection.addDefault("guild rank too low", "&cYou must be at least &4%RANK% &cto perform this command");
             commandsSection.addDefault("not in guild", "&cYou must be in a guild to perform this command");
-            commandsSection.addDefault("player not found", "&cNo player &4%INPUT% &ccould be found");
+            commandsSection.addDefault("player not found", "&cNo player &4%I% &ccould be found");
             commandsSection.addDefault("player not in your guild", "&4%PLAYER% &cis not in your guild");
-            commandsSection.addDefault("not a guild or player", "&4%INPUT% &cis not a guild or player");
+            commandsSection.addDefault("not a guild or player", "&4%I% &cis not a guild or player");
             commandsSection.addDefault("raid interfering", "&4%GUILD% &cis being raided. You cannot interfere");
             //create
             commandsSection.addDefault("create.description", "&2Creates your own guild");
@@ -117,11 +116,11 @@ public class Messages {
             // desc
             commandsSection.addDefault("desc.description", "&2Sets your guild's description");
             commandsSection.addDefault("desc.usage", "&2/g desc <description>");
-            commandsSection.addDefault("desc.successfully set desc", "&aYou set your guild's description to: &2%INPUT%");
+            commandsSection.addDefault("desc.successfully set desc", "&aYou set your guild's description to: &2%I%");
             // name
             commandsSection.addDefault("name.description", "&2Sets your guild's name");
             commandsSection.addDefault("name.usage", "&2/g name <name>");
-            commandsSection.addDefault("name.successfully set name", "&aYou set your guild's name to &2%INPUT%");
+            commandsSection.addDefault("name.successfully set name", "&aYou set your guild's name to &2%I%");
             // chat
             commandsSection.addDefault("chat.description", "&2Joins or leaves your guild's chat channel");
             commandsSection.addDefault("chat.usage", "&2/g chat <?g|p|on|off|message?>");
@@ -161,21 +160,21 @@ public class Messages {
             commandsSection.addDefault("map.map construction.player guild claim prefix", "&a");
             commandsSection.addDefault("map.map construction.outlands prefix", "&0");
             commandsSection.addDefault("map.map construction.guild colors", List.of("&9", "&c", "&d", "&e", "&b", "&6", "&f", "&2", "&3", "&5", "&1", "&8"));
-            commandsSection.addDefault("map.map construction.footer with guilds", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|\n&7Guilds: %INPUT%");
+            commandsSection.addDefault("map.map construction.footer with guilds", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|\n&7Guilds: %I%");
             commandsSection.addDefault("map.map construction.footer without guilds", "&7&l |-=-=-=-=- &6&lS &7&l-=-=-=-=-|");
             commandsSection.addDefault("map.map construction.guilds list delimiter", "&7, ");
             // power
             commandsSection.addDefault("power.description", "&2Returns your guild's power and max power");
             commandsSection.addDefault("power.usage", "&2/g power");
-            commandsSection.addDefault("power.power msg", "&2Guild Power: &a%INPUT%");
+            commandsSection.addDefault("power.power msg", "&2Guild Power: &a%I%");
             // claim
             commandsSection.addDefault("claim.description", "&2Claim a chunk for your guild");
             commandsSection.addDefault("claim.usage", "&2/g claim <?radius?>");
             commandsSection.addDefault("claim.cannot claim in world", "&cYou cannot claim land in this world");
             commandsSection.addDefault("claim.successfully claimed single chunk", "&aYou claimed land for your guild");
-            commandsSection.addDefault("claim.invalid radius", "&4%INPUT% &cis not a valid radius");
+            commandsSection.addDefault("claim.invalid radius", "&4%I% &cis not a valid radius");
             commandsSection.addDefault("claim.successfully claimed multiple chunks", "&aYou claimed &2%AMOUNT% &achunks for your guild");
-            commandsSection.addDefault("claim.radius too big", "&4%INPUT% &cis too big of a claim radius");
+            commandsSection.addDefault("claim.radius too big", "&4%I% &cis too big of a claim radius");
             // unclaim
             commandsSection.addDefault("unclaim.description", "&2Unclaim a chunk from your guild");
             commandsSection.addDefault("unclaim.usage", "&2/g unclaim <?radius?>");
@@ -183,7 +182,7 @@ public class Messages {
             commandsSection.addDefault("unclaim.chunk not owned by guild", "&cYour guild does not own this chunk");
             commandsSection.addDefault("unclaim.successfully unclaimed single chunk", "&aYou unclaimed land from your guild");
             commandsSection.addDefault("unclaim.successfully unclaimed multiple chunks", "&aYou unclaimed &2%AMOUNT% &achunks for your guild");
-            commandsSection.addDefault("unclaim.invalid radius", "&4%INPUT% &cis not a valid radius");
+            commandsSection.addDefault("unclaim.invalid radius", "&4%I% &cis not a valid radius");
             commandsSection.addDefault("unclaim.radius too big", "&4%AMOUNT% &cis too big of an unclaim radius");
             // unclaimall
             commandsSection.addDefault("unclaimall.description", "&2Unclaim all of your guild's land");
@@ -197,15 +196,14 @@ public class Messages {
         // Guild announcements
         messagesFile.createSection("guild announcements");
             ConfigurationSection guildAnnouncementsSection = messagesFile.getConfigurationSection("guild announcements");
-            assert guildAnnouncementsSection != null;
             // announcements
             guildAnnouncementsSection.addDefault("disband", "&c&lYour Guild has been &4&ldisbanded!");
             guildAnnouncementsSection.addDefault("player join", "&2&l%PLAYER% &a&lhas joined your guild!");
             guildAnnouncementsSection.addDefault("guild was full", "&4&l%PLAYER% &c&ltried to join your guild, but your guild was full!");
             guildAnnouncementsSection.addDefault("player leave", "&4&l%PLAYER% &c&lleft your guild!");
             guildAnnouncementsSection.addDefault("player kicked", "&4&l%PLAYER1% &c&lhas kicked &4&l%PLAYER2% &c&lfrom your guild!");
-            guildAnnouncementsSection.addDefault("description changed", "&2&l%PLAYER% &a&lset your guild's description to &2&l%INPUT%!");
-            guildAnnouncementsSection.addDefault("name changed", "&2&l%PLAYER% &a&lset your guild's name to: &2&l%INPUT%!");
+            guildAnnouncementsSection.addDefault("description changed", "&2&l%PLAYER% &a&lset your guild's description to &2&l%I%!");
+            guildAnnouncementsSection.addDefault("name changed", "&2&l%PLAYER% &a&lset your guild's name to: &2&l%I%!");
             guildAnnouncementsSection.addDefault("enemied guild", "&c&lYour guild is now enemied with &4&l%GUILD%!");
             guildAnnouncementsSection.addDefault("guild has enemied your guild", "&4&l%GUILD% &c&lhas enemied your guild!");
             guildAnnouncementsSection.addDefault("truced guild", "&a&lYour guild is now truced with &2&l%GUILD%!");
@@ -217,58 +215,54 @@ public class Messages {
             guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER% &c&lhas unclaimed all your guild's land!");
             guildAnnouncementsSection.addDefault("overclaimed", "&4&l%GUILD% &c&lhas overclaimed some of your land!");
 
-    // Guild broadcasts
-    messagesFile.createSection("broadcasts");
-        ConfigurationSection broadcastsSection = messagesFile.getConfigurationSection("broadcasts");
-        assert broadcastsSection != null;
-        // broadcasts
-        broadcastsSection.addDefault("raidable title", "&4Now Raidable!");
-        broadcastsSection.addDefault("raidable subtitle", "&cYou must defend for %AMOUNT% minutes");
-        broadcastsSection.addDefault("raiding title", "&4Raiding: %GUILD%!");
-        broadcastsSection.addDefault("raiding subtitle", "&cYou have %AMOUNT% minutes to raid");
-        broadcastsSection.addDefault("no longer raidable title", "&4No Longer Raidable!");
-        broadcastsSection.addDefault("no longer raiding title", "&4Raid On %GUILD% Ended!");
-
-    // Guild broadcasts
-        messagesFile.createSection("server announcements");
-        ConfigurationSection serverAnnouncementsSection = messagesFile.getConfigurationSection("server announcements");
-        assert serverAnnouncementsSection != null;
-        // announcements
-        serverAnnouncementsSection.addDefault("guild raidable", "%GUILD% is now raidable!");
-
+        // Guild broadcasts
+        messagesFile.createSection("broadcasts");
+            ConfigurationSection broadcastsSection = messagesFile.getConfigurationSection("broadcasts");
+            broadcastsSection.addDefault("raidable title", "&4Now Raidable!");
+            broadcastsSection.addDefault("raidable subtitle", "&cYou must defend for %AMOUNT% minutes");
+            broadcastsSection.addDefault("raiding title", "&4Raiding: %GUILD%!");
+            broadcastsSection.addDefault("raiding subtitle", "&cYou have %AMOUNT% minutes to raid");
+            broadcastsSection.addDefault("no longer raidable title", "&4No Longer Raidable!");
+            broadcastsSection.addDefault("no longer raiding title", "&4Raid On %GUILD% Ended!");
 
         // Guild Naming
         messagesFile.createSection("guild naming");
             ConfigurationSection guildNamingSection = messagesFile.getConfigurationSection("guild naming");
-            assert guildNamingSection != null;
             // naming
-            guildNamingSection.addDefault("name too long", "&4%INPUT% &is too long of a name");
-            guildNamingSection.addDefault("name exists", "&4%INPUT% &cis already being used");
+            guildNamingSection.addDefault("name too long", "&4%I% &is too long of a name");
+            guildNamingSection.addDefault("name exists", "&4%I% &cis already being used");
             guildNamingSection.addDefault("name contains not legal character", "&cThat guild name cannot contain the character &4%CHAR%");
             guildNamingSection.addDefault("name blacklisted", "&cThat guild name is not allowed");
 
         // Autoclaiming
         messagesFile.createSection("autoclaiming");
-        ConfigurationSection autoclaimingSection = messagesFile.getConfigurationSection("autoclaiming");
-        assert autoclaimingSection != null;
-        autoclaimingSection.addDefault("enabled", "&aYou have &2enabled &aautoclaiming");
-        autoclaimingSection.addDefault("disabled", "&cYou have &4disabled &cautoclaiming");
+            ConfigurationSection autoclaimingSection = messagesFile.getConfigurationSection("autoclaiming");
+            autoclaimingSection.addDefault("enabled", "&aYou have &2enabled &aautoclaiming");
+            autoclaimingSection.addDefault("disabled", "&cYou have &4disabled &cautoclaiming");
 
         // Map auto
         messagesFile.createSection("map auto");
-        ConfigurationSection mapAutoSection = messagesFile.getConfigurationSection("map auto");
-        assert mapAutoSection != null;
-        mapAutoSection.addDefault("enabled", "&aYou have &2enabled &amap auto updating");
-        mapAutoSection.addDefault("disabled", "&cYou have &4disabled &cmap auto updating");
+            ConfigurationSection mapAutoSection = messagesFile.getConfigurationSection("map auto");
+            mapAutoSection.addDefault("enabled", "&aYou have &2enabled &amap auto updating");
+            mapAutoSection.addDefault("disabled", "&cYou have &4disabled &cmap auto updating");
 
         // Claiming
         messagesFile.createSection("claiming");
-        ConfigurationSection claimingSection = messagesFile.getConfigurationSection("claiming");
-        assert claimingSection != null;
-        claimingSection.addDefault("not enough power", "&cYour guild does not have enough power to claim more land");
-        claimingSection.addDefault("claiming own land", "&cYour guild already owns this land");
-        claimingSection.addDefault("no connecting claim", "&cYou can only claim land that is connected to your land");
-        claimingSection.addDefault("claiming in outlands", "&cYou cannot claim in the outlands");
+            ConfigurationSection claimingSection = messagesFile.getConfigurationSection("claiming");
+            claimingSection.addDefault("not enough power", "&cYour guild does not have enough power to claim more land");
+            claimingSection.addDefault("claiming own land", "&cYour guild already owns this land");
+            claimingSection.addDefault("no connecting claim", "&cYou can only claim land that is connected to your land");
+            claimingSection.addDefault("claiming in outlands", "&cYou cannot claim in the outlands");
+
+        // New territory titles
+        messagesFile.createSection("new territory titles");
+        ConfigurationSection newTerritoryTitlesSection = messagesFile.getConfigurationSection("new territory titles");
+        newTerritoryTitlesSection.addDefault("outlands.title", "&8Outlands");
+        newTerritoryTitlesSection.addDefault("outlands.subtitle", "&7You cannot claim or store items here");
+        newTerritoryTitlesSection.addDefault("wilderness.title", "&fWilderness");
+        newTerritoryTitlesSection.addDefault("wilderness.subtitle", "");
+        newTerritoryTitlesSection.addDefault("guild.title", "%I%");
+        newTerritoryTitlesSection.addDefault("guild.subtitle", "%I%");
     }
 
     public static FileConfiguration get() {
@@ -292,7 +286,7 @@ public class Messages {
     }
 
     public static String getMsg(String path, String input) {
-        return getMsg(path).replace("%INPUT%", input);
+        return getMsg(path).replace("%I%", input);
     }
 
     public static String getMsg(String path, gPlayer player) {
@@ -312,7 +306,7 @@ public class Messages {
     }
 
     public static String getMsg(String path, gPlayer player, String input) {
-        return getMsg(path).replace("%PLAYER%", player.getName()).replace("%INPUT%", input);
+        return getMsg(path).replace("%PLAYER%", player.getName()).replace("%I%", input);
     }
 
     public static String getMsg(String path, gPlayer player1, gPlayer player2) {

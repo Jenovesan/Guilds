@@ -2,7 +2,7 @@ package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.utils.util;
+import org.bukkit.ChatColor;
 
 import java.util.List;
 import java.util.UUID;
@@ -65,5 +65,31 @@ public class gUtil {
 
     public static String getNewUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    public static String getGuildToName(gPlayer player, Guild guild) {
+        Guild playerGuild = player.getGuild();
+        if (playerGuild == guild) {
+            return ChatColor.translateAlternateColorCodes('&', Config.get().getString("own guild name prefix")) + guild.getName();
+        }
+        else if (playerGuild.isEnemied(guild)) {
+            return ChatColor.translateAlternateColorCodes('&', Config.get().getString("enemy guild name prefix")) + guild.getName();
+        }
+        else {
+            return ChatColor.translateAlternateColorCodes('&', Config.get().getString("other guild name prefix")) + guild.getName();
+        }
+    }
+
+    public static String getGuildToDesc(gPlayer player, Guild guild) {
+        Guild playerGuild = player.getGuild();
+        if (playerGuild == guild) {
+            return ChatColor.translateAlternateColorCodes('&', Config.get().getString("own guild desc prefix")) + guild.getName();
+        }
+        else if (playerGuild.isEnemied(guild)) {
+            return ChatColor.translateAlternateColorCodes('&', Config.get().getString("enemy guild desc prefix")) + guild.getName();
+        }
+        else {
+            return ChatColor.translateAlternateColorCodes('&', Config.get().getString("other guild desc prefix")) + guild.getName();
+        }
     }
 }

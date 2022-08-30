@@ -287,7 +287,7 @@ public class Guild {
 
     public void sendBroadcast(String title, String subtitle) {
         for (gPlayer player : this.getOnlinePlayers()) {
-            player.getPlayer().sendTitle(title, Objects.requireNonNullElse(subtitle, ""), Config.get().getInt("broadcasts.fadeIn"), Config.get().getInt("broadcasts.stay"), Config.get().getInt("broadcasts.fadeOut"));
+            player.getPlayer().sendTitle(title, Objects.requireNonNullElse(subtitle, ""), Config.get().getInt("broadcasts.guilds.fadeIn"), Config.get().getInt("broadcasts.guilds.stay"), Config.get().getInt("broadcasts.guilds.fadeOut"));
         }
     }
 }

@@ -42,7 +42,7 @@ public class Board {
     }
 
     public static GuildChunk getChunk(Chunk chunk) {
-        return getBoard()[getChunkCord(chunk.getX())][getChunkCord(chunk.getZ())];
+        return getGuildChunkAt(chunk.getX(), chunk.getZ());
     }
 
     public static GuildChunk getGuildChunkAt(Location location) {
