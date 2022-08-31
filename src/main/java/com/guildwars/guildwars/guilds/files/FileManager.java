@@ -5,6 +5,5 @@ public class FileManager {
         Messages.setup();
         Config.setup();
         GuildData.setup();
-        PlayerData.setup();
     }
 }

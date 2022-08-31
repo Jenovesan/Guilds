@@ -5,12 +5,10 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-
 public class gPlayer {
 
     private Player player = null;
-    private final UUID uuid;
+    private final String uuid;
     private Guild guild;
     private String guildId;
     private GuildRank guildRank;
@@ -23,7 +21,7 @@ public class gPlayer {
         return this.player;
     }
 
-    public UUID getUUID() {
+    public String getUUID() {
         return this.uuid;
     }
 
@@ -83,7 +81,7 @@ public class gPlayer {
     }
 
     // For loading gPlayer from data
-    public gPlayer(UUID uuid, String name, float power) {
+    public gPlayer(String uuid, String name, float power) {
         this.uuid = uuid;
         this.name = name;
         this.power = power;
@@ -92,7 +90,7 @@ public class gPlayer {
     // For creating a gPlayer for the first time
     public gPlayer (Player player) {
         this.player = player;
-        this.uuid = player.getUniqueId();
+        this.uuid = String.valueOf(player.getUniqueId());
         this.name = player.getName();
     }
 

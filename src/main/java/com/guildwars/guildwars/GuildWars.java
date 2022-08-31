@@ -3,10 +3,7 @@ package com.guildwars.guildwars;
 import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
-import com.guildwars.guildwars.guilds.engine.AutoClaim;
 import com.guildwars.guildwars.guilds.engine.EngineIntegration;
-import com.guildwars.guildwars.guilds.engine.Power;
-import com.guildwars.guildwars.guilds.files.PlayerData;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,10 +28,10 @@ public final class GuildWars extends JavaPlugin {
         com.guildwars.guildwars.guilds.files.FileManager.setupFiles();
 
         // Load gPlayers
-        gPlayers.get().load();
+        gPlayers.get().loadAll();
 
         // Load Guilds
-        Guilds.get().load();
+        Guilds.get().loadAll();
 
         // Fill gPlayers guilds
         gPlayers.get().loadGuilds();
@@ -53,11 +50,6 @@ public final class GuildWars extends JavaPlugin {
 
         // Load Guilds commands
         getCommand("guild").setExecutor(new GuildsCommandManager());
-    }
-
-    public void unloadGuilds() {
-        // Save player data
-        PlayerData.saveAllPlayerData();
     }
 
     public void loadCore() {
@@ -81,6 +73,5 @@ public final class GuildWars extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        unloadGuilds();
     }
 }

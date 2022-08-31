@@ -15,7 +15,7 @@ public class Guilds extends Coll<Guild> {
     }
 
     @Override
-    public void load() {
+    public void loadAll() {
         for (String guildId : GuildData.get().getKeys(false)) {
             ConfigurationSection guildData = GuildData.get().getConfigurationSection(guildId);
             String name = guildData.getString("name");
@@ -24,9 +24,9 @@ public class Guilds extends Coll<Guild> {
             Map<String, Object> playersData = guildData.getConfigurationSection("players").getValues(false);
             HashMap<gPlayer, GuildRank> players = new HashMap<>();
             for (Map.Entry<String, Object> entry : playersData.entrySet()) {
-                UUID memberUUID = UUID.fromString(entry.getKey());
+                String memberUUID = entry.getKey();
                 for (gPlayer player : gPlayers.get().getAll()) {
-                    if (player.getUUID() == memberUUID) {
+                    if (player.getUUID().equals(memberUUID)) {
                         players.put(player, GuildRank.valueOf((String) entry.getValue()));
                     }
                 }

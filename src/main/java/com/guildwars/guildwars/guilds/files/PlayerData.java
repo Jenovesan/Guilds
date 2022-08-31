@@ -1,66 +1,29 @@
 package com.guildwars.guildwars.guilds.files;
 
+import com.guildwars.guildwars.guilds.ObjectDataManager;
 import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 
-public class PlayerData {
-    private static File file;
-    private static FileConfiguration dataFile;
+public class PlayerData extends ObjectDataManager<gPlayer> {
 
-    public static void setup() {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/guilds", "player_data.yml");
-
-        if (file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Error when creating guilds/player_data.yml file");
-            }
-        }
-        dataFile = YamlConfiguration.loadConfiguration(file);
-        loadDefaults();
-        dataFile.options().copyDefaults(true);
-        save();
+    public static PlayerData instance = new PlayerData();
+    public static PlayerData get() {
+        return instance;
     }
 
-    public static void loadDefaults() {}
-
-    public static FileConfiguration get() {
-        return dataFile;
+    public PlayerData() {
+        super("playerdata");
     }
 
-    public static void save() {
-        try {
-            dataFile.save(file);
-        } catch (IOException e) {
-            System.out.println("Error when saving guilds/player_data.yml file");
-        }
-    }
+    @Override
+    public void save(gPlayer player) {
+        HashMap<String, Object> playerData = new HashMap<>();
 
-    public static void reload() {
-        dataFile = YamlConfiguration.loadConfiguration(file);
-    }
+        playerData.put("uuid", String.valueOf(player.getUUID()));
+        playerData.put("name", player.getName());
+        playerData.put("power", player.getPower());
 
-    public static void saveAllPlayerData() {
-        for (gPlayer player : gPlayers.get().getAll()) {
-            String uuid = String.valueOf(player.getUUID());
-            get().createSection(uuid);
-            ConfigurationSection playerSection = get().getConfigurationSection(uuid);
-            assert playerSection != null;
-            playerSection.set("guildId", player.getGuildId());
-            if (player.getGuildRank() != null) {
-                playerSection.set("guildRank", player.getGuildRank().name());
-            }
-            playerSection.set("name", player.getName());
-            playerSection.set("power", player.getPower());
-        }
-        save();
+        saveRaw(player.getUUID(), playerData);
     }
 }
