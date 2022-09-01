@@ -18,21 +18,22 @@ public class gPlayers extends Coll<gPlayer> {
         for (FileConfiguration dataFile : playerData) {
 
             String uuid = dataFile.getString("uuid");
+            GuildRank guildRank = GuildRank.valueOf(dataFile.getString("guildRank"));
             String name = dataFile.getString("name");
             float power = (float) dataFile.getDouble("power");
 
-            getAll().add(new gPlayer(uuid, name, power));
+            gPlayer newPlayer = new gPlayer(uuid, guildRank, name, power);
+
+            getAll().add(newPlayer);
         }
     }
 
     @Override
     public void loadGuilds() {
         for (Guild guild : Guilds.get().getAll()) {
-            Set<gPlayer> players = guild.getPlayers().keySet();
+            HashSet<gPlayer> players = guild.getPlayers();
             for (gPlayer player : players) {
                 player.setGuild(guild);
-                player.setGuildId(guild.getId());
-                player.setGuildRank(guild.getGuildRank(player));
             }
         }
     }

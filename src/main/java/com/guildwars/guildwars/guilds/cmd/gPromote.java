@@ -47,7 +47,7 @@ public class gPromote extends gCommand{
         }
 
         GuildRank promoterGuildRank = promoter.getGuildRank();
-        GuildRank promoteeGuildRank = guild.getGuildRank(promotee);
+        GuildRank promoteeGuildRank = promotee.getGuildRank();
         if (GuildRank.higherByAmount(promoterGuildRank, promoteeGuildRank) < 2) {
             if (promoterGuildRank != GuildRank.LEADER) {
                 promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough", promotee));
@@ -59,7 +59,6 @@ public class gPromote extends gCommand{
 
         // Promote promotee
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(promoteeGuildRank.level + 1);
-        guild.changeGuildRank(promotee, newGuildRank);
 
         // Update gPlayer
         promotee.setGuildRank(newGuildRank);

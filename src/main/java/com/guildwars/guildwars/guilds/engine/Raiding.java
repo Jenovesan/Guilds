@@ -60,7 +60,7 @@ public class Raiding extends Engine {
 
                 // Reset power
                 int playerMaxPower = Config.get().getInt("player max power");
-                for (gPlayer player : guild.getPlayers().keySet()) {
+                for (gPlayer player : guild.getPlayers()) {
                     player.setPower(playerMaxPower);
                 }
 

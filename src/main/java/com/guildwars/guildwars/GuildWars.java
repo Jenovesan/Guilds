@@ -30,6 +30,9 @@ public final class GuildWars extends JavaPlugin {
         // Load gPlayers
         gPlayers.get().loadAll();
 
+        // Load gPlayers Index
+        gPlayersIndex.get().load();
+
         // Load Guilds
         Guilds.get().loadAll();
 
@@ -41,9 +44,6 @@ public final class GuildWars extends JavaPlugin {
 
         // Load Guilds Index
         GuildsIndex.get().load();
-
-        // Load gPlayers Index
-        gPlayersIndex.get().load();
 
         // Load Board
         Board.fillBoard();

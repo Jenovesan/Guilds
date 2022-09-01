@@ -56,8 +56,9 @@ public class gLeader extends gCommand{
             return;
         }
 
-        // Set newLeader to leader
-        guild.setLeader(oldLeader, newLeader);
+        // Change GuildRanks
+        newLeader.setGuildRank(GuildRank.LEADER);
+        oldLeader.setGuildRank(GuildRank.COLEADER);
 
         // Update gPlayers
         oldLeader.setGuildRank(GuildRank.COLEADER);

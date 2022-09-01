@@ -4,7 +4,6 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GuildCreationEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
-import org.bukkit.Bukkit;
 
 public class gCreate extends gCommand {
 
@@ -45,9 +44,6 @@ public class gCreate extends gCommand {
 
         // Add guild to guilds
         Guilds.get().add(newGuild);
-
-        // Save guild
-        Guilds.get().save(newGuild);
 
         // Update gPlayer
         player.joinedNewGuild(newGuild);

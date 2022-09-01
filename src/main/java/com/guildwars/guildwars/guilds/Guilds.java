@@ -21,16 +21,9 @@ public class Guilds extends Coll<Guild> {
             String name = guildData.getString("name");
             String description = guildData.getString("description");
 
-            Map<String, Object> playersData = guildData.getConfigurationSection("players").getValues(false);
-            HashMap<gPlayer, GuildRank> players = new HashMap<>();
-            for (Map.Entry<String, Object> entry : playersData.entrySet()) {
-                String memberUUID = entry.getKey();
-                for (gPlayer player : gPlayers.get().getAll()) {
-                    if (player.getUUID().equals(memberUUID)) {
-                        players.put(player, GuildRank.valueOf((String) entry.getValue()));
-                    }
-                }
-            }
+            List<String> playersData = guildData.getStringList("players");
+            HashSet<gPlayer> players = new HashSet<>();
+            playersData.forEach(uuid ->  players.add(gPlayersIndex.get().getByUUID(UUID.fromString(uuid))));
 
             Map<String, Object> permissionsData = guildData.getConfigurationSection("permissions").getValues(false);
             HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
@@ -62,26 +55,26 @@ public class Guilds extends Coll<Guild> {
         }
     }
 
-    @Override
-    public void save(Guild guild) {
-        GuildData.get().createSection(String.valueOf(guild.getId()));
-        ConfigurationSection guildSection = GuildData.get().getConfigurationSection(String.valueOf(guild.getId()));
-        assert guildSection != null;
-        guildSection.set("name", guild.getName());
-        guildSection.set("description", guild.getDescription());
-        HashMap<String, String> players = new HashMap<>();
-        for (Map.Entry<gPlayer, GuildRank> entry : guild.getPlayers().entrySet()) {
-            players.put(String.valueOf(entry.getKey().getUUID()), entry.getValue().name());
-        }
-        guildSection.set("players", players);
-        guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
-        guildSection.set("enemies", guild.getEnemies().stream().map(Guild::getId).collect(Collectors.toList()));
-        if (guild.isGettingRaided()) {
-            guildSection.set("raidedBy", guild.getRaidedBy().getId());
-        }
-        guildSection.set("raidEndTime", guild.getRaidEndTime());
-        GuildData.save();
-    }
+//    @Override
+//    public void save(Guild guild) {
+//        GuildData.get().createSection(String.valueOf(guild.getId()));
+//        ConfigurationSection guildSection = GuildData.get().getConfigurationSection(String.valueOf(guild.getId()));
+//        assert guildSection != null;
+//        guildSection.set("name", guild.getName());
+//        guildSection.set("description", guild.getDescription());
+//        HashMap<String, String> players = new HashMap<>();
+//        for (Map.Entry<gPlayer, GuildRank> entry : guild.getPlayers().entrySet()) {
+//            players.put(String.valueOf(entry.getKey().getUUID()), entry.getValue().name());
+//        }
+//        guildSection.set("players", players);
+//        guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
+//        guildSection.set("enemies", guild.getEnemies().stream().map(Guild::getId).collect(Collectors.toList()));
+//        if (guild.isGettingRaided()) {
+//            guildSection.set("raidedBy", guild.getRaidedBy().getId());
+//        }
+//        guildSection.set("raidEndTime", guild.getRaidEndTime());
+//        GuildData.save();
+//    }
 
     public void removeData(Guild guild) {
         GuildData.get().set(guild.getId(), null);

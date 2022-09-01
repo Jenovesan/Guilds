@@ -9,20 +9,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class ObjectDataManager<T> {
 
     String folderName;
-    File dataFolder = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/" + folderName);
+    File dataFolder;
     String dataFolderPath;
 
     public ObjectDataManager(String folderName) {
 
         this.folderName = folderName;
+        this.dataFolder = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/" + this.folderName);
         this.dataFolderPath = dataFolder.getAbsolutePath();
 
         if (!dataFolder.exists()) {
-            System.err.println("Unable to create " + folderName + " folder");
+            try {
+                dataFolder.mkdir();
+            } catch (Exception e) {
+                System.err.println("Unable to create " + folderName + " folder");
+            }
         }
     }
 
@@ -41,7 +47,9 @@ public abstract class ObjectDataManager<T> {
         // Apply data
         FileConfiguration file = YamlConfiguration.loadConfiguration(rawFile);
 
-        file.set("", data);
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            file.set(entry.getKey(), entry.getValue());
+        }
 
         // Save data
         try {

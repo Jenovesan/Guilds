@@ -10,7 +10,7 @@ public class Guild {
     private final String id;
     private String name;
     private String description;
-    private HashMap<gPlayer, GuildRank> players = new HashMap<>();
+    private HashSet<gPlayer> players = new HashSet<>();
     private HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
     private HashSet<gPlayer> invites = new HashSet<>();
     private HashSet<Guild> enemies = new HashSet<>();
@@ -31,7 +31,7 @@ public class Guild {
         return description;
     }
 
-    public HashMap<gPlayer, GuildRank> getPlayers() {
+    public HashSet<gPlayer> getPlayers() {
         return players;
     }
 
@@ -69,7 +69,7 @@ public class Guild {
         this.name = name;
         this.description = description;
         if (creator != null) {
-            this.getPlayers().put(creator, GuildRank.LEADER);
+            this.getPlayers().add(creator);
         }
         loadDefaults();
     }
@@ -78,7 +78,7 @@ public class Guild {
     public Guild(String id,
                  String name,
                  String description,
-                 HashMap<gPlayer, GuildRank> players,
+                 HashSet<gPlayer> players,
                  HashMap<GuildPermission, GuildRank> permissions,
                  long raidEndTime) {
         this.id = id;
@@ -109,14 +109,6 @@ public class Guild {
         this.description = desc;
     }
 
-    public void setLeader(gPlayer oldLeader, gPlayer newLeader) {
-        // Set the new leader to leader
-        this.getPlayers().replace(newLeader, GuildRank.LEADER);
-
-        // Set the old leader to coleader
-        this.getPlayers().replace(oldLeader, GuildRank.COLEADER);
-    }
-
     public void invite(gPlayer invitee) {
         getInvites().add(invitee);
     }
@@ -126,8 +118,7 @@ public class Guild {
     }
 
     public void addPlayer(gPlayer newPlayer) {
-        GuildRank playerNewGuidRank = GuildRank.valueOf(Config.get().getString("join guild at rank"));
-        this.getPlayers().put(newPlayer, playerNewGuidRank);
+        this.getPlayers().add(newPlayer);
     }
 
     public void removePlayer(gPlayer player) {
@@ -138,13 +129,9 @@ public class Guild {
         this.getPlayers().remove(kickee);
     }
 
-    public GuildRank getRank(gPlayer player) {
-        return this.getPlayers().get(player);
-    }
-
     public HashSet<gPlayer> getOnlinePlayers() {
         HashSet<gPlayer> onlinePlayers = new HashSet<>();
-        for (gPlayer player : this.getPlayers().keySet()) {
+        for (gPlayer player : this.getPlayers()) {
             Player onlinePlayer = player.getPlayer();
             if (onlinePlayer != null) {
                 onlinePlayers.add(player);
@@ -153,24 +140,24 @@ public class Guild {
         return onlinePlayers;
     }
 
-    public HashSet<Player> getOnlinePlayersThatHavePermission(GuildPermission permission) {
-        int minGuildRankLevel = this.getPermissions().get(permission).level;
-
-        HashSet<Player> onlinePlayers = new HashSet<>();
-        for (Map.Entry<gPlayer, GuildRank> entry : this.getPlayers().entrySet()) {
-            // GuildRank too low
-            if (entry.getValue().level < minGuildRankLevel) {
-                continue;
-            }
-
-            // Add player if they are online
-            Player onlinePlayer = entry.getKey().getPlayer();
-            if (onlinePlayer != null) {
-                onlinePlayers.add(onlinePlayer);
-            }
-        }
-        return onlinePlayers;
-    }
+//    public HashSet<Player> getOnlinePlayersThatHavePermission(GuildPermission permission) {
+//        int minGuildRankLevel = this.getPermissions().get(permission).level;
+//
+//        HashSet<Player> onlinePlayers = new HashSet<>();
+//        for (Map.Entry<gPlayer, GuildRank> entry : this.getPlayers().entrySet()) {
+//            // GuildRank too low
+//            if (entry.getValue().level < minGuildRankLevel) {
+//                continue;
+//            }
+//
+//            // Add player if they are online
+//            Player onlinePlayer = entry.getKey().getPlayer();
+//            if (onlinePlayer != null) {
+//                onlinePlayers.add(onlinePlayer);
+//            }
+//        }
+//        return onlinePlayers;
+//    }
 
     public boolean isInvited(gPlayer player) {
         return this.getInvites().contains(player);
@@ -185,14 +172,6 @@ public class Guild {
         for (gPlayer onlinePlayer : this.getOnlinePlayers()) {
             onlinePlayer.sendNotifyMsg(msg);
         }
-    }
-
-    public GuildRank getGuildRank(gPlayer player) {
-        return this.getPlayers().get(player);
-    }
-
-    public void changeGuildRank(gPlayer player, GuildRank newRank) {
-        this.getPlayers().replace(player, newRank);
     }
 
     public boolean isEnemied(Guild guild) {
@@ -223,18 +202,9 @@ public class Guild {
         return this;
     }
 
-    public gPlayer getPlayer(String name) {
-        for (gPlayer player : this.getPlayers().keySet()) {
-            if (player.getName().equalsIgnoreCase(name)) {
-                return player;
-            }
-        }
-        return null;
-    }
-
     public int getPower() {
         int power = 0;
-        for (gPlayer player : this.getPlayers().keySet()) {
+        for (gPlayer player : this.getPlayers()) {
             power += Math.floor(player.getPower());
         }
         return power;

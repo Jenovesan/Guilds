@@ -21,6 +21,7 @@ public class PlayerData extends ObjectDataManager<gPlayer> {
         HashMap<String, Object> playerData = new HashMap<>();
 
         playerData.put("uuid", String.valueOf(player.getUUID()));
+        playerData.put("guildRank", player.getGuildRank());
         playerData.put("name", player.getName());
         playerData.put("power", player.getPower());
 

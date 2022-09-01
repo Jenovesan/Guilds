@@ -57,14 +57,11 @@ public class AutoClaim extends Engine {
         GuildRank newGuildRank = event.getNewGuildRank();
         if (newGuildRank.level < event.getOldGuildRank().level) return;
 
-        Guild guild = event.getGuild();
-
-        for (Map.Entry<gPlayer, GuildRank> playerRank : guild.getPlayers().entrySet()) {
-            GuildRank rank = playerRank.getValue();
+        for (gPlayer player : event.getGuild().getPlayers()) {
+            GuildRank rank = player.getGuildRank();
 
             // Player's rank is below new guild rank
             if (rank.level < newGuildRank.level) {
-                gPlayer player = playerRank.getKey();
                 player.setAutoClaiming(false);
                 player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
             }

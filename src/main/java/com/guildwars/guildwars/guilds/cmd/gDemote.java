@@ -48,7 +48,7 @@ public class gDemote extends gCommand{
         }
 
         GuildRank demoterGuildRank = demoter.getGuildRank();
-        GuildRank demoteeGuildRank = guild.getGuildRank(demotee);
+        GuildRank demoteeGuildRank = demotee.getGuildRank();
         if (GuildRank.higherByAmount(demoterGuildRank, demoteeGuildRank) < 1) {
             demoter.sendFailMsg(Messages.getMsg("commands.demote.rank not high enough", demotee));
             return;
@@ -61,7 +61,7 @@ public class gDemote extends gCommand{
 
         // demote demotee
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(demoteeGuildRank.level - 1);
-        guild.changeGuildRank(demotee, newGuildRank);
+        demotee.setGuildRank(newGuildRank);
 
         // Update gPlayer
         demotee.setGuildRank(newGuildRank);

@@ -51,8 +51,8 @@ public class gKick extends gCommand{
             return;
         }
 
-        GuildRank kickerRank = guild.getRank(kicker);
-        GuildRank kickeeRank = guild.getRank(kickee);
+        GuildRank kickerRank = kicker.getGuildRank();
+        GuildRank kickeeRank = kickee.getGuildRank();
         if (kickerRank.level <= kickeeRank.level) {
             kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher"));
             return;
