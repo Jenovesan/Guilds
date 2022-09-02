@@ -80,12 +80,14 @@ public class Guild {
                  String description,
                  HashSet<gPlayer> players,
                  HashMap<GuildPermission, GuildRank> permissions,
+                 HashSet<int[]> claimLocations,
                  long raidEndTime) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.players = players;
         this.permissions = permissions;
+        this.claimLocations = claimLocations;
         this.raidEndTime = raidEndTime;
     }
 

@@ -25,6 +25,6 @@ public class PlayerData extends ObjectDataManager<gPlayer> {
         playerData.put("name", player.getName());
         playerData.put("power", player.getPower());
 
-        saveRaw(player.getUUID(), playerData);
+        super.saveRaw(player.getUUID(), playerData);
     }
 }

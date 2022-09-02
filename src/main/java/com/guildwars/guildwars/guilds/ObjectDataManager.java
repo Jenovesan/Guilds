@@ -13,9 +13,17 @@ import java.util.Map;
 
 public abstract class ObjectDataManager<T> {
 
-    String folderName;
-    File dataFolder;
-    String dataFolderPath;
+    private final String folderName;
+    private final File dataFolder;
+    private final String dataFolderPath;
+
+    protected File getDataFolder() {
+        return dataFolder;
+    }
+
+    protected String getDataFolderPath() {
+        return dataFolderPath;
+    }
 
     public ObjectDataManager(String folderName) {
 
