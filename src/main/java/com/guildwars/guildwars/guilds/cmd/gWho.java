@@ -5,6 +5,11 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gWho extends gCommand{
+
+    public gWho() {
+        super("who");
+    }
+
     @Override
     public String getDescription() {
         return Messages.getMsg("commands.who.description");
@@ -13,11 +18,6 @@ public class gWho extends gCommand{
     @Override
     public String getUsage() {
         return Messages.getMsg("commands.who.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 0;
     }
 
     @Override

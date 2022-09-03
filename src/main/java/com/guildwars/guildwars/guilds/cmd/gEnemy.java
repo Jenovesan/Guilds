@@ -5,19 +5,10 @@ import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gEnemy extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.enemy.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.enemy.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gEnemy() {
+        super("enemy");
+        this.setMinArgs(1);
     }
 
     @Override

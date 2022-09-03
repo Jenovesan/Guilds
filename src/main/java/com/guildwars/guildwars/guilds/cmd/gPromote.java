@@ -4,25 +4,12 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.utils.pUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 public class gPromote extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.promote.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.promote.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gPromote() {
+        super("promote");
+        this.setMinArgs(1);
     }
 
     @Override

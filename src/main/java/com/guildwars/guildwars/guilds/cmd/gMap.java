@@ -1,25 +1,13 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.Board;
 import com.guildwars.guildwars.guilds.BoardMap;
-import com.guildwars.guildwars.guilds.engine.MapAuto;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gMap extends gCommand {
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.map.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.map.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 0;
+    public gMap() {
+        super("map");
     }
 
     @Override

@@ -6,22 +6,11 @@ import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
-import org.bukkit.Bukkit;
 
 public class gLeave extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.leave.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.leave.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 0;
+    public gLeave() {
+        super("leave");
     }
 
     @Override

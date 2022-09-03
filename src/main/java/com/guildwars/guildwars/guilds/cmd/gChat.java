@@ -8,21 +8,10 @@ import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
 import org.bukkit.entity.Player;
 
-public class gChat extends gCommand{
+public class gChat extends gCommand {
 
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.chat.description");
-    }
-
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.chat.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 0;
+    public gChat() {
+        super("chat");
     }
 
     @Override

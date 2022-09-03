@@ -4,26 +4,12 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.utils.pUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 public class gLeader extends gCommand{
 
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.leader.description");
-    }
-
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.leader.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gLeader() {
+        super("leader");
+        this.setMinArgs(1);
     }
 
     @Override

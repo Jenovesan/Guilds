@@ -5,19 +5,10 @@ import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gName extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.name.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.name.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gName() {
+        super("name");
+        this.setMinArgs(1);
     }
 
     @Override

@@ -4,25 +4,12 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.utils.pUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 public class gKick extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.kick.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.kick.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gKick() {
+        super("kick");
+        this.setMinArgs(1);
     }
 
     @Override

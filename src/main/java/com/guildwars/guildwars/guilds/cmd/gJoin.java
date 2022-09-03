@@ -4,22 +4,12 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
-import org.bukkit.Bukkit;
 
 public class gJoin extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.join.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.join.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gJoin() {
+        super("join");
+        this.setMinArgs(1);
     }
 
     @Override

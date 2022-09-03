@@ -5,19 +5,9 @@ import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gUnclaim extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.unclaim.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.unclaim.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 0;
+    public gUnclaim() {
+        super("unclaim");
     }
 
     @Override

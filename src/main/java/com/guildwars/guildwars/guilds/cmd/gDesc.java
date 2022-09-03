@@ -8,19 +8,10 @@ import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
 
 public class gDesc extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.desc.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.desc.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gDesc() {
+        super("desc");
+        this.setMinArgs(1);
     }
 
     @Override

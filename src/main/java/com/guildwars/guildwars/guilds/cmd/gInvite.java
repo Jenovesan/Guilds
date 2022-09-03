@@ -4,24 +4,14 @@ import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
-import com.guildwars.guildwars.utils.pUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class gInvite extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.invite.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.invite.usage");
+    public gInvite() {
+        super("invite");
+        this.setMinArgs(1);
     }
-
-    @Override
-    public int getMinArgs() { return 1; }
 
     @Override
     public void perform(gPlayer inviter, String[] args) {

@@ -4,19 +4,10 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gDeInvite extends gCommand{
-    @Override
-    public String getDescription() {
-        return null;
-    }
 
-    @Override
-    public String getUsage() {
-        return null;
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gDeInvite() {
+        super("deinvite");
+        this.setMinArgs(1);
     }
 
     @Override

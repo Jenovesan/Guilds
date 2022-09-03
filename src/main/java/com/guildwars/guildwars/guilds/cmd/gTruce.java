@@ -8,19 +8,10 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class gTruce extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.truce.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.truce.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gTruce() {
+        super("truce");
+        this.setMinArgs(1);
     }
 
     @Override

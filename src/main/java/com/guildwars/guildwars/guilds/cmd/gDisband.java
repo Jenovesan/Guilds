@@ -6,21 +6,10 @@ import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.util;
 
 public class gDisband extends gCommand{
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.disband.description");
-    }
 
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.disband.usage");
+    public gDisband() {
+        super("disband");
     }
-
-    @Override
-    public int getMinArgs() {
-        return 0;
-    }
-
 
     @Override
     public void perform(gPlayer player, String[] args) {

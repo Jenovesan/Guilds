@@ -9,19 +9,9 @@ import com.guildwars.guildwars.guilds.files.PlayerData;
 
 public class gCreate extends gCommand {
 
-    @Override
-    public String getDescription() {
-        return Messages.getMsg("commands.create.description");
-    }
-
-    @Override
-    public String getUsage() {
-        return Messages.getMsg("commands.create.usage");
-    }
-
-    @Override
-    public int getMinArgs() {
-        return 1;
+    public gCreate() {
+        super("create");
+        this.setMinArgs(1);
     }
 
     @Override
