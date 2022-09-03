@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
 import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
 import com.guildwars.guildwars.guilds.gPlayersIndex;
@@ -42,6 +43,7 @@ public class Power extends Engine{
             // Will run if admin lowers max power
             if (player.getPower() > MAX_POWER) {
                 player.setPower(MAX_POWER);
+                PlayerData.get().save(player);
             }
         }
     }

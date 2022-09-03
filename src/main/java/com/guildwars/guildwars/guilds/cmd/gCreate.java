@@ -3,8 +3,9 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GuildCreationEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
-import org.bukkit.Bukkit;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 
 public class gCreate extends gCommand {
 
@@ -46,11 +47,15 @@ public class gCreate extends gCommand {
         // Add guild to guilds
         Guilds.get().add(newGuild);
 
-        // Save guild
-        Guilds.get().save(newGuild);
+        // Save data
+        GuildData.get().save(newGuild);
 
         // Update gPlayer
-        player.joinedNewGuild(newGuild);
+        player.setGuild(newGuild);
+        player.setGuildRank(GuildRank.LEADER);
+
+        // Save data
+        PlayerData.get().save(player);
 
         // Add to index
         GuildsIndex.get().add(newGuild);

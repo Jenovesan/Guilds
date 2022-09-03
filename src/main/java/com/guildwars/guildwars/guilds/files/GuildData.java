@@ -1,47 +1,49 @@
 package com.guildwars.guildwars.guilds.files;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.ObjectDataManager;
+import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.utils.util;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class GuildData {
-    private static File file;
-    private static FileConfiguration dataFile;
+public class GuildData extends ObjectDataManager<Guild> {
 
-    public static void setup() {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/guilds", "guild_data.yml");
+    public static GuildData instance = new GuildData();
+    public static GuildData get() { return instance; }
 
-        if (file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Error when creating guilds/guild_data.yml file");
-            }
+    public GuildData() {
+        super("guilddata");
+    }
+
+    @Override
+    public void save(Guild guild) {
+        HashMap<String, Object> guildData = new HashMap<>();
+
+        guildData.put("id", guild.getId());
+        guildData.put("name", guild.getName());
+        guildData.put("description", guild.getDescription());
+        guildData.put("players", guild.getPlayers().stream().map(gPlayer::getUUID).collect(Collectors.toList()));
+        guildData.put("permissions", util.hashMapToHashMapString(guild.getPermissions()));
+        guildData.put("enemies", guild.getEnemies().stream().map(Guild::getId).collect(Collectors.toList()));
+        List<String> claimLocations = new ArrayList<>();
+        guild.getClaimLocations().forEach(claim -> claimLocations.add(claim[0] + ":" + claim[1]));
+        guildData.put("claimLocations", claimLocations);
+        if (guild.getRaidedBy() != null) guildData.put("raidedBy", guild.getRaidedBy().getId());
+        guildData.put("raidEndTime", guild.getRaidEndTime());
+
+        super.saveRaw(guild.getId(), guildData);
+    }
+
+    public void remove(Guild guild) {
+        String guildId = guild.getId();
+        File rawFile = new File(getDataFolder() + "/" + guildId + ".yml");
+        if (!rawFile.delete()) {
+            System.out.println("Unable to delete " + guildId + ".yml");
         }
-        dataFile = YamlConfiguration.loadConfiguration(file);
-        loadDefaults();
-        dataFile.options().copyDefaults(true);
-        save();
-    }
-
-    public static void loadDefaults() {}
-
-    public static FileConfiguration get() {
-        return dataFile;
-    }
-
-    public static void save() {
-        try {
-            dataFile.save(file);
-        } catch (IOException e) {
-            System.out.println("Error when saving guilds/guild_data.yml file");
-        }
-    }
-
-    public static void reload() {
-        dataFile = YamlConfiguration.loadConfiguration(file);
     }
 }

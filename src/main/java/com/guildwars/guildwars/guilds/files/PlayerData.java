@@ -1,66 +1,38 @@
 package com.guildwars.guildwars.guilds.files;
 
+import com.guildwars.guildwars.guilds.ObjectDataManager;
 import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 
-public class PlayerData {
-    private static File file;
-    private static FileConfiguration dataFile;
+public class PlayerData extends ObjectDataManager<gPlayer> {
 
-    public static void setup() {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/guilds", "player_data.yml");
+    public static PlayerData instance = new PlayerData();
+    public static PlayerData get() {
+        return instance;
+    }
 
-        if (file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Error when creating guilds/player_data.yml file");
-            }
+    public PlayerData() {
+        super("playerdata");
+    }
+
+    @Override
+    public void save(gPlayer player) {
+        HashMap<String, Object> playerData = new HashMap<>();
+
+        // uuid
+        playerData.put("uuid", String.valueOf(player.getUUID()));
+        // guild rank
+        if (player.getGuildRank() != null) {
+            playerData.put("guildRank", player.getGuildRank().name());
+        } else {
+            playerData.put("guildRank", "null");
         }
-        dataFile = YamlConfiguration.loadConfiguration(file);
-        loadDefaults();
-        dataFile.options().copyDefaults(true);
-        save();
-    }
+        // name
+        playerData.put("name", player.getName());
+        // power
+        playerData.put("power", player.getPower());
 
-    public static void loadDefaults() {}
-
-    public static FileConfiguration get() {
-        return dataFile;
-    }
-
-    public static void save() {
-        try {
-            dataFile.save(file);
-        } catch (IOException e) {
-            System.out.println("Error when saving guilds/player_data.yml file");
-        }
-    }
-
-    public static void reload() {
-        dataFile = YamlConfiguration.loadConfiguration(file);
-    }
-
-    public static void saveAllPlayerData() {
-        for (gPlayer player : gPlayers.get().getAll()) {
-            String uuid = String.valueOf(player.getUUID());
-            get().createSection(uuid);
-            ConfigurationSection playerSection = get().getConfigurationSection(uuid);
-            assert playerSection != null;
-            playerSection.set("guildId", player.getGuildId());
-            if (player.getGuildRank() != null) {
-                playerSection.set("guildRank", player.getGuildRank().name());
-            }
-            playerSection.set("name", player.getName());
-            playerSection.set("power", player.getPower());
-        }
-        save();
+        super.saveRaw(player.getUUID(), playerData);
     }
 }

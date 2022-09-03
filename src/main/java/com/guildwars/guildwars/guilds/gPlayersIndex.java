@@ -56,7 +56,7 @@ public class gPlayersIndex extends Index<gPlayer>{
 
     @Override
     public void add(gPlayer player) {
-        id2gPlayer.put(player.getUUID(), player);
+        id2gPlayer.put(UUID.fromString(player.getUUID()), player);
         name2Obj.put(player.getName(), player);
         player2gPlayer.put(player.getPlayer(), player);
     }
@@ -69,7 +69,7 @@ public class gPlayersIndex extends Index<gPlayer>{
     public void load() {
         for (gPlayer player : gPlayers.get().getAll()) {
             // UUID -> gPlayer
-            id2gPlayer.put(player.getUUID(), player);
+            id2gPlayer.put(UUID.fromString(player.getUUID()), player);
             // Name -> gPlayer
             name2Obj.put(player.getName().toLowerCase(), player);
         }

@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gName extends gCommand{
@@ -41,6 +42,9 @@ public class gName extends gCommand{
         Guild guild = player.getGuild();
         String oldGuildName = guild.getName();
         guild.setName(newGuildName);
+
+        // Save data
+        GuildData.get().save(guild);
 
         // Update index
         GuildsIndex.get().updateName(guild, oldGuildName, newGuildName);

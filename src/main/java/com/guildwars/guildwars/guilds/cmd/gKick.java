@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
@@ -51,15 +52,18 @@ public class gKick extends gCommand{
             return;
         }
 
-        GuildRank kickerRank = guild.getRank(kicker);
-        GuildRank kickeeRank = guild.getRank(kickee);
+        GuildRank kickerRank = kicker.getGuildRank();
+        GuildRank kickeeRank = kickee.getGuildRank();
         if (kickerRank.level <= kickeeRank.level) {
             kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher"));
             return;
         }
 
         // Kick player
-        guild.kickPlayer(kickee);
+        guild.removePlayer(kickee);
+
+        // Save data
+        GuildData.get().save(guild);
 
         // Update gPlayer
         kickee.leftGuild();

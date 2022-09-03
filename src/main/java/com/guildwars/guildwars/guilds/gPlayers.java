@@ -1,7 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 
@@ -13,32 +13,27 @@ public class gPlayers extends Coll<gPlayer> {
     }
 
     @Override
-    public void load() {
-        for (String playerUUID : PlayerData.get().getKeys(false)) {
-            UUID uuid = UUID.fromString(playerUUID);
+    public void loadAll() {
+        List<FileConfiguration> playerData = PlayerData.get().getAllData();
+        for (FileConfiguration dataFile : playerData) {
 
-            ConfigurationSection playerSection = PlayerData.get().getConfigurationSection(playerUUID);
-            assert playerSection != null;
-            String name = playerSection.getString("name");
-            float power = (float) playerSection.getDouble("power");
+            String uuid = dataFile.getString("uuid");
+            GuildRank guildRank = dataFile.getString("guildRank") != null ? GuildRank.valueOf(dataFile.getString("guildRank")) : null;
+            String name = dataFile.getString("name");
+            float power = (float) dataFile.getDouble("power");
 
-            getAll().add(new gPlayer(uuid, name, power));
+            gPlayer newPlayer = new gPlayer(uuid, guildRank, name, power);
+
+            getAll().add(newPlayer);
         }
-    }
-
-    @Override
-    public void save(gPlayer obj) {
-
     }
 
     @Override
     public void loadGuilds() {
         for (Guild guild : Guilds.get().getAll()) {
-            Set<gPlayer> players = guild.getPlayers().keySet();
+            HashSet<gPlayer> players = guild.getPlayers();
             for (gPlayer player : players) {
                 player.setGuild(guild);
-                player.setGuildId(guild.getId());
-                player.setGuildRank(guild.getGuildRank(player));
             }
         }
     }

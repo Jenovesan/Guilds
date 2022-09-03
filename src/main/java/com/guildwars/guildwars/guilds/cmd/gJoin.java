@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Bukkit;
 
@@ -64,6 +65,9 @@ public class gJoin extends gCommand{
         guildToJoin.sendAnnouncement(Messages.getMsg("guild announcements.player join", player));
 
         guildToJoin.addPlayer(player);
+
+        // Save data
+        GuildData.get().save(guildToJoin);
 
         // Update gPlayer
         player.joinedNewGuild(guildToJoin);

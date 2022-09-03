@@ -6,7 +6,9 @@ import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
 import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.event.EventHandler;
@@ -38,6 +40,8 @@ public class Raiding extends Engine {
             playerGuild.setRaidedBy(killerGuild);
             playerGuild.setRaidEndTime(util.getTimeLater(raidDuration));
 
+            // Save data
+            GuildData.get().save(playerGuild);
 
             // Broadcasts
             playerGuild.sendBroadcast(Messages.getMsg("broadcasts.raidable title"), Messages.getMsg("broadcasts.raidable subtitle", raidDuration));
@@ -58,10 +62,14 @@ public class Raiding extends Engine {
                 // Remove raid
                 guild.setRaidedBy(null);
 
+                // Save data
+                GuildData.get().save(guild);
+
                 // Reset power
                 int playerMaxPower = Config.get().getInt("player max power");
-                for (gPlayer player : guild.getPlayers().keySet()) {
+                for (gPlayer player : guild.getPlayers()) {
                     player.setPower(playerMaxPower);
+                    PlayerData.get().save(player);
                 }
 
                 // Send broadcasts

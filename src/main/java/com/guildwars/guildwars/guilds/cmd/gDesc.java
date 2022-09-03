@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
@@ -38,6 +39,9 @@ public class gDesc extends gCommand{
         String description = String.join(" ", args);
         Guild guild = player.getGuild();
         guild.setDescription(description);
+
+        // Save data
+        GuildData.get().save(guild);
 
         // Send Guild announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.description changed", player, description));

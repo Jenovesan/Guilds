@@ -11,10 +11,6 @@ public class GuildChunk {
     private final int[] boardLocation;
 
     public void claim(Guild hostGuild) {
-        if (this.guild != null) {
-            getGuild().removeClaim(this);
-            getGuild().sendAnnouncement(Messages.getMsg("guild announcements.overclaimed", hostGuild));
-        }
         this.guild = hostGuild;
         this.guildId = hostGuild != null ? hostGuild.getId() : null;
     }

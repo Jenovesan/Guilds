@@ -4,6 +4,7 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -48,7 +49,7 @@ public class gDemote extends gCommand{
         }
 
         GuildRank demoterGuildRank = demoter.getGuildRank();
-        GuildRank demoteeGuildRank = guild.getGuildRank(demotee);
+        GuildRank demoteeGuildRank = demotee.getGuildRank();
         if (GuildRank.higherByAmount(demoterGuildRank, demoteeGuildRank) < 1) {
             demoter.sendFailMsg(Messages.getMsg("commands.demote.rank not high enough", demotee));
             return;
@@ -61,10 +62,10 @@ public class gDemote extends gCommand{
 
         // demote demotee
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(demoteeGuildRank.level - 1);
-        guild.changeGuildRank(demotee, newGuildRank);
-
-        // Update gPlayer
         demotee.setGuildRank(newGuildRank);
+
+        // Save data
+        PlayerData.get().save(demotee);
 
         // Call Event
         PlayerGuildRankChangeEvent playerGuildRankChangeEvent = new PlayerGuildRankChangeEvent(demotee, newGuildRank);

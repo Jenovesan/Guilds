@@ -3,6 +3,7 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -56,12 +57,13 @@ public class gLeader extends gCommand{
             return;
         }
 
-        // Set newLeader to leader
-        guild.setLeader(oldLeader, newLeader);
-
-        // Update gPlayers
-        oldLeader.setGuildRank(GuildRank.COLEADER);
+        // Change GuildRanks
         newLeader.setGuildRank(GuildRank.LEADER);
+        oldLeader.setGuildRank(GuildRank.COLEADER);
+
+        // Save data
+        PlayerData.get().save(newLeader);
+        PlayerData.get().save(oldLeader);
 
         // Call Events
         PlayerGuildRankChangeEvent newLeaderGuildRankChangeEvent = new PlayerGuildRankChangeEvent(newLeader, GuildRank.LEADER);

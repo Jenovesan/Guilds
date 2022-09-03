@@ -3,6 +3,7 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -91,6 +92,10 @@ public class gTruce extends gCommand{
 
             // Have guildToTruce truce playerGuild
             guildToTruce.truce(playerGuild);
+
+            // Save data
+            GuildData.get().save(playerGuild);
+            GuildData.get().save(guildToTruce);
 
             // Inform playerGuild
             playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", guildToTruce));

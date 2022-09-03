@@ -1,11 +1,12 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.utils.util;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Guilds extends Coll<Guild> {
 
@@ -15,76 +16,64 @@ public class Guilds extends Coll<Guild> {
     }
 
     @Override
-    public void load() {
-        for (String guildId : GuildData.get().getKeys(false)) {
-            ConfigurationSection guildData = GuildData.get().getConfigurationSection(guildId);
-            String name = guildData.getString("name");
-            String description = guildData.getString("description");
+    public void loadAll() {
+        List<FileConfiguration> guildData = GuildData.get().getAllData();
+        for (FileConfiguration dataFile : guildData) {
 
-            Map<String, Object> playersData = guildData.getConfigurationSection("players").getValues(false);
-            HashMap<gPlayer, GuildRank> players = new HashMap<>();
-            for (Map.Entry<String, Object> entry : playersData.entrySet()) {
-                UUID memberUUID = UUID.fromString(entry.getKey());
-                for (gPlayer player : gPlayers.get().getAll()) {
-                    if (player.getUUID() == memberUUID) {
-                        players.put(player, GuildRank.valueOf((String) entry.getValue()));
-                    }
-                }
+            // id
+            String id = dataFile.getString("id");
+            // name
+            String name = dataFile.getString("name");
+            // description
+            String description = dataFile.getString("description");
+            // players
+            List<String> rawPlayers = dataFile.getStringList("players");
+            HashSet<gPlayer> players = new HashSet<>();
+            for (String uuid : rawPlayers) {
+                players.add(gPlayersIndex.get().getByUUID(UUID.fromString(uuid)));
             }
-
-            Map<String, Object> permissionsData = guildData.getConfigurationSection("permissions").getValues(false);
+            // permissions
+            Map<String, Object> rawPermissions = dataFile.getConfigurationSection("permissions").getValues(false);
             HashMap<GuildPermission, GuildRank> permissions = new HashMap<>();
-            for (Map.Entry<String, Object> entry : permissionsData.entrySet()) {
-                permissions.put(GuildPermission.valueOf(entry.getKey()), GuildRank.valueOf((String) entry.getValue()));
+            for (Map.Entry<String, Object> permission : rawPermissions.entrySet()) {
+                permissions.put(GuildPermission.valueOf(permission.getKey()), GuildRank.valueOf((String) permission.getValue()));
             }
+            // claim locations
+            List<String> claimLocationsRaw = dataFile.getStringList("claimLocations");
+            HashSet<int[]> claimLocations = new HashSet<>();
+            for (String location : claimLocationsRaw) {
+                String[] locationsStrings = location.split(":");
+                int[] locations = new int[] {Integer.parseInt(locationsStrings[0]), Integer.parseInt(locationsStrings[1])};
+                claimLocations.add(locations);
+            }
+            // raid end time
+            long raidEndTime = dataFile.getLong("raidEndTime");
 
-            long raidEndTime = guildData.getLong("raidEndTime");
+            // create guild
+            Guild newGuild = new Guild(id, name, description, players, permissions, claimLocations, raidEndTime);
 
-            Guild loadedGuild = new Guild(guildId, name, description, players, permissions, raidEndTime);
-            add(loadedGuild);
+            // add guild
+            getAll().add(newGuild);
         }
     }
 
     @Override
     public void loadGuilds() {
         for (Guild guild : getAll()) {
-            ConfigurationSection guildData = GuildData.get().getConfigurationSection(guild.getId());
+            // get the guild's data
+            ConfigurationSection dataFile = YamlConfiguration.loadConfiguration(new File(GuildData.get().getDataFolderPath() + "/" + guild.getId()));
 
-            // Enemies
-            List<String> enemiesIds = guildData.getStringList("enemies");
-            for (String id : enemiesIds) {
-                guild.addEnemy((GuildsIndex.get().getById(id)));
+            // add enemies
+            List<String> enemiesRaw = dataFile.getStringList("enemies");
+            HashSet<Guild> enemies = new HashSet<>();
+            for (String id : enemiesRaw) {
+                enemies.add(GuildsIndex.get().getById(id));
             }
+            enemies.forEach(guild::addEnemy);
 
-            // RaidedBy
-            String raidedById = guildData.getString("raidedBy");
+            // add raided by
+            String raidedById = dataFile.getString("raidedBy");
             guild.setRaidedBy(GuildsIndex.get().getById(raidedById));
         }
-    }
-
-    @Override
-    public void save(Guild guild) {
-        GuildData.get().createSection(String.valueOf(guild.getId()));
-        ConfigurationSection guildSection = GuildData.get().getConfigurationSection(String.valueOf(guild.getId()));
-        assert guildSection != null;
-        guildSection.set("name", guild.getName());
-        guildSection.set("description", guild.getDescription());
-        HashMap<String, String> players = new HashMap<>();
-        for (Map.Entry<gPlayer, GuildRank> entry : guild.getPlayers().entrySet()) {
-            players.put(String.valueOf(entry.getKey().getUUID()), entry.getValue().name());
-        }
-        guildSection.set("players", players);
-        guildSection.set("permissions", util.hashMapToHashMapString(guild.getPermissions()));
-        guildSection.set("enemies", guild.getEnemies().stream().map(Guild::getId).collect(Collectors.toList()));
-        if (guild.isGettingRaided()) {
-            guildSection.set("raidedBy", guild.getRaidedBy().getId());
-        }
-        guildSection.set("raidEndTime", guild.getRaidEndTime());
-        GuildData.save();
-    }
-
-    public void removeData(Guild guild) {
-        GuildData.get().set(guild.getId(), null);
-        GuildData.save();
     }
 }

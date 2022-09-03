@@ -1,18 +1,17 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class gPlayer {
 
     private Player player = null;
-    private final UUID uuid;
+    private final String uuid;
     private Guild guild;
-    private String guildId;
     private GuildRank guildRank;
     private String name;
     private float power = Config.get().getInt("player max power");
@@ -23,16 +22,12 @@ public class gPlayer {
         return this.player;
     }
 
-    public UUID getUUID() {
+    public String getUUID() {
         return this.uuid;
     }
 
     public Guild getGuild() {
         return this.guild;
-    }
-
-    public String getGuildId() {
-        return this.guildId;
     }
 
     public GuildRank getGuildRank() {
@@ -57,7 +52,6 @@ public class gPlayer {
 
     public void setGuild(Guild guild) {
         this.guild = guild;
-        this.guildId = guild != null ? guild.getId() : null;
     }
 
     public void setGuildRank(GuildRank rank) {
@@ -83,8 +77,9 @@ public class gPlayer {
     }
 
     // For loading gPlayer from data
-    public gPlayer(UUID uuid, String name, float power) {
+    public gPlayer(String uuid, GuildRank guildRank, String name, float power) {
         this.uuid = uuid;
+        this.guildRank = guildRank;
         this.name = name;
         this.power = power;
     }
@@ -92,7 +87,7 @@ public class gPlayer {
     // For creating a gPlayer for the first time
     public gPlayer (Player player) {
         this.player = player;
-        this.uuid = player.getUniqueId();
+        this.uuid = String.valueOf(player.getUniqueId());
         this.name = player.getName();
     }
 
@@ -122,12 +117,16 @@ public class gPlayer {
 
     public void joinedNewGuild(Guild newGuild) {
         this.setGuild(newGuild);
-        this.setGuildRank(newGuild.getRank(this));
+        this.setGuildRank(GuildRank.valueOf(Config.get().getString("join guild at rank")));
+
+        PlayerData.get().save(this);
     }
 
     public void leftGuild() {
         this.setGuild(null);
         this.setGuildRank(null);
+
+        PlayerData.get().save(this);
     }
 
     public boolean tryClaim(GuildChunk chunk) {
@@ -166,6 +165,9 @@ public class gPlayer {
         // Claim chunk for Guild
         guild.claim(chunk);
 
+        // Save data
+        GuildData.get().save(guild);
+
         // Send Guild announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", this));
 
@@ -190,6 +192,9 @@ public class gPlayer {
         // Unclaim chunk
         guild.unclaim(chunk);
 
+        // Save data
+        GuildData.get().save(guild);
+
         // Unclaim chunk on Board
         chunk.setWilderness();
 
@@ -201,10 +206,6 @@ public class gPlayer {
 
     public boolean isOnline() {
         return player != null;
-    }
-
-    public void setGuildId(String id) {
-        this.guildId = id;
     }
 
     public void setAutoClaiming(boolean autoClaiming) {

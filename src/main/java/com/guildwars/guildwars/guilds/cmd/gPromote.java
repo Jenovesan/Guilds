@@ -3,6 +3,7 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -47,7 +48,7 @@ public class gPromote extends gCommand{
         }
 
         GuildRank promoterGuildRank = promoter.getGuildRank();
-        GuildRank promoteeGuildRank = guild.getGuildRank(promotee);
+        GuildRank promoteeGuildRank = promotee.getGuildRank();
         if (GuildRank.higherByAmount(promoterGuildRank, promoteeGuildRank) < 2) {
             if (promoterGuildRank != GuildRank.LEADER) {
                 promoter.sendFailMsg(Messages.getMsg("commands.promote.rank not high enough", promotee));
@@ -59,10 +60,12 @@ public class gPromote extends gCommand{
 
         // Promote promotee
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(promoteeGuildRank.level + 1);
-        guild.changeGuildRank(promotee, newGuildRank);
 
         // Update gPlayer
         promotee.setGuildRank(newGuildRank);
+
+        // Save data
+        PlayerData.get().save(promotee);
 
         // Call Event
         PlayerGuildRankChangeEvent playerGuildRankChangeEvent = new PlayerGuildRankChangeEvent(promotee, newGuildRank);

@@ -7,11 +7,9 @@ public abstract class Coll<T> {
 
     private HashSet<T> coll = new HashSet<>();
 
-    public abstract void load();
+    public abstract void loadAll();
 
     public abstract void loadGuilds();
-
-    public abstract void save(T obj);
 
     public Set<T> getAll() {
         return coll;

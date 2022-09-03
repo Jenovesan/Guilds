@@ -3,6 +3,7 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import org.bukkit.Bukkit;
@@ -40,6 +41,9 @@ public class gLeave extends gCommand{
         //Leave guild
         Guild guild = player.getGuild();
         guild.removePlayer(player);
+
+        // Save data
+        GuildData.get().save(guild);
 
         // Update gPlayer
         player.leftGuild();
