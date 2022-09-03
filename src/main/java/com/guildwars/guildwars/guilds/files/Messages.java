@@ -210,9 +210,11 @@ public class Messages {
             guildAnnouncementsSection.addDefault("sent truce request", "&2&l%PLAYER% &a&lhas sent a truce request to &2&l%GUILD%!");
             guildAnnouncementsSection.addDefault("received truce request", "&2&l%GUILD% &a&lhas requested to truce with your guild!");
             guildAnnouncementsSection.addDefault("gave leadership", "&2&l%PLAYER1% &a&lhas given leadership to the guild to &2&l%PLAYER2%!");
-            guildAnnouncementsSection.addDefault("claimed land", "&2&l%PLAYER% &a&lhas claimed land!");
-            guildAnnouncementsSection.addDefault("unclaimed land", "&4&l%PLAYER% &c&lhas unclaimed land!");
+            guildAnnouncementsSection.addDefault("claimed single land", "&2&l%PLAYER% &a&lhas claimed land!");
+            guildAnnouncementsSection.addDefault("unclaimed single land", "&4&l%PLAYER% &c&lhas unclaimed land!");
             guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER% &c&lhas unclaimed all your guild's land!");
+            guildAnnouncementsSection.addDefault("claimed many land", "&2&l%PLAYER% &a&lhas claimed %AMOUNT% chunks!");
+            guildAnnouncementsSection.addDefault("unclaimed many land", "&4&l%PLAYER% &c&lhas unclaimed %AMOUNT% chunks!");
 
         // Guild broadcasts
         messagesFile.createSection("broadcasts");
@@ -252,16 +254,17 @@ public class Messages {
             claimingSection.addDefault("claiming own land", "&cYour guild already owns this land");
             claimingSection.addDefault("no connecting claim", "&cYou can only claim land that is connected to your land");
             claimingSection.addDefault("claiming in outlands", "&cYou cannot claim in the outlands");
+            claimingSection.addDefault("ran out of power", "&cYour guild ran out of power to claim");
 
         // New territory titles
         messagesFile.createSection("new territory titles");
-        ConfigurationSection newTerritoryTitlesSection = messagesFile.getConfigurationSection("new territory titles");
-        newTerritoryTitlesSection.addDefault("outlands.title", "&8Outlands");
-        newTerritoryTitlesSection.addDefault("outlands.subtitle", "&7You cannot claim or store items here");
-        newTerritoryTitlesSection.addDefault("wilderness.title", "&fWilderness");
-        newTerritoryTitlesSection.addDefault("wilderness.subtitle", "");
-        newTerritoryTitlesSection.addDefault("guild.title", "%I%");
-        newTerritoryTitlesSection.addDefault("guild.subtitle", "%I%");
+            ConfigurationSection newTerritoryTitlesSection = messagesFile.getConfigurationSection("new territory titles");
+            newTerritoryTitlesSection.addDefault("outlands.title", "&8Outlands");
+            newTerritoryTitlesSection.addDefault("outlands.subtitle", "&7You cannot claim or store items here");
+            newTerritoryTitlesSection.addDefault("wilderness.title", "&fWilderness");
+            newTerritoryTitlesSection.addDefault("wilderness.subtitle", "");
+            newTerritoryTitlesSection.addDefault("guild.title", "%I%");
+            newTerritoryTitlesSection.addDefault("guild.subtitle", "%I%");
     }
 
     public static FileConfiguration get() {
@@ -310,6 +313,10 @@ public class Messages {
 
     public static String getMsg(String path, gPlayer player1, gPlayer player2) {
         return getMsg(path).replace("%PLAYER1%", player1.getName()).replace("%PLAYER2%", player2.getName());
+    }
+
+    public static String getMsg(String path, gPlayer player1, int amount) {
+        return getMsg(path).replace("%PLAYER%", player1.getName()).replace("%AMOUNT%", String.valueOf(amount));
     }
 
     public static String[] getStringArray(String path) {

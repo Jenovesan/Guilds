@@ -1,9 +1,5 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.guilds.files.Messages;
-
-import java.util.UUID;
-
 public class GuildChunk {
 
     private Guild guild;

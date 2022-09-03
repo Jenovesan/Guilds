@@ -58,22 +58,17 @@ public class gClaim extends gCommand{
                     return;
                 }
 
-                int successfulClaims = 0;
-
                 GuildChunk[] guildChunksToClaim = Board.getNearbyChunks(player.getPlayer().getLocation(), radius);
 
-                for (GuildChunk chunk : guildChunksToClaim) {
-                    // Try to claim
-                    boolean claimed = player.tryClaim(chunk);
+                // Try claiming
+                int successfulClaims = player.tryClaim(guildChunksToClaim);
 
-                    if (claimed) {
-                        // Track successful claim
-                        successfulClaims++;
-                    }
-                }
 
-                // Inform plauer
+                // Inform
                 if (successfulClaims > 0) {
+                    // Inform guild
+                    player.getGuild().sendAnnouncement(Messages.getMsg("guild announcements.claimed many land", player, successfulClaims));
+                    // Inform player
                     player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed multiple chunks", successfulClaims));
                 }
                 // Player did not claim any chunks

@@ -8,8 +8,6 @@ import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
-import java.util.Map;
-
 public class AutoClaim extends Engine {
 
     @EventHandler(priority = EventPriority.MONITOR)

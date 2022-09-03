@@ -37,8 +37,6 @@ public class gUnclaim extends gCommand{
             return;
         }
 
-        Guild guild = player.getGuild();
-
         // Unclaim chunk(s)
         // Player is unclaiming in a radius
         if (args.length > 0) {
@@ -56,23 +54,21 @@ public class gUnclaim extends gCommand{
                     return;
                 }
 
-                int successfulUnclaims = 0;
-
                 GuildChunk[] guildChunksToUnclaim = Board.getNearbyChunks(player.getPlayer().getLocation(), radius);
 
-                for (GuildChunk chunk : guildChunksToUnclaim) {
-                    // Try to claim
-                    boolean unclaimed = player.tryUnclaim(chunk);
+                int successfulUnclaims = player.tryUnclaim(guildChunksToUnclaim);
 
-                    if (unclaimed) {
-                        // Track successful claim
-                        successfulUnclaims++;
-                    }
+                // Inform
+                if (successfulUnclaims > 0) {
+                    // Inform guild
+                    player.getGuild().sendAnnouncement(Messages.getMsg("guild announcements.unclaimed many land", player, successfulUnclaims));
+                    // Inform player
+                    player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully unclaimed multiple chunks", successfulUnclaims));
                 }
-
-
-                // Inform plauer
-                player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", String.valueOf(successfulUnclaims)));
+                // Player did not unclaim any chunks
+                else {
+                    player.sendNotifyMsg(Messages.getMsg("commands.claim.successfully unclaimed multiple chunks", successfulUnclaims));
+                }
 
             } catch (NumberFormatException e) {
                 player.sendFailMsg(Messages.getMsg("commands.unclaim.invalid radius", args[0]));

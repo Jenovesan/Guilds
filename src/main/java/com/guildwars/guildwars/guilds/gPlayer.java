@@ -162,16 +162,46 @@ public class gPlayer {
         // Claim chunk
         chunk.claim(guild);
 
-        // Claim chunk for Guild
+        // Claim chunk
         guild.claim(chunk);
 
         // Save data
         GuildData.get().save(guild);
 
         // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", this));
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed single land", this));
 
         return true;
+    }
+
+    public int tryClaim(GuildChunk[] chunks) {
+        int successfulClaims = 0;
+
+        for (GuildChunk chunk : chunks) {
+            if (!guild.canClaim()) {
+                this.sendFailMsg(Messages.getMsg("claiming.ran out of power"));
+                break;
+            }
+
+            // Is outlands
+            if (chunk == null) continue;
+
+            // Chunk already has host guild
+            if (!chunk.isClaimable()) continue;
+
+            // Claim chunk
+            chunk.claim(guild);
+
+            // Claim chunk
+            guild.claim(chunk);
+
+            successfulClaims++;
+        }
+
+        // Save data
+        GuildData.get().save(guild);
+
+        return successfulClaims;
     }
 
     public boolean tryUnclaim(GuildChunk chunk) {
@@ -180,8 +210,6 @@ public class gPlayer {
         if (chunk == null) {
             return false;
         }
-
-        Guild guild = getGuild();
 
         // Check if chunk is owned by the player's guild
         if (chunk.getGuild() != guild) {
@@ -199,9 +227,34 @@ public class gPlayer {
         chunk.setWilderness();
 
         // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed land", this));
+        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed single land", this));
 
         return true;
+    }
+
+    public int tryUnclaim(GuildChunk[] chunks) {
+        int successfulUnclaims = 0;
+        Guild guild = getGuild();
+
+        for (GuildChunk chunk : chunks) {
+            // Is outlands
+            if (chunk == null) continue;
+            // Not owned by player's guild
+            if (chunk.getGuild() != guild) continue;
+
+            // Unclaim chunk
+            guild.unclaim(chunk);
+
+            // Unclaim chunk
+            chunk.setWilderness();
+
+            successfulUnclaims++;
+        }
+
+        // Save data
+        GuildData.get().save(guild);
+
+        return successfulUnclaims;
     }
 
     public boolean isOnline() {
