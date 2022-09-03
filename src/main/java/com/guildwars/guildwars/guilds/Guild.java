@@ -1,6 +1,8 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -230,5 +232,31 @@ public class Guild {
         for (gPlayer player : this.getOnlinePlayers()) {
             player.getPlayer().sendTitle(title, Objects.requireNonNullElse(subtitle, ""), Config.get().getInt("broadcasts.guilds.fadeIn"), Config.get().getInt("broadcasts.guilds.stay"), Config.get().getInt("broadcasts.guilds.fadeOut"));
         }
+    }
+
+    public void disband() {
+        // Remove data
+        GuildData.get().remove(this);
+
+        // Remove Guild from Guilds
+        Guilds.get().remove(this);
+
+        // Update gPlayers & call event
+        for (gPlayer onlineGuildMember : this.getOnlinePlayers()) {
+            // Update gPlayer
+            onlineGuildMember.leftGuild();
+
+            // Call PlayerGuildChangeEvents
+            PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(onlineGuildMember, null, PlayerGuildChangeEvent.Reason.DISBAND);
+            playerGuildChangeEvent.run();
+        }
+
+        // Update board
+        for (int[] claimBoardLocation : this.getClaimLocations()) {
+            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
+        }
+
+        // Remove index
+        GuildsIndex.get().remove(this);
     }
 }

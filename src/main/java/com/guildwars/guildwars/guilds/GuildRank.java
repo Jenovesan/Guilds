@@ -29,4 +29,8 @@ public enum GuildRank {
     public static GuildRank getGuildRankByLevel(int level) {
         return levelsWithGuildRanks.get(level);
     }
+
+    public static GuildRank[] getAll() {
+        return GuildRank.values();
+    }
 }

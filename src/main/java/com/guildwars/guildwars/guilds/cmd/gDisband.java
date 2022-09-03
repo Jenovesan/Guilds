@@ -2,12 +2,8 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
-import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
-import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.util;
-import org.bukkit.Bukkit;
 
 public class gDisband extends gCommand{
     @Override
@@ -42,29 +38,7 @@ public class gDisband extends gCommand{
         // Disband Guild
         Guild guild = player.getGuild();
 
-        // Remove Guild Data
-        GuildData.get().remove(guild);
-
-        // Remove Guild from Guilds
-        Guilds.get().remove(guild);
-
-        // Update gPlayers & call event
-        for (gPlayer onlineGuildMember : guild.getOnlinePlayers()) {
-            // Update gPlayer
-            onlineGuildMember.leftGuild();
-
-            // Call PlayerGuildChangeEvents
-            PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(onlineGuildMember, null, PlayerGuildChangeEvent.Reason.DISBAND);
-            playerGuildChangeEvent.run();
-        }
-
-        // Update board
-        for (int[] claimBoardLocation : guild.getClaimLocations()) {
-            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
-        }
-
-        // Remove from index
-        GuildsIndex.get().remove(guild);
+        guild.disband();
 
         // Send Guild Announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.disband"));

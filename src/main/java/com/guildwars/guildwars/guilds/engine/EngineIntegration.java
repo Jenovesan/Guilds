@@ -10,5 +10,6 @@ public class EngineIntegration {
         new Raiding();
         new RegisterGPlayer();
         new NewTerritoryInform();
+        new ChangeGuildLeadershipOnLeaderBan();
     }
 }
