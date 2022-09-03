@@ -127,10 +127,6 @@ public class Guild {
         this.getPlayers().remove(player);
     }
 
-    public void kickPlayer(gPlayer kickee) {
-        this.getPlayers().remove(kickee);
-    }
-
     public HashSet<gPlayer> getOnlinePlayers() {
         HashSet<gPlayer> onlinePlayers = new HashSet<>();
         for (gPlayer player : this.getPlayers()) {
@@ -141,25 +137,6 @@ public class Guild {
         }
         return onlinePlayers;
     }
-
-//    public HashSet<Player> getOnlinePlayersThatHavePermission(GuildPermission permission) {
-//        int minGuildRankLevel = this.getPermissions().get(permission).level;
-//
-//        HashSet<Player> onlinePlayers = new HashSet<>();
-//        for (Map.Entry<gPlayer, GuildRank> entry : this.getPlayers().entrySet()) {
-//            // GuildRank too low
-//            if (entry.getValue().level < minGuildRankLevel) {
-//                continue;
-//            }
-//
-//            // Add player if they are online
-//            Player onlinePlayer = entry.getKey().getPlayer();
-//            if (onlinePlayer != null) {
-//                onlinePlayers.add(onlinePlayer);
-//            }
-//        }
-//        return onlinePlayers;
-//    }
 
     public boolean isInvited(gPlayer player) {
         return this.getInvites().contains(player);
@@ -198,10 +175,6 @@ public class Guild {
 
     public boolean hasTruceRequestWith(Guild guild) {
         return this.getTruceRequests().contains(guild);
-    }
-
-    public Guild get() {
-        return this;
     }
 
     public int getPower() {
@@ -251,10 +224,6 @@ public class Guild {
 
     public boolean isGettingRaided() {
         return this.getRaidedBy() != null;
-    }
-
-    public void removeClaim(GuildChunk chunk) {
-        this.getClaimLocations().remove(chunk.getBoardLocation());
     }
 
     public void sendBroadcast(String title, String subtitle) {

@@ -20,9 +20,17 @@ public class PlayerData extends ObjectDataManager<gPlayer> {
     public void save(gPlayer player) {
         HashMap<String, Object> playerData = new HashMap<>();
 
+        // uuid
         playerData.put("uuid", String.valueOf(player.getUUID()));
-        playerData.put("guildRank", player.getGuildRank());
+        // guild rank
+        if (player.getGuildRank() != null) {
+            playerData.put("guildRank", player.getGuildRank().name());
+        } else {
+            playerData.put("guildRank", "null");
+        }
+        // name
         playerData.put("name", player.getName());
+        // power
         playerData.put("power", player.getPower());
 
         super.saveRaw(player.getUUID(), playerData);

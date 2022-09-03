@@ -39,11 +39,11 @@ public final class GuildWars extends JavaPlugin {
         // Fill gPlayers guilds
         gPlayers.get().loadGuilds();
 
-        // Fill Guilds guilds
-        Guilds.get().loadGuilds();
-
         // Load Guilds Index
         GuildsIndex.get().load();
+
+        // Fill Guilds guilds
+        Guilds.get().loadGuilds();
 
         // Load Board
         Board.fillBoard();

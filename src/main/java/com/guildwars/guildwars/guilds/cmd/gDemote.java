@@ -4,6 +4,7 @@ import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
 import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -63,8 +64,8 @@ public class gDemote extends gCommand{
         GuildRank newGuildRank = GuildRank.getGuildRankByLevel(demoteeGuildRank.level - 1);
         demotee.setGuildRank(newGuildRank);
 
-        // Update gPlayer
-        demotee.setGuildRank(newGuildRank);
+        // Save data
+        PlayerData.get().save(demotee);
 
         // Call Event
         PlayerGuildRankChangeEvent playerGuildRankChangeEvent = new PlayerGuildRankChangeEvent(demotee, newGuildRank);

@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.guilds.event.GPlayerQuitEvent;
 import com.guildwars.guildwars.guilds.event.GPlayerLoginEvent;
+import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
 import com.guildwars.guildwars.guilds.gPlayersIndex;
@@ -49,6 +50,9 @@ public class RegisterGPlayer extends Engine {
         // Add new gPlayer to gPlayer collection
         gPlayers.get().add(player);
 
+        // Save data
+        PlayerData.get().save(player);
+
         // Update index
         gPlayersIndex.get().add(player);
 
@@ -64,7 +68,11 @@ public class RegisterGPlayer extends Engine {
 
         // Update gPlayer name because player changed their name
         if (!gPlayerName.equals(playerName)) {
+            // Set name
             player.setName(playerPlayer.getName());
+
+            // Save data
+            PlayerData.get().save(player);
 
             // Update index
             gPlayersIndex.get().updateName(player, gPlayerName, playerName);

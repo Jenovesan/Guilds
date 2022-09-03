@@ -213,7 +213,6 @@ public class Messages {
             guildAnnouncementsSection.addDefault("claimed land", "&2&l%PLAYER% &a&lhas claimed land!");
             guildAnnouncementsSection.addDefault("unclaimed land", "&4&l%PLAYER% &c&lhas unclaimed land!");
             guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER% &c&lhas unclaimed all your guild's land!");
-            guildAnnouncementsSection.addDefault("overclaimed", "&4&l%GUILD% &c&lhas overclaimed some of your land!");
 
         // Guild broadcasts
         messagesFile.createSection("broadcasts");

@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.pUtil;
@@ -51,26 +52,18 @@ public class gPlayer {
 
     public void setGuild(Guild guild) {
         this.guild = guild;
-
-        this.changed();
     }
 
     public void setGuildRank(GuildRank rank) {
         this.guildRank = rank;
-
-        this.changed();
     }
 
     public void setPower(int power) {
         this.power = power;
-
-        this.changed();
     }
 
     public void setName(String name) {
         this.name = name;
-
-        this.changed();
     }
 
     public void setPlayer(Player player) {
@@ -96,8 +89,6 @@ public class gPlayer {
         this.player = player;
         this.uuid = String.valueOf(player.getUniqueId());
         this.name = player.getName();
-
-        this.changed();
     }
 
     public void sendMessage(String msg) {
@@ -128,14 +119,14 @@ public class gPlayer {
         this.setGuild(newGuild);
         this.setGuildRank(GuildRank.valueOf(Config.get().getString("join guild at rank")));
 
-        this.changed();
+        PlayerData.get().save(this);
     }
 
     public void leftGuild() {
         this.setGuild(null);
         this.setGuildRank(null);
 
-        this.changed();
+        PlayerData.get().save(this);
     }
 
     public boolean tryClaim(GuildChunk chunk) {
@@ -174,6 +165,9 @@ public class gPlayer {
         // Claim chunk for Guild
         guild.claim(chunk);
 
+        // Save data
+        GuildData.get().save(guild);
+
         // Send Guild announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed land", this));
 
@@ -198,6 +192,9 @@ public class gPlayer {
         // Unclaim chunk
         guild.unclaim(chunk);
 
+        // Save data
+        GuildData.get().save(guild);
+
         // Unclaim chunk on Board
         chunk.setWilderness();
 
@@ -217,9 +214,5 @@ public class gPlayer {
 
     public void setAutoMapping(boolean autoMapping) {
         this.autoMapping = autoMapping;
-    }
-
-    private void changed() {
-        PlayerData.get().save(this);
     }
 }

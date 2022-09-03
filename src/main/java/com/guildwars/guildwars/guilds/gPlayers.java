@@ -18,7 +18,7 @@ public class gPlayers extends Coll<gPlayer> {
         for (FileConfiguration dataFile : playerData) {
 
             String uuid = dataFile.getString("uuid");
-            GuildRank guildRank = GuildRank.valueOf(dataFile.getString("guildRank"));
+            GuildRank guildRank = dataFile.getString("guildRank") != null ? GuildRank.valueOf(dataFile.getString("guildRank")) : null;
             String name = dataFile.getString("name");
             float power = (float) dataFile.getDouble("power");
 

@@ -33,7 +33,7 @@ public class GuildData extends ObjectDataManager<Guild> {
         List<String> claimLocations = new ArrayList<>();
         guild.getClaimLocations().forEach(claim -> claimLocations.add(claim[0] + ":" + claim[1]));
         guildData.put("claimLocations", claimLocations);
-        guildData.put("raidedBy", guild.getRaidedBy().getId());
+        if (guild.getRaidedBy() != null) guildData.put("raidedBy", guild.getRaidedBy().getId());
         guildData.put("raidEndTime", guild.getRaidEndTime());
 
         super.saveRaw(guild.getId(), guildData);

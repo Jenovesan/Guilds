@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gEnemy extends gCommand{
@@ -63,6 +64,10 @@ public class gEnemy extends gCommand{
 
         // Have guildToEnemy enemy playerGuild
         guildToEnemy.addEnemy(playerGuild);
+
+        // Save data
+        GuildData.get().save(playerGuild);
+        GuildData.get().save(guildToEnemy);
 
         // Inform playerGuild
         playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.enemied guild", guildToEnemy));

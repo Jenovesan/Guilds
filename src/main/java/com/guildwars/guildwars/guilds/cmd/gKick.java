@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Bukkit;
@@ -59,7 +60,10 @@ public class gKick extends gCommand{
         }
 
         // Kick player
-        guild.kickPlayer(kickee);
+        guild.removePlayer(kickee);
+
+        // Save data
+        GuildData.get().save(guild);
 
         // Update gPlayer
         kickee.leftGuild();

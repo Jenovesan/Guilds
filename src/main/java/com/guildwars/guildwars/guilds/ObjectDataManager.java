@@ -28,7 +28,7 @@ public abstract class ObjectDataManager<T> {
     public ObjectDataManager(String folderName) {
 
         this.folderName = folderName;
-        this.dataFolder = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/" + this.folderName);
+        this.dataFolder = new File(Bukkit.getServer().getPluginManager().getPlugin("GuildWars").getDataFolder() + "/guilds/" + this.folderName);
         this.dataFolderPath = dataFolder.getAbsolutePath();
 
         if (!dataFolder.exists()) {

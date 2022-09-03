@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gUnclaimAll extends gCommand{
@@ -41,6 +42,9 @@ public class gUnclaimAll extends gCommand{
 
         // Update guild
         guild.unclaimAll();
+
+        // Save data
+        GuildData.get().save(guild);
 
         // Send Guild announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", player));
