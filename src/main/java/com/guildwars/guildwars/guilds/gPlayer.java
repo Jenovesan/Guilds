@@ -1,5 +1,6 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
@@ -226,6 +227,10 @@ public class gPlayer {
         // Unclaim chunk on Board
         chunk.setWilderness();
 
+        // Call event
+        GuildUnclaimEvent guildUnclaimEvent = new GuildUnclaimEvent(guild, chunk);
+        guildUnclaimEvent.run();
+
         // Send Guild announcement
         guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed single land", this));
 
@@ -247,6 +252,10 @@ public class gPlayer {
 
             // Unclaim chunk
             chunk.setWilderness();
+
+            // Call event
+            GuildUnclaimEvent guildUnclaimEvent = new GuildUnclaimEvent(guild, chunk);
+            guildUnclaimEvent.run();
 
             successfulUnclaims++;
         }

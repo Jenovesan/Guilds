@@ -9,4 +9,5 @@ public enum GuildPermission {
     CLAIM,
     UNCLAIM,
     UNCLAIM_ALL,
+    SETHOME,
 }

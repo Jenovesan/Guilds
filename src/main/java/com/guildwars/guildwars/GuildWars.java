@@ -24,28 +24,38 @@ public final class GuildWars extends JavaPlugin {
     }
 
     public void loadGuilds() {
+        System.out.println("-----Enabling Guilds-----");
+
         // Load Guilds data
+        System.out.println("-setting up files");
         com.guildwars.guildwars.guilds.files.FileManager.setupFiles();
 
         // Load gPlayers
+        System.out.println("-loading players");
         gPlayers.get().loadAll();
 
         // Load gPlayers Index
+        System.out.println("-loading players index");
         gPlayersIndex.get().load();
 
         // Load Guilds
+        System.out.println("-loading guilds");
         Guilds.get().loadAll();
 
         // Fill gPlayers guilds
+        System.out.println("-loading player guilds");
         gPlayers.get().loadGuilds();
 
         // Load Guilds Index
+        System.out.println("-loading guilds index");
         GuildsIndex.get().load();
 
         // Fill Guilds guilds
+        System.out.println("-loading guilds' guilds");
         Guilds.get().loadGuilds();
 
         // Load Board
+        System.out.println("-filling board");
         Board.fillBoard();
 
         // Load Guilds commands

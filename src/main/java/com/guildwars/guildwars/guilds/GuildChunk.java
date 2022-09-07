@@ -1,10 +1,13 @@
 package com.guildwars.guildwars.guilds;
 
+import org.bukkit.Chunk;
+
 public class GuildChunk {
 
     private Guild guild;
     private String guildId;
     private final int[] boardLocation;
+    private final Chunk chunk;
 
     public void claim(Guild hostGuild) {
         this.guild = hostGuild;
@@ -23,12 +26,17 @@ public class GuildChunk {
         return this.boardLocation;
     }
 
-    public GuildChunk(Guild hostGuild, int[] boardLocation) {
+    public Chunk getChunk() {
+        return this.chunk;
+    }
+
+    public GuildChunk(Guild hostGuild, int[] boardLocation, Chunk chunk) {
         this.guild = hostGuild;
         if (hostGuild != null) {
             this.guildId = hostGuild.getId();
         }
         this.boardLocation = boardLocation;
+        this.chunk = chunk;
     }
 
     public boolean isClaimable() {

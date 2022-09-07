@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.GuildData;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -49,8 +50,11 @@ public class Guilds extends Coll<Guild> {
             // raid end time
             long raidEndTime = dataFile.getLong("raidEndTime");
 
+            // home
+            Location home = dataFile.getLocation("home");
+
             // create guild
-            Guild newGuild = new Guild(id, name, description, players, permissions, claimLocations, raidEndTime);
+            Guild newGuild = new Guild(id, name, description, players, permissions, claimLocations, raidEndTime, home);
 
             // add guild
             getAll().add(newGuild);

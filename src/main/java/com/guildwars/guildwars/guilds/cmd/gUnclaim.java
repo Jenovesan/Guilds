@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 
@@ -53,11 +54,11 @@ public class gUnclaim extends gCommand{
                     // Inform guild
                     player.getGuild().sendAnnouncement(Messages.getMsg("guild announcements.unclaimed many land", player, successfulUnclaims));
                     // Inform player
-                    player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully unclaimed multiple chunks", successfulUnclaims));
+                    player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", successfulUnclaims));
                 }
                 // Player did not unclaim any chunks
                 else {
-                    player.sendNotifyMsg(Messages.getMsg("commands.claim.successfully unclaimed multiple chunks", successfulUnclaims));
+                    player.sendNotifyMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", successfulUnclaims));
                 }
 
             } catch (NumberFormatException e) {
@@ -72,6 +73,7 @@ public class gUnclaim extends gCommand{
             boolean unclaimed = player.tryUnclaim(chunk);
 
             if (unclaimed) {
+
                 // Inform player
                 player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed single chunk"));
             }

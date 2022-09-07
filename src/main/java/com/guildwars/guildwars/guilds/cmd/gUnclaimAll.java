@@ -1,8 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
+
+import java.util.HashSet;
 
 public class gUnclaimAll extends gCommand{
 
@@ -26,18 +27,19 @@ public class gUnclaimAll extends gCommand{
         Guild guild = player.getGuild();
 
         // Update Board
-        for (int[] claimBoardLocation : guild.getClaimLocations()) {
-            Board.getBoard()[claimBoardLocation[0]][claimBoardLocation[1]].setWilderness();
+        HashSet<int[]> claimLocations = guild.getClaimLocations();
+        GuildChunk[] claims = new GuildChunk[claimLocations.size()];
+        int i = 0;
+        for (int[] boardLocation : claimLocations) {
+            claims[i] = Board.getBoard()[boardLocation[0]][boardLocation[1]];
+            i++;
         }
+        int unclaims = player.tryUnclaim(claims);
 
-        // Update guild
-        guild.unclaimAll();
-
-        // Save data
-        GuildData.get().save(guild);
-
-        // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", player));
+        if (unclaims > 0) {
+            // Send Guild announcement
+            guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", player));
+        }
 
         // Inform player
         player.sendSuccessMsg(Messages.getMsg("commands.unclaimall.successfully unclaimed all"));

@@ -192,6 +192,12 @@ public class Messages {
         commandsSection.addDefault("autoclaim.description", "&2Claim each new chunk you move into");
         commandsSection.addDefault("autoclaim.usage", "&2/g autoclaim");
         commandsSection.addDefault("autoclaim.cannot claim in world", "&cYou cannot claim land in this world");
+        // sethome
+        commandsSection.addDefault("sethome.description", "&2Sets your guild's home");
+        commandsSection.addDefault("sethome.usage", "&2/g sethome");
+        commandsSection.addDefault("sethome.can only sethome in territory", "&cYou must set your guild's home in your guild's territory");
+        commandsSection.addDefault("sethome.cannot create bed here", "&cCannot create your guild home's bed here");
+        commandsSection.addDefault("sethome.successfully sethome", "&aYou set your guild's home");
 
         // Guild announcements
         messagesFile.createSection("guild announcements");
@@ -215,6 +221,9 @@ public class Messages {
         guildAnnouncementsSection.addDefault("unclaimed all", "&4&l%PLAYER% &c&lhas unclaimed all your guild's land!");
         guildAnnouncementsSection.addDefault("claimed many land", "&2&l%PLAYER% &a&lhas claimed %AMOUNT% chunks!");
         guildAnnouncementsSection.addDefault("unclaimed many land", "&4&l%PLAYER% &c&lhas unclaimed %AMOUNT% chunks!");
+        guildAnnouncementsSection.addDefault("sethome", "&2&l%PLAYER% &a&lhas set your guild's home!");
+        guildAnnouncementsSection.addDefault("home destroyed", "&c&lYour guild's home has been destroyed!");
+        guildAnnouncementsSection.addDefault("home unclaimed", "&c&lYour guild's home has been unclaimed!");
 
         // Guild broadcasts
         messagesFile.createSection("broadcasts");

@@ -11,5 +11,6 @@ public class EngineIntegration {
         new RegisterGPlayer();
         new NewTerritoryInform();
         new ChangeGuildLeadershipOnLeaderBan();
+        new Home();
     }
 }

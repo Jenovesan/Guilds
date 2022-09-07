@@ -35,6 +35,7 @@ public class GuildData extends ObjectDataManager<Guild> {
         guildData.put("claimLocations", claimLocations);
         if (guild.getRaidedBy() != null) guildData.put("raidedBy", guild.getRaidedBy().getId());
         guildData.put("raidEndTime", guild.getRaidEndTime());
+        guildData.put("home", guild.getHome());
 
         super.saveRaw(guild.getId(), guildData);
     }

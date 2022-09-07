@@ -3,6 +3,7 @@ package com.guildwars.guildwars.guilds;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -20,6 +21,7 @@ public class Guild {
     private HashSet<int[]> claimLocations = new HashSet<>();
     private Guild raidedBy;
     private long raidEndTime;
+    private Location home;
 
     public String getId() {
         return id;
@@ -65,6 +67,10 @@ public class Guild {
         return raidEndTime;
     }
 
+    public Location getHome() {
+        return home;
+    }
+
     // Creating a new guild
     public Guild(gPlayer creator, String name, String description) {
         this.id = gUtil.getNewUUID();
@@ -83,7 +89,8 @@ public class Guild {
                  HashSet<gPlayer> players,
                  HashMap<GuildPermission, GuildRank> permissions,
                  HashSet<int[]> claimLocations,
-                 long raidEndTime) {
+                 long raidEndTime,
+                 Location home) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -91,6 +98,7 @@ public class Guild {
         this.permissions = permissions;
         this.claimLocations = claimLocations;
         this.raidEndTime = raidEndTime;
+        this.home = home;
     }
 
     public void loadDefaults() {
@@ -103,6 +111,7 @@ public class Guild {
         this.permissions.put(GuildPermission.CLAIM, GuildRank.valueOf(Config.get().getString("default permissions.claim")));
         this.permissions.put(GuildPermission.UNCLAIM, GuildRank.valueOf(Config.get().getString("default permissions.unclaim")));
         this.permissions.put(GuildPermission.UNCLAIM_ALL, GuildRank.valueOf(Config.get().getString("default permissions.unclaim_all")));
+        this.permissions.put(GuildPermission.SETHOME, GuildRank.valueOf(Config.get().getString("default permissions.sethome")));
     }
 
     public void setName(String newName) {
@@ -208,10 +217,6 @@ public class Guild {
         this.getClaimLocations().remove(chunk.getBoardLocation());
     }
 
-    public void unclaimAll() {
-        this.getClaimLocations().clear();
-    }
-
     public int getExcessPower() {
         return this.getPower() - this.getNumberOfClaims();
     }
@@ -258,5 +263,13 @@ public class Guild {
 
         // Remove index
         GuildsIndex.get().remove(this);
+    }
+
+    public void setHome(Location home) {
+        this.home = home;
+    }
+
+    public boolean hasHome() {
+        return this.home != null;
     }
 }

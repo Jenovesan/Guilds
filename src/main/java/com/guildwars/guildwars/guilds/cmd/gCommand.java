@@ -8,7 +8,7 @@ public abstract class gCommand {
     final String cmdName;
     String description;
     String usage;
-    Integer minArgs;
+    Integer minArgs = 0;
 
     public gCommand(String cmdName) {
         this.cmdName = cmdName;

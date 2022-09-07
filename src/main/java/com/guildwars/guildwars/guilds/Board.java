@@ -1,8 +1,10 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.guilds.files.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class Board {
 
@@ -15,10 +17,15 @@ public class Board {
     }
 
     public static void fillBoard() {
+
+        World world = Bukkit.getWorld(Config.get().getString("world name"));
+
         // Fill board with Guilds' claims
         for (Guild guild : Guilds.get().getAll()) {
             for (int[] claimLocation : guild.getClaimLocations()) {
-                getBoard()[claimLocation[0]][claimLocation[1]] = new GuildChunk(guild, claimLocation);
+                int x = claimLocation[0];
+                int z = claimLocation[1];
+                getBoard()[x][z] = new GuildChunk(guild, claimLocation, world.getChunkAt(getChunkCord(x), getChunkCord(z)));
             }
         }
 
@@ -28,12 +35,22 @@ public class Board {
                 if (getBoard()[x][z] != null) {
                     continue;
                 }
-                getBoard()[x][z] = new GuildChunk(null, new int[]{x, z});
+                getBoard()[x][z] = new GuildChunk(null, new int[]{x, z}, world.getChunkAt(getChunkCord(x), getChunkCord(z)));
             }
         }
     }
 
-    public static int getChunkCord(int chunkCord) {
+    public static int getChunkCord(int boardCord) {
+        if (boardCord > worldClaimRadius) {
+            // Chunk cord is positive
+            return boardCord - worldClaimRadius;
+        } else {
+            // Chunk cord is negative
+            return (worldClaimRadius - boardCord) * -1;
+        }
+    }
+
+    public static int getBoardCord(int chunkCord) {
         if (chunkCord > 0) {
             return worldClaimRadius + chunkCord;
         } else {
@@ -49,13 +66,21 @@ public class Board {
         return getGuildChunkAt(location.getChunk().getX(), location.getChunk().getZ());
     }
 
+    public static GuildChunk getGuildChunkAt(Chunk chunk) {
+        return getGuildChunkAt(chunk.getX(), chunk.getZ());
+    }
+
     public static GuildChunk getGuildChunkAt(int xRaw, int zRaw) {
-        int x = getChunkCord(xRaw);
-        int z = getChunkCord(zRaw);
+        int x = getBoardCord(xRaw);
+        int z = getBoardCord(zRaw);
         if (x < 0 || x >= worldClaimRadius * 2 || z < 0 || z >= worldClaimRadius * 2) {
             return null;
         }
         return getBoard()[x][z];
+    }
+
+    public static Guild getGuildAt(Location location) {
+        return getGuildChunkAt(location).getGuild();
     }
 
     public static GuildChunk getGuildChunkAt(int[] boardLocation) {
@@ -99,6 +124,4 @@ public class Board {
         }
         return nearbyChunks;
     }
-
-
 }
