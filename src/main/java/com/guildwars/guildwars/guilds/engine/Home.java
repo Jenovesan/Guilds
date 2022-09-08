@@ -3,7 +3,6 @@ package com.guildwars.guildwars.guilds.engine;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.*;
@@ -13,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
 
 public class Home extends Engine{
 
@@ -24,6 +24,11 @@ public class Home extends Engine{
     @EventHandler(priority = EventPriority.MONITOR)
     public void detectIfHomeIsBlownUp(BlockExplodeEvent event) {
         testIfGuildBedIsDestroyed(event.getBlock());
+    }
+
+    @EventHandler(priority  = EventPriority.MONITOR)
+    public void detectIfHomeIsBrokenByPiston(BlockPistonExtendEvent event) {
+        event.getBlocks().forEach(this::testIfGuildBedIsDestroyed);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -53,7 +58,6 @@ public class Home extends Engine{
     }
 
     private void testIfGuildBedIsDestroyed(Block block) {
-        System.out.println("triggerd");
         if (block.getType() != Material.RED_BED) return;
 
         // Get the bed pieces
