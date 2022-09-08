@@ -10,4 +10,5 @@ public enum GuildPermission {
     UNCLAIM,
     UNCLAIM_ALL,
     SETHOME,
+    HOME,
 }
