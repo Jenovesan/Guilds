@@ -198,6 +198,10 @@ public class Messages {
         commandsSection.addDefault("sethome.can only sethome in territory", "&cYou must set your guild's home in your guild's territory");
         commandsSection.addDefault("sethome.cannot create bed here", "&cCannot create your guild home's bed here");
         commandsSection.addDefault("sethome.successfully sethome", "&aYou set your guild's home");
+        // Home
+        commandsSection.addDefault("home.description", "&2Teleports you to your guild's home");
+        commandsSection.addDefault("home.usage", "&2/g home");
+        commandsSection.addDefault("home.no home", "&cYour guild does not have a home set");
 
         // Guild announcements
         messagesFile.createSection("guild announcements");

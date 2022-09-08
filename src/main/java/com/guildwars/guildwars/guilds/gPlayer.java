@@ -1,31 +1,20 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.core.CorePlayer;
 import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
 import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.entity.Player;
 
-public class gPlayer {
+public class gPlayer extends CorePlayer {
 
-    private Player player = null;
-    private final String uuid;
     private Guild guild;
     private GuildRank guildRank;
-    private String name;
     private float power = Config.get().getInt("player max power");
     private boolean autoClaiming = false;
     private boolean autoMapping = false;
-
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    public String getUUID() {
-        return this.uuid;
-    }
 
     public Guild getGuild() {
         return this.guild;
@@ -33,10 +22,6 @@ public class gPlayer {
 
     public GuildRank getGuildRank() {
         return this.guildRank;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public float getPower() {
@@ -63,14 +48,6 @@ public class gPlayer {
         this.power = power;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     public void changePower(float changeBy) {
         int playerMaxPower = Config.get().getInt("player max power");
         int playerMinPower = Config.get().getInt("player min power");
@@ -79,39 +56,14 @@ public class gPlayer {
 
     // For loading gPlayer from data
     public gPlayer(String uuid, GuildRank guildRank, String name, float power) {
-        this.uuid = uuid;
+        super(uuid, name);
         this.guildRank = guildRank;
-        this.name = name;
         this.power = power;
     }
 
     // For creating a gPlayer for the first time
     public gPlayer (Player player) {
-        this.player = player;
-        this.uuid = String.valueOf(player.getUniqueId());
-        this.name = player.getName();
-    }
-
-    public void sendMessage(String msg) {
-        getPlayer().sendMessage(msg);
-    }
-
-    public void sendSuccessMsg(String msg) {
-        if (this.player != null) {
-            pUtil.sendSuccessMsg(this.getPlayer(), msg);
-        }
-    }
-
-    public void sendFailMsg(String msg) {
-        if (this.player != null) {
-            pUtil.sendFailMsg(this.getPlayer(), msg);
-        }
-    }
-
-    public void sendNotifyMsg(String msg) {
-        if (this.player != null) {
-            pUtil.sendNotifyMsg(this.getPlayer(), msg);
-        }
+        super(player);
     }
 
     public Boolean isInGuild() { return getGuild() != null; }
@@ -264,10 +216,6 @@ public class gPlayer {
         GuildData.get().save(guild);
 
         return successfulUnclaims;
-    }
-
-    public boolean isOnline() {
-        return player != null;
     }
 
     public void setAutoClaiming(boolean autoClaiming) {

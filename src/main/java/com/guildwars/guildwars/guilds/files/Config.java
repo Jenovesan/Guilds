@@ -74,6 +74,7 @@ public class Config {
         defaultPermissionsSection.addDefault("unclaim", "MOD");
         defaultPermissionsSection.addDefault("unclaim_all", "COLEADER");
         defaultPermissionsSection.addDefault("sethome", "MOD");
+        defaultPermissionsSection.addDefault("home", "MEMBER");
 
         //default permissions
         configFile.createSection("broadcasts");

@@ -112,6 +112,7 @@ public class Guild {
         this.permissions.put(GuildPermission.UNCLAIM, GuildRank.valueOf(Config.get().getString("default permissions.unclaim")));
         this.permissions.put(GuildPermission.UNCLAIM_ALL, GuildRank.valueOf(Config.get().getString("default permissions.unclaim_all")));
         this.permissions.put(GuildPermission.SETHOME, GuildRank.valueOf(Config.get().getString("default permissions.sethome")));
+        this.permissions.put(GuildPermission.HOME, GuildRank.valueOf(Config.get().getString("default permissions.home")));
     }
 
     public void setName(String newName) {
