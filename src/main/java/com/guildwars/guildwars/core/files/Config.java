@@ -30,10 +30,16 @@ public class Config {
     }
 
     public static void loadDefaults() {
+        // Teleporting title
+        configFile.createSection("teleporting title");
+        ConfigurationSection teleportingTitlesSection = configFile.getConfigurationSection("teleporting title");
+        teleportingTitlesSection.addDefault("bar length", 40);
+        teleportingTitlesSection.addDefault("fadeIn", 0);
+        teleportingTitlesSection.addDefault("stay", 2);
+        teleportingTitlesSection.addDefault("fadeOut", 0);
         // Chat channels
         configFile.createSection("chat channels");
         ConfigurationSection chatChannelsSection = configFile.getConfigurationSection("chat channels");
-        assert chatChannelsSection != null;
         chatChannelsSection.addDefault("GUILD", "&2[G] <display name> &a<msg>"); // Can use name instead to format the name
     }
 

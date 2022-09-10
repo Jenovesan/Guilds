@@ -60,6 +60,7 @@ public class Config {
         configFile.addDefault("own guild desc prefix", "&a");
         configFile.addDefault("enemy guild desc prefix", "&c");
         configFile.addDefault("other guild desc prefix", "&f");
+        configFile.addDefault("teleport to home charge up (ticks)", 200);
 
         //default permissions
         configFile.createSection("default permissions");
