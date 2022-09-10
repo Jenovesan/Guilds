@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
+import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
@@ -31,5 +32,6 @@ public class gHome extends gCommand {
 
         Location guildHome = guild.getHome();
 
+        player.teleport(Config.get().getInt("teleport to home charge up (ticks)"), guildHome);
     }
 }
