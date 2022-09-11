@@ -1,10 +1,12 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Bed;
@@ -53,7 +55,7 @@ public class Home extends Engine{
             GuildData.get().save(guild);
 
             // Send guild announcement
-            guild.sendAnnouncement(Messages.getMsg("guild announcements.home unclaimed"));
+            guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.home unclaimed"));
         }
     }
 
@@ -90,7 +92,7 @@ public class Home extends Engine{
                 GuildData.get().save(guild);
 
                 // Send guild announcement
-                guild.sendAnnouncement(Messages.getMsg("guild announcements.home destroyed"));
+                guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.home destroyed"));
 
                 // Only one guild home can be destroyed, so if a guild home is destroyed, stop checking other guild homes
                 return;

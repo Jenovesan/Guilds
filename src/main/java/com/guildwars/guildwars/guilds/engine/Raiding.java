@@ -1,13 +1,15 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildChunk;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.utils.util;
@@ -17,7 +19,7 @@ import org.bukkit.event.EventPriority;
 public class Raiding extends Engine {
 
     public Raiding() {
-        super(Config.get().getLong("raiding kick non-raiders update (tick)"));
+        super(Config.get(Plugin.GUILDS).getLong("raiding kick non-raiders update (tick)"));
     }
 
     @EventHandler
@@ -34,7 +36,7 @@ public class Raiding extends Engine {
 
         // Guild has more claims than power
         if (!playerGuild.isGettingRaided() && playerGuild.getNumberOfClaims() > playerGuild.getPower()) {
-            int raidDuration = Config.get().getInt("raiding duration (min)");
+            int raidDuration = Config.get(Plugin.GUILDS).getInt("raiding duration (min)");
 
             // Set raidable
             playerGuild.setRaidedBy(killerGuild);
@@ -44,8 +46,8 @@ public class Raiding extends Engine {
             GuildData.get().save(playerGuild);
 
             // Broadcasts
-            playerGuild.sendBroadcast(Messages.getMsg("broadcasts.raidable title"), Messages.getMsg("broadcasts.raidable subtitle", raidDuration));
-            killerGuild.sendBroadcast(Messages.getMsg("broadcasts.raiding title", playerGuild), Messages.getMsg("broadcasts.raiding subtitle", raidDuration));
+            playerGuild.sendBroadcast(Messages.get(Plugin.GUILDS).get("broadcasts.raidable title"), Messages.get(Plugin.GUILDS).get("broadcasts.raidable subtitle", raidDuration));
+            killerGuild.sendBroadcast(Messages.get(Plugin.GUILDS).get("broadcasts.raiding title", playerGuild), Messages.get(Plugin.GUILDS).get("broadcasts.raiding subtitle", raidDuration));
         }
     }
 
@@ -66,15 +68,15 @@ public class Raiding extends Engine {
                 GuildData.get().save(guild);
 
                 // Reset power
-                int playerMaxPower = Config.get().getInt("player max power");
+                int playerMaxPower = Config.get(Plugin.GUILDS).getInt("player max power");
                 for (gPlayer player : guild.getPlayers()) {
                     player.setPower(playerMaxPower);
                     PlayerData.get().save(player);
                 }
 
                 // Send broadcasts
-                guild.sendBroadcast(Messages.getMsg("broadcasts.no longer raidable title"), null);
-                raidingGuild.sendBroadcast(Messages.getMsg("broadcasts.no longer raiding title", guild), null);
+                guild.sendBroadcast(Messages.get(Plugin.GUILDS).get("broadcasts.no longer raidable title"), null);
+                raidingGuild.sendBroadcast(Messages.get(Plugin.GUILDS).get("broadcasts.no longer raiding title", guild), null);
             }
         }
     }
@@ -94,7 +96,7 @@ public class Raiding extends Engine {
         // Chunk host is being raided and the player's guild is not raiding them
         if (chunkHost.getRaidedBy() != null && chunkHost.getRaidedBy() != event.getPlayer().getGuild()) {
             event.setCancelled(true);
-            player.sendFailMsg(Messages.getMsg("raid interfering", chunkHost));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("raid interfering", chunkHost));
         }
     }
 }

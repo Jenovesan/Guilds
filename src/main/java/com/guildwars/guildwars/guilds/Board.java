@@ -1,6 +1,8 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.guilds.files.Config;
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -8,7 +10,7 @@ import org.bukkit.World;
 
 public class Board {
 
-    private final static int worldClaimRadius = Config.get().getInt("world claim radius (chunks)");
+    private final static int worldClaimRadius = Config.get(Plugin.GUILDS).getInt("world claim radius (chunks)");
 
     private static GuildChunk[][] board = new GuildChunk[worldClaimRadius * 2][worldClaimRadius * 2];
 
@@ -18,7 +20,7 @@ public class Board {
 
     public static void fillBoard() {
 
-        World world = Bukkit.getWorld(Config.get().getString("world name"));
+        World world = Bukkit.getWorld(Config.get(Plugin.GUILDS).getString("world name"));
 
         // Fill board with Guilds' claims
         for (Guild guild : Guilds.get().getAll()) {

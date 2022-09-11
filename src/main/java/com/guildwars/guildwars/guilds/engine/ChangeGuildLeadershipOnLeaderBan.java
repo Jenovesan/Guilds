@@ -1,9 +1,11 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.GPlayerQuitEvent;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayer;
 import org.bukkit.entity.Player;
@@ -42,7 +44,7 @@ public class ChangeGuildLeadershipOnLeaderBan extends Engine{
             PlayerData.get().save(player);
 
             // Inform guild
-            guild.sendAnnouncement(Messages.getMsg("guild announcements.gave leadership", player, newLeader));
+            guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.gave leadership", player, newLeader));
         }
     }
 
@@ -52,7 +54,6 @@ public class ChangeGuildLeadershipOnLeaderBan extends Engine{
         GuildRank[] guildRanks = GuildRank.getAll();
         for (int i = guildRanks.length-2; i > -1; i--) {
             GuildRank rank = guildRanks[i];
-            System.out.println(rank.name());
 
             for (gPlayer member : guild.getPlayers()) {
                 if (member.getGuildRank() == rank) {

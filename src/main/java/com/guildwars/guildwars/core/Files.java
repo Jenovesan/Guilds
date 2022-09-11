@@ -1,44 +1,45 @@
-package com.guildwars.guildwars.core.files;
+package com.guildwars.guildwars.core;
 
-import com.guildwars.guildwars.ConfigFile;
+import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.GuildWars;
-import com.guildwars.guildwars.MessageFile;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 
 import java.io.File;
 
-public class FileManager {
+public class Files {
 
-    public FileManager instance;
+    public Files instance;
 
-    public FileManager get() {
+    public Files get() {
         return instance;
     }
 
     private final String folder;
 
-    private final MessageFile messageFile;
+    private final Messages messageFile;
 
-    public MessageFile getMsgFile() {
+    public Messages getMessages() {
         return messageFile;
     }
 
-    private ConfigFile configFile;
+    private Config configFile;
 
-    public ConfigFile getConfFile() {
+    public Config getConfig() {
         return configFile;
     }
 
-    public FileManager(String folder) {
+    public Files(Plugin plugin) {
         // Initialization
         instance = this;
-        this.folder = folder;
+        this.folder = plugin.name().toLowerCase();
 
         // Make directory
         mkDir();
 
         // Load files
-        messageFile = new MessageFile("core");
-        configFile = new ConfigFile("core");
+        messageFile = new Messages(plugin);
+        configFile = new Config(plugin);
     }
 
     private void mkDir() {

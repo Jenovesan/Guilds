@@ -1,7 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.files.Messages;
 
 import java.util.HashSet;
 
@@ -15,7 +17,7 @@ public class gUnclaimAll extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -38,10 +40,10 @@ public class gUnclaimAll extends gCommand{
 
         if (unclaims > 0) {
             // Send Guild announcement
-            guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed all", player));
+            guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.unclaimed all", player));
         }
 
         // Inform player
-        player.sendSuccessMsg(Messages.getMsg("commands.unclaimall.successfully unclaimed all"));
+        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.unclaimall.successfully unclaimed all"));
     }
 }

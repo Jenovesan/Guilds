@@ -1,8 +1,10 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.utils.util;
 
 public class gDisband extends gCommand{
@@ -15,12 +17,12 @@ public class gDisband extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
         if (player.getGuildRank() != GuildRank.LEADER) {
-            player.sendFailMsg(Messages.getMsg("commands.guild rank too low", util.formatEnum(GuildRank.LEADER)));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.guild rank too low", util.formatEnum(GuildRank.LEADER)));
             return;
         }
 
@@ -30,14 +32,14 @@ public class gDisband extends gCommand{
         guild.disband();
 
         // Send Guild Announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.disband"));
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.disband"));
 
         // Call GuildDisbandEvent
         GuildDisbandEvent guildDisbandEvent = new GuildDisbandEvent(guild);
         guildDisbandEvent.run();
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.disband.successfully disbanded", guild));
+        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.disband.successfully disbanded", guild));
 
     }
 }

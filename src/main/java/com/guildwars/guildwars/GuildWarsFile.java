@@ -20,9 +20,9 @@ public class GuildWarsFile<T> {
         return configuration;
     }
 
-    public GuildWarsFile(String name, String folder) {
+    public GuildWarsFile(String name, Plugin plugin) {
         this.name = name;
-        this.folder = folder;
+        this.folder = plugin.name().toLowerCase();
 
         loadFile();
     }

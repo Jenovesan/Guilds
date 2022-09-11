@@ -1,6 +1,7 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.gPlayer;
 
 public abstract class gCommand {
@@ -12,8 +13,8 @@ public abstract class gCommand {
 
     public gCommand(String cmdName) {
         this.cmdName = cmdName;
-        this.description = Messages.getMsg("commands." + this.cmdName + ".description");
-        this.usage = Messages.getMsg("commands." + this.cmdName + ".usage");
+        this.description = Messages.get(Plugin.GUILDS).get("commands." + this.cmdName + ".description");
+        this.usage = Messages.get(Plugin.GUILDS).get("commands." + this.cmdName + ".usage");
     }
 
     public String getDescription() {

@@ -5,12 +5,20 @@ import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.utils.util;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class MessageFile extends GuildWarsFile<String> {
+public class Messages extends GuildWarsFile<String> {
 
-    public MessageFile(String folder) {
-        super("messages", folder);
+    private static HashMap<Plugin, Messages> messageFiles = new HashMap<>();
+
+    public static Messages get(Plugin plugin) {
+        return messageFiles.get(plugin);
+    }
+
+    public Messages(Plugin plugin) {
+        super("messages", plugin);
+        messageFiles.put(plugin, this);
     }
 
 
@@ -18,7 +26,7 @@ public class MessageFile extends GuildWarsFile<String> {
 
         String string = messagesCache.get(path);
 
-        // First time string is retrieved from config
+        // First time string is retrieved from configuration
         if (string == null) {
             string = getConfiguration().getString(path);
             messagesCache.put(path, string);
@@ -28,7 +36,7 @@ public class MessageFile extends GuildWarsFile<String> {
             return util.translateColors(string);
         }
         else {
-            return format(string);
+            return util.translateColors(format(string, objects));
         }
     }
 
@@ -53,7 +61,7 @@ public class MessageFile extends GuildWarsFile<String> {
                 string = string.replace("%GUILD%", ((Guild) object).getName());
             }
             else if (object instanceof gPlayer) {
-                string = string.replace("%PLAYER%", ((gPlayer) object).getName());
+                string = string.replace("%GPLAYER%", ((gPlayer) object).getName());
             }
             else if (object instanceof GuildRank) {
                 string = string.replace("%GUILDRANK", ((GuildRank) object).name());

@@ -1,9 +1,11 @@
 package com.guildwars.guildwars.guilds.engine;
 
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.*;
-import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,7 +27,7 @@ public class AutoClaim extends Engine {
 
         if (claimed) {
             // Inform player
-            player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
+            player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.claim.successfully claimed single chunk"));
         }
     }
 
@@ -34,7 +36,7 @@ public class AutoClaim extends Engine {
         gPlayer player = event.getPlayer();
         if (!gUtil.checkPermission(player, GuildPermission.CLAIM, false)) {
             player.setAutoClaiming(false);
-            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
+            player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("autoclaiming.disabled"));
         }
     }
 
@@ -42,7 +44,7 @@ public class AutoClaim extends Engine {
     public void removePlayerOnGuildChangeEvent(PlayerGuildChangeEvent event) {
         gPlayer player = event.getPlayer();
         if (player.isAutoClaiming()) {
-            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
+            player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("autoclaiming.disabled"));
         }
         player.setAutoClaiming(false);
     }
@@ -61,7 +63,7 @@ public class AutoClaim extends Engine {
             // Player's rank is below new guild rank
             if (rank.level < newGuildRank.level) {
                 player.setAutoClaiming(false);
-                player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
+                player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("autoclaiming.disabled"));
             }
 
         }

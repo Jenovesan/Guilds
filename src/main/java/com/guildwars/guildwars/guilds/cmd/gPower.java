@@ -1,6 +1,8 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gPower extends gCommand{
@@ -13,7 +15,7 @@ public class gPower extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -21,6 +23,6 @@ public class gPower extends gCommand{
         int guildPower = player.getGuild().getPower();
         int maxGuildPower = player.getGuild().getMaxPower();
 
-        player.sendNotifyMsg(Messages.getMsg("commands.power.power msg", guildPower + "/" + maxGuildPower));
+        player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.power.power msg", guildPower + "/" + maxGuildPower));
     }
 }

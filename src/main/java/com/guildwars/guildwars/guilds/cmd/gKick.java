@@ -1,9 +1,11 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gKick extends gCommand{
 
@@ -17,7 +19,7 @@ public class gKick extends gCommand{
 
         // Checks
         if (!kicker.isInGuild()) {
-            kicker.sendFailMsg(Messages.getMsg("commands.invite.invitee not found"));
+            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee not found"));
             return;
         }
 
@@ -26,7 +28,7 @@ public class gKick extends gCommand{
         gPlayer kickee = gPlayersIndex.get().getByName(args[0]);
 
         if (kickee == null) {
-            kicker.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));
+            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
             return;
         }
 
@@ -35,14 +37,14 @@ public class gKick extends gCommand{
         }
 
         if (kickee.getGuild() != guild) {
-            kicker.sendFailMsg(Messages.getMsg("commands.player not in your guild", kickee));
+            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not in your guild", kickee));
             return;
         }
 
         GuildRank kickerRank = kicker.getGuildRank();
         GuildRank kickeeRank = kickee.getGuildRank();
         if (kickerRank.level <= kickeeRank.level) {
-            kicker.sendFailMsg(Messages.getMsg("commands.kick.guild rank not higher"));
+            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.kick.guild rank not higher"));
             return;
         }
 
@@ -56,16 +58,16 @@ public class gKick extends gCommand{
         kickee.leftGuild();
 
         // Send Guild Announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.player kicked", kicker, kickee));
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player kicked", kicker, kickee));
 
         // Call event
         PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(kickee, null, PlayerGuildChangeEvent.Reason.KICKED);
         playerGuildChangeEvent.run();
 
         // Inform kickee
-        kickee.sendNotifyMsg(Messages.getMsg("commands.kick.kickee kicked msg", guild));
+        kickee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.kick.kickee kicked msg", guild));
 
         // Inform kicker
-        kicker.sendSuccessMsg(Messages.getMsg("commands.kick.successfully kicked", kickee));
+        kicker.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.kick.successfully kicked", kickee));
     }
 }

@@ -1,9 +1,11 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.core.ChatChannel;
 import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
 import org.bukkit.entity.Player;
@@ -19,7 +21,7 @@ public class gChat extends gCommand {
 
         // Checks
         if (!gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            gPlayer.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -59,12 +61,12 @@ public class gChat extends gCommand {
     private void joinGuildChat(gPlayer gPlayer, Player player) {
         ChatChannels.setPlayerChatChannel(player, ChatChannel.GUILD);
         // Inform
-        gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.joined guild chat"));
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.chat.joined guild chat"));
     }
 
     private void leaveGuildChat(gPlayer gPlayer, Player player) {
         ChatChannels.setPlayerChatChannel(player, null);
         // Inform
-        gPlayer.sendSuccessMsg(Messages.getMsg("commands.chat.left guild chat"));
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.chat.left guild chat"));
     }
 }

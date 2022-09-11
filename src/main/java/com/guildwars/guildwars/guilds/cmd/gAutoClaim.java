@@ -1,7 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
 
@@ -15,7 +17,7 @@ public class gAutoClaim extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -24,7 +26,7 @@ public class gAutoClaim extends gCommand{
         }
 
         if (!gUtil.isInMainWorld(player)) {
-            player.sendFailMsg(Messages.getMsg("autoclaim.cannot claim in world"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("autoclaim.cannot claim in world"));
             return;
         }
 
@@ -33,13 +35,13 @@ public class gAutoClaim extends gCommand{
         // Remove them from autoclaiming
         if (player.isAutoClaiming()) {
             player.setAutoClaiming(false);
-            player.sendNotifyMsg(Messages.getMsg("autoclaiming.disabled"));
+            player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("autoclaiming.disabled"));
         }
         // Player is not auto-claiming.
         // Add them to autoclaiming
         else {
             player.setAutoClaiming(true);
-            player.sendNotifyMsg(Messages.getMsg("autoclaiming.enabled"));
+            player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("autoclaiming.enabled"));
         }
         // Informing the player is handled in AutoClaim
     }

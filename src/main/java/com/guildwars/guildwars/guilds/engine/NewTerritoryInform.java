@@ -1,10 +1,12 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildChunk;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
-import com.guildwars.guildwars.guilds.files.Config;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gUtil;
 import org.bukkit.entity.Player;
@@ -12,9 +14,9 @@ import org.bukkit.event.EventHandler;
 
 public class NewTerritoryInform extends Engine {
 
-    private static final int FADE_IN = Config.get().getInt("broadcasts.new territory.fadeIn");
-    private static final int STAY = Config.get().getInt("broadcasts.new territory.stay");
-    private static final int FADE_OUT = Config.get().getInt("broadcasts.new territory.fadeOut");
+    private static final int FADE_IN = Config.get(Plugin.GUILDS).getInt("broadcasts.new territory.fadeIn");
+    private static final int STAY = Config.get(Plugin.GUILDS).getInt("broadcasts.new territory.stay");
+    private static final int FADE_OUT = Config.get(Plugin.GUILDS).getInt("broadcasts.new territory.fadeOut");
 
 
     @EventHandler
@@ -27,8 +29,8 @@ public class NewTerritoryInform extends Engine {
             // Player moved into outlands
             if (oldChunk != null) {
                 playerPlayer.sendTitle(
-                        Messages.getMsg("new territory titles.outlands.title"),
-                        Messages.getMsg("new territory titles.outlands.subtitle"),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.outlands.title"),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.outlands.subtitle"),
                         FADE_IN, STAY, FADE_OUT
                 );
             }
@@ -42,8 +44,8 @@ public class NewTerritoryInform extends Engine {
             // Player moved into wilderness
             if (newChunk.isWilderness()) {
                 playerPlayer.sendTitle(
-                        Messages.getMsg("new territory titles.wilderness.title"),
-                        Messages.getMsg("new territory titles.wilderness.subtitle"),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.wilderness.title"),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.wilderness.subtitle"),
                         FADE_IN, STAY, FADE_OUT
                 );
             }
@@ -51,8 +53,8 @@ public class NewTerritoryInform extends Engine {
             else {
                 gPlayer player = event.getPlayer();
                 playerPlayer.sendTitle(
-                        Messages.getMsg("new territory titles.guild.title", gUtil.getGuildToName(player, newChunkGuild)),
-                        Messages.getMsg("new territory titles.guild.subtitle", gUtil.getGuildToDesc(player, newChunkGuild)),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.guild.title", gUtil.getGuildToName(player, newChunkGuild)),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.guild.subtitle", gUtil.getGuildToDesc(player, newChunkGuild)),
                         FADE_IN, STAY, FADE_OUT
                 );
             }

@@ -1,8 +1,9 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.GuildWars;
-import com.guildwars.guildwars.guilds.files.Config;
-import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,21 +17,21 @@ public class BoardMap implements Runnable {
     // CONSTANTS
     // -------------------------------------------- //
 
-    private static final int mapSize = Config.get().getInt("g map radius (chunks)");
+    private static final int mapSize = Config.get(Plugin.GUILDS).getInt("g map radius (chunks)");
 
     private static final String MAP_PATH = "commands.map.";
     private static final String MAP_CONSTRUCTION_PATH = MAP_PATH + "map construction.";
 
-    private static final String WILDERNESS_CLAIM_PREFIX = Messages.getMsg(MAP_CONSTRUCTION_PATH + "wilderness claim prefix");
-    private static final String PLAYER_CLAIM_PREFIX = Messages.getMsg(MAP_CONSTRUCTION_PATH + "player guild claim prefix");
-    private static final String OUTLANDS_PREFIX = Messages.getMsg(MAP_CONSTRUCTION_PATH + "outlands prefix");
+    private static final String WILDERNESS_CLAIM_PREFIX = Messages.get(Plugin.GUILDS).get(MAP_CONSTRUCTION_PATH + "wilderness claim prefix");
+    private static final String PLAYER_CLAIM_PREFIX = Messages.get(Plugin.GUILDS).get(MAP_CONSTRUCTION_PATH + "player guild claim prefix");
+    private static final String OUTLANDS_PREFIX = Messages.get(Plugin.GUILDS).get(MAP_CONSTRUCTION_PATH + "outlands prefix");
 
-    private static final String CLAIM_SYMBOL = Messages.getMsg(MAP_CONSTRUCTION_PATH + "claim symbol");
+    private static final String CLAIM_SYMBOL = Messages.get(Plugin.GUILDS).get(MAP_CONSTRUCTION_PATH + "claim symbol");
 
-    private static final String TITLE = Messages.getMsg(MAP_CONSTRUCTION_PATH + "header");
-    private static final String FOOTER_WITHOUT_GUILDS = Messages.getMsg(MAP_CONSTRUCTION_PATH + "footer without guilds");
+    private static final String TITLE = Messages.get(Plugin.GUILDS).get(MAP_CONSTRUCTION_PATH + "header");
+    private static final String FOOTER_WITHOUT_GUILDS = Messages.get(Plugin.GUILDS).get(MAP_CONSTRUCTION_PATH + "footer without guilds");
 
-    private static final String[] GUILD_COLORS = Messages.getStringArray(MAP_CONSTRUCTION_PATH + "guild colors");
+    private static final String[] GUILD_COLORS = Messages.get(Plugin.GUILDS).getArr(MAP_CONSTRUCTION_PATH + "guild colors");
 
     // -------------------------------------------- //
     // FIELDS
@@ -71,7 +72,7 @@ public class BoardMap implements Runnable {
             map = map.concat("\n" + ChatColor.RESET);
 
             if (z == 0) { // Center of the map (z-axis)
-                map = map.concat(Messages.getMsg("commands.map.map construction.west"));
+                map = map.concat(Messages.get(Plugin.GUILDS).get("commands.map.map construction.west"));
             } else {
                 map = map.concat("  ");
             }
@@ -81,7 +82,7 @@ public class BoardMap implements Runnable {
                 GuildChunk chunk = Board.getGuildChunkAt(playerChunkX + x, playerChunkZ + z);
                 // Add player symbol at center of map
                 if (x == 0 && z == 0) {
-                    map = map.concat(Messages.getMsg("commands.map.map construction.player symbol"));
+                    map = map.concat(Messages.get(Plugin.GUILDS).get("commands.map.map construction.player symbol"));
                     if (chunk != null && player.isInGuild() && chunk.getGuild() == playerGuild) {
                         guildsOnMap.put(playerGuild, PLAYER_CLAIM_PREFIX); // So player's claim shows up on Guild's list
                     }
@@ -128,7 +129,7 @@ public class BoardMap implements Runnable {
                 }
             }
             if (z == 0) { // Center of the map (z-axis)
-                map = map.concat(Messages.getMsg("commands.map.map construction.east"));
+                map = map.concat(Messages.get(Plugin.GUILDS).get("commands.map.map construction.east"));
             }
         }
         return map;
@@ -155,10 +156,10 @@ public class BoardMap implements Runnable {
 
             // Add comma/delimiter after guild name
             if (i != numberOfGuilds) {
-                guildsList = guildsList.concat(Messages.getMsg("commands.map.map construction.guilds list delimiter"));
+                guildsList = guildsList.concat(Messages.get(Plugin.GUILDS).get("commands.map.map construction.guilds list delimiter"));
             }
         }
 
-        return "\n" + Messages.getMsg("commands.map.map construction.footer with guilds", guildsList);
+        return "\n" + Messages.get(Plugin.GUILDS).get("commands.map.map construction.footer with guilds", guildsList);
     }
 }

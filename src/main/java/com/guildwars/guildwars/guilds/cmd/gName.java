@@ -1,8 +1,10 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gName extends gCommand{
 
@@ -15,7 +17,7 @@ public class gName extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -41,9 +43,9 @@ public class gName extends gCommand{
         GuildsIndex.get().updateName(guild, oldGuildName, newGuildName);
 
         // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.name changed", player, newGuildName));
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.name changed", player, newGuildName));
 
         // Inform
-        player.sendSuccessMsg(Messages.getMsg("commands.name.successfully set name", args[0]));
+        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.name.successfully set name", args[0]));
     }
 }
