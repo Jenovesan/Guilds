@@ -1,10 +1,11 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.core.CorePlayer;
 import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import org.bukkit.entity.Player;
 
@@ -12,7 +13,7 @@ public class gPlayer extends CorePlayer {
 
     private Guild guild;
     private GuildRank guildRank;
-    private float power = Config.get().getInt("player max power");
+    private float power = Config.get(Plugin.GUILDS).getInt("player max power");
     private boolean autoClaiming = false;
     private boolean autoMapping = false;
 
@@ -49,8 +50,8 @@ public class gPlayer extends CorePlayer {
     }
 
     public void changePower(float changeBy) {
-        int playerMaxPower = Config.get().getInt("player max power");
-        int playerMinPower = Config.get().getInt("player min power");
+        int playerMaxPower = Config.get(Plugin.GUILDS).getInt("player max power");
+        int playerMinPower = Config.get(Plugin.GUILDS).getInt("player min power");
         this.power = Math.min(Math.max(this.power + changeBy, playerMinPower), playerMaxPower);
     }
 
@@ -70,7 +71,7 @@ public class gPlayer extends CorePlayer {
 
     public void joinedNewGuild(Guild newGuild) {
         this.setGuild(newGuild);
-        this.setGuildRank(GuildRank.valueOf(Config.get().getString("join guild at rank")));
+        this.setGuildRank(GuildRank.valueOf(Config.get(Plugin.GUILDS).getString("join guild at rank")));
 
         PlayerData.get().save(this);
     }
@@ -88,7 +89,7 @@ public class gPlayer extends CorePlayer {
         Guild guild = getGuild();
         // Check if guild can claim
         if (!guild.canClaim()) {
-            this.sendFailMsg(Messages.getMsg("claiming.not enough power"));
+            this.sendFailMsg(Messages.get(Plugin.GUILDS).get("claiming.not enough power"));
             return false;
         }
 
@@ -101,14 +102,14 @@ public class gPlayer extends CorePlayer {
         if (!chunk.isClaimable()) {
             // Player is trying to claim their own chunk
             if (chunk.getGuild() == guild) {
-                this.sendFailMsg(Messages.getMsg("claiming.claiming own land"));
+                this.sendFailMsg(Messages.get(Plugin.GUILDS).get("claiming.claiming own land"));
             }
             return false;
         }
 
         // If it is not the guild's first claim, check if it has a connecting claim
         if (guild.getNumberOfClaims() > 0 && !chunk.hasConnectingClaim(guild)) {
-            this.sendFailMsg(Messages.getMsg("claiming.no connecting claim"));
+            this.sendFailMsg(Messages.get(Plugin.GUILDS).get("claiming.no connecting claim"));
             return false;
         }
 
@@ -122,7 +123,7 @@ public class gPlayer extends CorePlayer {
         GuildData.get().save(guild);
 
         // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.claimed single land", this));
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.claimed single land", this));
 
         return true;
     }
@@ -132,7 +133,7 @@ public class gPlayer extends CorePlayer {
 
         for (GuildChunk chunk : chunks) {
             if (!guild.canClaim()) {
-                this.sendFailMsg(Messages.getMsg("claiming.ran out of power"));
+                this.sendFailMsg(Messages.get(Plugin.GUILDS).get("claiming.ran out of power"));
                 break;
             }
 
@@ -166,7 +167,7 @@ public class gPlayer extends CorePlayer {
 
         // Check if chunk is owned by the player's guild
         if (chunk.getGuild() != guild) {
-            this.sendFailMsg(Messages.getMsg("commands.unclaim.chunk not owned by guild"));
+            this.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.chunk not owned by guild"));
             return false;
         }
 
@@ -184,7 +185,7 @@ public class gPlayer extends CorePlayer {
         guildUnclaimEvent.run();
 
         // Send Guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.unclaimed single land", this));
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.unclaimed single land", this));
 
         return true;
     }

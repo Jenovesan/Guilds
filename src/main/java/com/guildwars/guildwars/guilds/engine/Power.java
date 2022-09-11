@@ -1,27 +1,28 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayers;
 import com.guildwars.guildwars.guilds.gPlayersIndex;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class Power extends Engine{
 
-    private final int ONLINE_PLAYER_POWER_REGEN = Config.get().getInt("online player power regen per min");
-    private final int OFFLINE_PLAYER_POWER_REGEN = Config.get().getInt("offline player power regen per min");
+    private final float ONLINE_PLAYER_POWER_REGEN = Config.get(Plugin.GUILDS).getFloat("online player power regen per min");
+    private final float OFFLINE_PLAYER_POWER_REGEN = Config.get(Plugin.GUILDS).getFloat("offline player power regen per min");
 
     public Power() {
         super(1200L);
         updatePower();
     }
 
-    private final int MAX_POWER = Config.get().getInt("player max power");
+    private final int MAX_POWER = Config.get(Plugin.GUILDS).getInt("player max power");
 
     @Override
     public void run() {
@@ -58,7 +59,7 @@ public class Power extends Engine{
         gPlayer gPlayer = gPlayersIndex.get().getByPlayer(player);
         gPlayer gKiller = killer != null ? gPlayersIndex.get().getByPlayer(killer) : null;
 
-        int powerLossOnDeath = Config.get().getInt("power change on death");
+        int powerLossOnDeath = Config.get(Plugin.GUILDS).getInt("power change on death");
 
         gPlayer.changePower(powerLossOnDeath);
 

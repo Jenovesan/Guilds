@@ -1,8 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -16,7 +17,7 @@ public class gSetHome extends gCommand{
     @Override
     public void perform(gPlayer player, String[] args) {
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -25,14 +26,14 @@ public class gSetHome extends gCommand{
         Location playerLocation = player.getPlayer().getLocation();
 
         if (Board.getGuildAt(playerLocation) != player.getGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.sethome.can only sethome in territory"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.sethome.can only sethome in territory"));
             return;
         }
 
         // Create the bed
         BlockFace bedFace = getBedFace(playerLocation.getYaw());
         if (playerLocation.getBlock().getRelative(bedFace).getType() != Material.AIR) {
-            player.sendFailMsg(Messages.getMsg("commands.sethome.cannot create bed here"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.sethome.cannot create bed here"));
             return;
         }
         // Set the bed head
@@ -57,10 +58,10 @@ public class gSetHome extends gCommand{
         GuildData.get().save(guild);
 
         // Send guild announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.sethome", player));
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.sethome", player));
 
         // Inform player
-        player.sendSuccessMsg(Messages.getMsg("commands.sethome.successfully sethome"));
+        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.sethome.successfully sethome"));
     }
 
     private BlockFace getBedFace(float yaw) {

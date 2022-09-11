@@ -1,10 +1,12 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gLeave extends gCommand{
@@ -18,12 +20,12 @@ public class gLeave extends gCommand{
 
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
         if (player.getGuildRank() == GuildRank.LEADER) {
-            player.sendFailMsg(Messages.getMsg("commands.leave.is leader"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.leave.is leader"));
             return;
         }
 
@@ -38,13 +40,13 @@ public class gLeave extends gCommand{
         player.leftGuild();
 
         // Send Guild Announcement
-        guild.sendAnnouncement(Messages.getMsg("guild announcements.player leave", player));
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player leave", player));
 
         // Call event
         PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(player, null, PlayerGuildChangeEvent.Reason.LEAVE);
         playerGuildChangeEvent.run();
 
         // Inform player
-        player.sendSuccessMsg(Messages.getMsg("commands.leave.successfully left", guild));
+        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.leave.successfully left", guild));
     }
 }

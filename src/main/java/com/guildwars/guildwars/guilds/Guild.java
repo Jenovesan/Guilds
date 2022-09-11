@@ -1,7 +1,9 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -103,16 +105,16 @@ public class Guild {
 
     public void loadDefaults() {
         // Permissions
-        this.permissions.put(GuildPermission.INVITE, GuildRank.valueOf(Config.get().getString("default permissions.invite")));
-        this.permissions.put(GuildPermission.SET_DESC, GuildRank.valueOf(Config.get().getString("default permissions.set_desc")));
-        this.permissions.put(GuildPermission.SET_NAME, GuildRank.valueOf(Config.get().getString("default permissions.set_name")));
-        this.permissions.put(GuildPermission.CHAT, GuildRank.valueOf(Config.get().getString("default permissions.chat")));
-        this.permissions.put(GuildPermission.RELATIONS, GuildRank.valueOf(Config.get().getString("default permissions.relations")));
-        this.permissions.put(GuildPermission.CLAIM, GuildRank.valueOf(Config.get().getString("default permissions.claim")));
-        this.permissions.put(GuildPermission.UNCLAIM, GuildRank.valueOf(Config.get().getString("default permissions.unclaim")));
-        this.permissions.put(GuildPermission.UNCLAIM_ALL, GuildRank.valueOf(Config.get().getString("default permissions.unclaim_all")));
-        this.permissions.put(GuildPermission.SETHOME, GuildRank.valueOf(Config.get().getString("default permissions.sethome")));
-        this.permissions.put(GuildPermission.HOME, GuildRank.valueOf(Config.get().getString("default permissions.home")));
+        this.permissions.put(GuildPermission.INVITE, Config.get(Plugin.GUILDS).getGuildRank("default permissions.invite"));
+        this.permissions.put(GuildPermission.SET_DESC, Config.get(Plugin.GUILDS).getGuildRank("default permissions.set_desc"));
+        this.permissions.put(GuildPermission.SET_NAME, Config.get(Plugin.GUILDS).getGuildRank("default permissions.set_name"));
+        this.permissions.put(GuildPermission.CHAT, Config.get(Plugin.GUILDS).getGuildRank("default permissions.chat"));
+        this.permissions.put(GuildPermission.RELATIONS, Config.get(Plugin.GUILDS).getGuildRank("default permissions.relations"));
+        this.permissions.put(GuildPermission.CLAIM, Config.get(Plugin.GUILDS).getGuildRank("default permissions.claim"));
+        this.permissions.put(GuildPermission.UNCLAIM, Config.get(Plugin.GUILDS).getGuildRank("default permissions.unclaim"));
+        this.permissions.put(GuildPermission.UNCLAIM_ALL, Config.get(Plugin.GUILDS).getGuildRank("default permissions.unclaim_all"));
+        this.permissions.put(GuildPermission.SETHOME, Config.get(Plugin.GUILDS).getGuildRank("default permissions.sethome"));
+        this.permissions.put(GuildPermission.HOME, Config.get(Plugin.GUILDS).getGuildRank("default permissions.home"));
     }
 
     public void setName(String newName) {
@@ -155,7 +157,7 @@ public class Guild {
      }
 
     public boolean isFull() {
-        int maxPlayersInGuild = Config.get().getInt("max players in guild");
+        int maxPlayersInGuild = Config.get(Plugin.GUILDS).getInt("max players in guild");
         return this.getPlayers().size() >= maxPlayersInGuild;
     }
 
@@ -202,7 +204,7 @@ public class Guild {
     }
 
     public int getMaxPower() {
-        return this.getPlayers().size() * Config.get().getInt("player max power");
+        return this.getPlayers().size() * Config.get(Plugin.GUILDS).getInt("player max power");
     }
 
     public boolean canClaim() {
@@ -236,7 +238,10 @@ public class Guild {
 
     public void sendBroadcast(String title, String subtitle) {
         for (gPlayer player : this.getOnlinePlayers()) {
-            player.getPlayer().sendTitle(title, Objects.requireNonNullElse(subtitle, ""), Config.get().getInt("broadcasts.guilds.fadeIn"), Config.get().getInt("broadcasts.guilds.stay"), Config.get().getInt("broadcasts.guilds.fadeOut"));
+            player.getPlayer().sendTitle(title, Objects.requireNonNullElse(subtitle, ""),
+                    Config.get(Plugin.GUILDS).getInt("broadcasts.guilds.fadeIn"),
+                    Config.get(Plugin.GUILDS).getInt("broadcasts.guilds.stay"),
+                    Config.get(Plugin.GUILDS).getInt("broadcasts.guilds.fadeOut"));
         }
     }
 

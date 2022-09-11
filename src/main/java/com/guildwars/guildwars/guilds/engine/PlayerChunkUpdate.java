@@ -1,11 +1,12 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.event.GPlayerQuitEvent;
 import com.guildwars.guildwars.guilds.event.GPlayerLoginEvent;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.gPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class PlayerChunkUpdate extends Engine {
 
     public PlayerChunkUpdate() {
-        super(Config.get().getLong("player chunk update (ticks)"));
+        super(Config.get(Plugin.GUILDS).getLong("player chunk update (ticks)"));
     }
 
     HashMap<gPlayer, Location> playerLastLocations = new HashMap<>();

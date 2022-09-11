@@ -1,11 +1,12 @@
 package com.guildwars.guildwars.core;
 
-import com.guildwars.guildwars.core.files.Config;
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.Plugin;
 
 public enum ChatChannel {
     GUILD;
 
     public static String getRawChannelFormat(ChatChannel channel) {
-        return Config.get().getString("chat channels." + channel.name());
+        return Config.get(Plugin.CORE).getString("chat channels." + channel.name());
     }
 }

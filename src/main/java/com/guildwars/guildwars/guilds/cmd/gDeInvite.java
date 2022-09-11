@@ -1,7 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gDeInvite extends gCommand{
 
@@ -15,7 +17,7 @@ public class gDeInvite extends gCommand{
 
         // Checks
         if (!deInviter.isInGuild()) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            deInviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
         Guild deInviterGuild = deInviter.getGuild();
@@ -27,12 +29,12 @@ public class gDeInvite extends gCommand{
         gPlayer deInvitee = gPlayersIndex.get().getByName(args[0]);
 
         if (deInvitee == null) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));
+            deInviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
             return;
         }
 
         if (deInviterGuild.isInvited(deInvitee)) {
-            deInviter.sendFailMsg(Messages.getMsg("commands.not invited", deInvitee));
+            deInviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not invited", deInvitee));
             return;
         }
 
@@ -40,9 +42,9 @@ public class gDeInvite extends gCommand{
         deInviterGuild.removeInvite(deInvitee);
 
         // Inform deinvitee
-        deInvitee.sendNotifyMsg(Messages.getMsg("commands.deinvite.deinvitee deinvited msg", deInviterGuild));
+        deInvitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.deinvite.deinvitee deinvited msg", deInviterGuild));
 
         // Inform deinviter
-        deInviter.sendSuccessMsg(Messages.getMsg("commands.deinvite.successfully deinvited", deInvitee));
+        deInviter.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.deinvite.successfully deinvited", deInvitee));
     }
 }

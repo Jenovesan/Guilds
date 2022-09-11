@@ -1,9 +1,10 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.files.Config;
-import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class gInvite extends gCommand{
@@ -18,14 +19,14 @@ public class gInvite extends gCommand{
 
         // Checks
         if (!inviter.isInGuild()) {
-            inviter.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
         gPlayer invitee = gPlayersIndex.get().getByName(args[0]);
 
         if (invitee == null) {
-            inviter.sendFailMsg(Messages.getMsg("commands.player not found", args[0]));
+            inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
             return;
         }
 
@@ -36,7 +37,7 @@ public class gInvite extends gCommand{
         Guild inviterGuild = inviter.getGuild();
 
         if (inviterGuild.isInvited(invitee)) {
-            inviter.sendFailMsg(Messages.getMsg("commands.invite.already invited", invitee));
+            inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.already invited", invitee));
             return;
         }
 
@@ -44,12 +45,12 @@ public class gInvite extends gCommand{
         if (invitee.isInGuild()) {
             // Invitee is already a member of the inviter's Guild
             if (invitee.getGuild() == inviterGuild) {
-                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in inviter guild", invitee));
+                inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee in inviter guild", invitee));
                 return;
             }
             // Invitee not in Guild
             else {
-                inviter.sendFailMsg(Messages.getMsg("commands.invite.invitee in guild", invitee));
+                inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee in guild", invitee));
                 return;
             }
         }
@@ -71,16 +72,16 @@ public class gInvite extends gCommand{
 
                 // Notify player if they're online
                 if (invitee.getPlayer() != null) {
-                    invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invite expired", inviterGuild));
+                    invitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invite expired", inviterGuild));
                 }
             }
-        }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("invite expire time (s)") * 20L);
+        }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get(Plugin.GUILDS).getInt("invite expire time (s)") * 20L);
 
         // Inform invitee
-        invitee.sendNotifyMsg(Messages.getMsg("commands.invite.invitee invite msg", inviterGuild));
+        invitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee invite msg", inviterGuild));
 
         // Inform inviter
-        inviter.sendSuccessMsg(Messages.getMsg("commands.invite.successfully invited", invitee));
+        inviter.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.invite.successfully invited", invitee));
 
     }
 }

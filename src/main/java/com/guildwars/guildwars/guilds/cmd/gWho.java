@@ -1,7 +1,9 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.files.Messages;
 import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gWho extends gCommand{
@@ -12,12 +14,12 @@ public class gWho extends gCommand{
 
     @Override
     public String getDescription() {
-        return Messages.getMsg("commands.who.description");
+        return Messages.get(Plugin.GUILDS).get("commands.who.description");
     }
 
     @Override
     public String getUsage() {
-        return Messages.getMsg("commands.who.usage");
+        return Messages.get(Plugin.GUILDS).get("commands.who.usage");
     }
 
     @Override

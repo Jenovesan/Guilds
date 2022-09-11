@@ -1,9 +1,10 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
-import com.guildwars.guildwars.guilds.files.Config;
-import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gUnclaim extends gCommand{
 
@@ -15,7 +16,7 @@ public class gUnclaim extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -24,7 +25,7 @@ public class gUnclaim extends gCommand{
         }
 
         if (!gUtil.isInMainWorld(player)) {
-            player.sendFailMsg(Messages.getMsg("commands.unclaim.cannot claim in world"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.cannot claim in world"));
             return;
         }
 
@@ -35,13 +36,13 @@ public class gUnclaim extends gCommand{
                 int radius = Integer.parseInt(args[0]);
 
                 // Check if radius is too big
-                if (radius > Config.get().getInt("max unclaim radius (chunks)")) {
-                    player.sendFailMsg(Messages.getMsg("commands.unclaim.radius too big", radius));
+                if (radius > Config.get(Plugin.GUILDS).getInt("max unclaim radius (chunks)")) {
+                    player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.radius too big", radius));
                     return;
                 }
 
                 if (radius < 0) {
-                    player.sendFailMsg(Messages.getMsg("commands.unclaim.invalid radius", args[0]));
+                    player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.invalid radius", args[0]));
                     return;
                 }
 
@@ -52,17 +53,17 @@ public class gUnclaim extends gCommand{
                 // Inform
                 if (successfulUnclaims > 0) {
                     // Inform guild
-                    player.getGuild().sendAnnouncement(Messages.getMsg("guild announcements.unclaimed many land", player, successfulUnclaims));
+                    player.getGuild().sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.unclaimed many land", player, successfulUnclaims));
                     // Inform player
-                    player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", successfulUnclaims));
+                    player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.successfully unclaimed multiple chunks", successfulUnclaims));
                 }
                 // Player did not unclaim any chunks
                 else {
-                    player.sendNotifyMsg(Messages.getMsg("commands.unclaim.successfully unclaimed multiple chunks", successfulUnclaims));
+                    player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.successfully unclaimed multiple chunks", successfulUnclaims));
                 }
 
             } catch (NumberFormatException e) {
-                player.sendFailMsg(Messages.getMsg("commands.unclaim.invalid radius", args[0]));
+                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.invalid radius", args[0]));
             }
         }
         // Player is unclaiming a single chunk
@@ -75,7 +76,7 @@ public class gUnclaim extends gCommand{
             if (unclaimed) {
 
                 // Inform player
-                player.sendSuccessMsg(Messages.getMsg("commands.unclaim.successfully unclaimed single chunk"));
+                player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.successfully unclaimed single chunk"));
             }
         }
     }

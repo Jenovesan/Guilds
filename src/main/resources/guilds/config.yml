@@ -1,0 +1,111 @@
+teleport to home charge up (ticks): 200
+join guild at rank: RECRUIT
+max characters in guild name: 15
+invite expire time (s): 60
+truce request expire time (m): 60
+max players in guild: 10
+valid guild name characters:
+  - q
+  - w
+  - e
+  - r
+  - t
+  - y
+  - u
+  - i
+  - o
+  - p
+  - a
+  - s
+  - d
+  - f
+  - g
+  - h
+  - j
+  - k
+  - l
+  - z
+  - x
+  - c
+  - v
+  - b
+  - n
+  - m
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - A
+  - S
+  - D
+  - F
+  - G
+  - H
+  - J
+  - K
+  - L
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+blacklisted guild names:
+  - ''
+power change on death: -1
+player max power: 5
+player min power: 0
+player power regen amount: 1
+world name: world
+max unclaim radius (chunks): 10
+max claim radius (chunks): 3
+border guild color: '&0'
+raiding duration (min): 60
+world claim radius (chunks): 30
+g map radius (chunks): 7
+online player power regen per min: 0.017
+offline player power regen per min: 0.0055
+raiding kick non-raiders update (tick): 20
+player chunk update (ticks): 20
+own guild name prefix: '&2'
+enemy guild name prefix: '&4'
+other guild name prefix: '&7'
+own guild desc prefix: '&a'
+enemy guild desc prefix: '&c'
+other guild desc prefix: '&f'
+default permissions:
+  invite: MOD
+  set_desc: COLEADER
+  set_name: COLEADER
+  chat: RECRUIT
+  relations: MOD
+  claim: MOD
+  unclaim: MOD
+  unclaim_all: COLEADER
+  sethome: MOD
+  home: MEMBER
+broadcasts:
+  guilds:
+    fadeIn: 20
+    stay: 100
+    fadeOut: 40
+  new territory:
+    fadeIn: 10
+    stay: 20
+    fadeOut: 10

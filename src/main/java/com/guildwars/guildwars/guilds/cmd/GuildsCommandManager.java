@@ -1,6 +1,8 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.guilds.gPlayersIndex;
 import org.bukkit.command.Command;
@@ -93,14 +95,14 @@ public class GuildsCommandManager implements CommandExecutor {
                 gCommandName = args[0].toLowerCase();
                 modifiedArgs = Arrays.copyOfRange(args, 1, args.length);
             } else {
-                sender.sendMessage(Messages.getMsg("commands.command does not exist"));
+                sender.sendMessage(Messages.get(Plugin.GUILDS).get("commands.command does not exist"));
                 return true;
             }
 
             gCommand guildCommand = getgCommands().get(gCommandName);
 
             if (modifiedArgs.length < guildCommand.getMinArgs()) {
-                sender.sendMessage(Messages.getMsg("commands.too few arguments given"));
+                sender.sendMessage(Messages.get(Plugin.GUILDS).get("commands.too few arguments given"));
                 return true;
             }
             gPlayer gPlayer = gPlayersIndex.get().getByPlayer(player);

@@ -1,10 +1,11 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.files.Config;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.files.Messages;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class gTruce extends gCommand{
@@ -18,7 +19,7 @@ public class gTruce extends gCommand{
     public void perform(gPlayer player, String[] args) {
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -30,26 +31,26 @@ public class gTruce extends gCommand{
         gPlayer possiblePlayerToTruce = gPlayersIndex.get().getByName(args[0]);
         if (possiblePlayerToTruce != null) { // Player using player name to truce guild
             if (!possiblePlayerToTruce.isInGuild()) {
-                player.sendFailMsg(Messages.getMsg("commands.truce.player not in guild", possiblePlayerToTruce));
+                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.truce.player not in guild", possiblePlayerToTruce));
                 return;
             }
             guildToTruce = possiblePlayerToTruce.getGuild();
         } else { //Player using guild name to truce guild
             guildToTruce = GuildsIndex.get().getByName(args[0]);
             if (guildToTruce == null) {
-                player.sendFailMsg(Messages.getMsg("commands.not a guild or player", args[0]));
+                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not a guild or player", args[0]));
                 return;
             }
         }
 
         Guild playerGuild = player.getGuild();
         if (!playerGuild.isEnemied(guildToTruce)) {
-            player.sendFailMsg(Messages.getMsg("commands.truce.not enemied", guildToTruce));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.truce.not enemied", guildToTruce));
             return;
         }
 
         if (playerGuild.hasTruceRequestWith(guildToTruce)) {
-            player.sendFailMsg(Messages.getMsg("commands.truce.already sent truce request", guildToTruce));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.truce.already sent truce request", guildToTruce));
             return;
         }
 
@@ -59,10 +60,10 @@ public class gTruce extends gCommand{
             playerGuild.sendTruceRequest(guildToTruce);
 
             // Inform GuildToTruce
-            guildToTruce.sendAnnouncement(Messages.getMsg("guild announcements.received truce request", playerGuild));
+            guildToTruce.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.received truce request", playerGuild));
 
             // Inform playerGuild
-            playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.sent truce request", player, guildToTruce));
+            playerGuild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.sent truce request", player, guildToTruce));
 
             // Remove truce request later
             new BukkitRunnable() {
@@ -71,10 +72,10 @@ public class gTruce extends gCommand{
                     // Remove truce request
                     playerGuild.removeTruceRequest(guildToTruce);
                 }
-            }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get().getInt("truce request expire time (m)") * 1200L);
+            }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get(Plugin.GUILDS).getInt("truce request expire time (m)") * 1200L);
 
             // Inform
-            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully sent truce request", guildToTruce));
+            player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.truce.successfully sent truce request", guildToTruce));
         }
         // Truce guild
         else {
@@ -89,16 +90,16 @@ public class gTruce extends gCommand{
             GuildData.get().save(guildToTruce);
 
             // Inform playerGuild
-            playerGuild.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", guildToTruce));
+            playerGuild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.truced guild", guildToTruce));
 
             // Inform guildToTruce
-            guildToTruce.sendAnnouncement(Messages.getMsg("guild announcements.truced guild", playerGuild));
+            guildToTruce.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.truced guild", playerGuild));
 
             // Remove guildToTruce's truce request with this guild
             guildToTruce.removeTruceRequest(playerGuild);
 
             // Inform player
-            player.sendSuccessMsg(Messages.getMsg("commands.truce.successfully truced", guildToTruce));
+            player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.truce.successfully truced", guildToTruce));
         }
     }
 }

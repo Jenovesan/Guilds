@@ -1,8 +1,10 @@
 package com.guildwars.guildwars.guilds.cmd;
 
+import com.guildwars.guildwars.Config;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.files.Config;
-import com.guildwars.guildwars.guilds.files.Messages;
 
 public class gClaim extends gCommand{
 
@@ -16,7 +18,7 @@ public class gClaim extends gCommand{
 
         // Checks
         if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.getMsg("commands.not in guild"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
             return;
         }
 
@@ -25,7 +27,7 @@ public class gClaim extends gCommand{
         }
 
         if (!gUtil.isInMainWorld(player)) {
-            player.sendFailMsg(Messages.getMsg("commands.claim.cannot claim in world"));
+            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.cannot claim in world"));
             return;
         }
 
@@ -39,13 +41,13 @@ public class gClaim extends gCommand{
                 int radius = Integer.parseInt(args[0]) - 1;
 
                 // Check if radius is too big
-                if (radius > Config.get().getInt("max claim radius (chunks)")) {
-                    player.sendFailMsg(Messages.getMsg("commands.claim.radius too big", args[0]));
+                if (radius > Config.get(Plugin.GUILDS).getInt("max claim radius (chunks)")) {
+                    player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.radius too big", args[0]));
                     return;
                 }
 
                 if (radius < 0) {
-                    player.sendFailMsg(Messages.getMsg("commands.claim.invalid radius", args[0]));
+                    player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.invalid radius", args[0]));
                     return;
                 }
 
@@ -58,17 +60,17 @@ public class gClaim extends gCommand{
                 // Inform
                 if (successfulClaims > 0) {
                     // Inform guild
-                    player.getGuild().sendAnnouncement(Messages.getMsg("guild announcements.claimed many land", player, successfulClaims));
+                    player.getGuild().sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.claimed many land", player, successfulClaims));
                     // Inform player
-                    player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed multiple chunks", successfulClaims));
+                    player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.claim.successfully claimed multiple chunks", successfulClaims));
                 }
                 // Player did not claim any chunks
                 else {
-                    player.sendNotifyMsg(Messages.getMsg("commands.claim.successfully claimed multiple chunks", successfulClaims));
+                    player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.claim.successfully claimed multiple chunks", successfulClaims));
                 }
 
             } catch (NumberFormatException e) {
-                player.sendFailMsg(Messages.getMsg("commands.claim.invalid radius", args[0]));
+                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.invalid radius", args[0]));
             }
         }
         // Player is claiming a single chunk
@@ -78,7 +80,7 @@ public class gClaim extends gCommand{
 
             // Claiming in outlands
             if (chunk == null) {
-                player.sendFailMsg(Messages.getMsg("claiming.claiming in outlands"));
+                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("claiming.claiming in outlands"));
                 return;
             }
 
@@ -87,7 +89,7 @@ public class gClaim extends gCommand{
 
             if (claimed) {
                 // Inform plauer
-                player.sendSuccessMsg(Messages.getMsg("commands.claim.successfully claimed single chunk"));
+                player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.claim.successfully claimed single chunk"));
             }
         }
     }

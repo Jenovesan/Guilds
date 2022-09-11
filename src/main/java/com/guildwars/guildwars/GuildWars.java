@@ -1,6 +1,7 @@
 package com.guildwars.guildwars;
 
 import com.guildwars.guildwars.core.ChatChannels;
+import com.guildwars.guildwars.core.Files;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
 import com.guildwars.guildwars.guilds.engine.EngineIntegration;
@@ -28,7 +29,7 @@ public final class GuildWars extends JavaPlugin {
 
         // Load Guilds data
         System.out.println("-setting up files");
-        com.guildwars.guildwars.guilds.files.FileManager.setupFiles();
+        new Files(Plugin.GUILDS);
 
         // Load gPlayers
         System.out.println("-loading players");
@@ -63,8 +64,10 @@ public final class GuildWars extends JavaPlugin {
     }
 
     public void loadCore() {
-        com.guildwars.guildwars.core.files.FileManager.setupFiles();
+        // Load file manager
+        new Files(Plugin.CORE);
     }
+
 
     public void activateEngines() {
         // Guilds

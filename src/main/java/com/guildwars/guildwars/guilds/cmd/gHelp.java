@@ -1,6 +1,8 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.guilds.files.Messages;
+import com.guildwars.guildwars.GuildWars;
+import com.guildwars.guildwars.Messages;
+import com.guildwars.guildwars.Plugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -13,10 +15,10 @@ public class gHelp {
     }
 
     private String constructHelpMsg(Collection<gCommand> gCommands) {
-        String help_command = Messages.getMsg("commands.help.title") + "\n";
+        String help_command = Messages.get(Plugin.GUILDS).get("commands.help.title") + "\n";
         for (gCommand gCommand : gCommands) {
             help_command = help_command.concat(
-                    Messages.getMsg("commands.help.color") +
+                    Messages.get(Plugin.GUILDS).get("commands.help.color") +
                             ChatColor.stripColor(gCommand.getUsage()) +
                             " - " +
                             ChatColor.stripColor(gCommand.getDescription()) +
