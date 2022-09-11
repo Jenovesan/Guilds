@@ -1,8 +1,6 @@
 package com.guildwars.guildwars.core;
 
 import com.guildwars.guildwars.GuildWars;
-import com.guildwars.guildwars.core.files.Config;
-import com.guildwars.guildwars.core.files.Messages;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -73,13 +71,13 @@ public class CorePlayer {
         }
     }
 
-    int FADE_IN = Config.get().getInt("teleporting title.fadeIn");
-    int STAY = Config.get().getInt("teleporting title.stay");
-    int FADE_OUT = Config.get().getInt("teleporting title.fadeOut");
-    int BAR_LEN = Config.get().getInt("teleporting title.bar length");
-    String BAR_CHARGED_PREFIX = Messages.getMsg("teleporting.title.bar charged prefix");
-    String BAR_UNCHARGED_PREFIX = Messages.getMsg("teleporting.title.bar uncharged prefix");
-    String BAR = Messages.getMsg("teleporting.title.bar");
+    int FADE_IN = GuildWars.getCoreFM().getConfFile().getInt("teleporting title.fadeIn");
+    int STAY = GuildWars.getCoreFM().getConfFile().getInt("teleporting title.stay");
+    int FADE_OUT = GuildWars.getCoreFM().getConfFile().getInt("teleporting title.fadeOut");
+    int BAR_LEN = GuildWars.getCoreFM().getConfFile().getInt("teleporting title.bar length");
+    String BAR_CHARGED_PREFIX = GuildWars.getCoreFM().getMsgFile().get("teleporting.title.bar charged prefix");
+    String BAR_UNCHARGED_PREFIX = GuildWars.getCoreFM().getMsgFile().get("teleporting.title.bar uncharged prefix");
+    String BAR = GuildWars.getCoreFM().getMsgFile().get("teleporting.title.bar");
 
     public void teleport(float chargeUp, Location to) {
 
@@ -87,7 +85,7 @@ public class CorePlayer {
         double startLocationZ = getPlayer().getLocation().getZ();
 
         // Inform
-        sendMessage(Messages.getMsg("teleporting.message.teleporting"));
+        sendMessage(GuildWars.getCoreFM().getMsgFile().get("teleporting.message.teleporting"));
 
         new BukkitRunnable() {
             int d = 0;
@@ -96,7 +94,7 @@ public class CorePlayer {
                 // Check if player has moved
                 if (getPlayer().getLocation().getX() != startLocationX || getPlayer().getLocation().getZ() != startLocationZ) {
                     // Inform
-                    sendMessage(Messages.getMsg("teleporting.message.cancelled"));
+                    sendMessage(GuildWars.getCoreFM().getMsgFile().get("teleporting.message.cancelled"));
 
                     this.cancel();
                 }
@@ -107,7 +105,7 @@ public class CorePlayer {
                     player.teleport(to);
 
                     // Inform
-                    sendMessage(Messages.getMsg("teleporting.message.teleported"));
+                    sendMessage(GuildWars.getCoreFM().getMsgFile().get("teleporting.message.teleported"));
 
                     this.cancel();
                 }
@@ -125,7 +123,7 @@ public class CorePlayer {
 
                 // Send title
                 getPlayer().sendTitle(
-                    Messages.getMsg("teleporting.title.title"),
+                    GuildWars.getCoreFM().getMsgFile().get("teleporting.title.title"),
                     bar,
                     FADE_IN, STAY, FADE_OUT
                 );

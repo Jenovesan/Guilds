@@ -1,6 +1,7 @@
 package com.guildwars.guildwars;
 
 import com.guildwars.guildwars.core.ChatChannels;
+import com.guildwars.guildwars.core.files.FileManager;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
 import com.guildwars.guildwars.guilds.engine.EngineIntegration;
@@ -63,7 +64,14 @@ public final class GuildWars extends JavaPlugin {
     }
 
     public void loadCore() {
-        com.guildwars.guildwars.core.files.FileManager.setupFiles();
+        // Load file manager
+        coreFM = new com.guildwars.guildwars.core.files.FileManager("core");
+    }
+
+    private static FileManager coreFM;
+
+    public static FileManager getCoreFM() {
+        return coreFM;
     }
 
     public void activateEngines() {

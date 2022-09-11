@@ -1,0 +1,10 @@
+teleporting:
+  title:
+    title: '&aTeleporting...'
+    bar charged prefix: '&a'
+    bar uncharged prefix: '&7'
+    bar: ▎
+  message:
+    teleporting: '&aTeleporting...'
+    teleported: '&aTeleported!'
+    cancelled: '&cTeleport Cancelled'

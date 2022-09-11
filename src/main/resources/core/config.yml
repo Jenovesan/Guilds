@@ -1,0 +1,7 @@
+chat channels:
+  GUILD: '&2[G] <display name> &a<msg>'
+teleporting title:
+  bar length: 40
+  fadeIn: 0
+  stay: 2
+  fadeOut: 0

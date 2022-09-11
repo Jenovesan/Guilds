@@ -52,4 +52,8 @@ public class util {
         }
         return null;
     }
+
+    public static String translateColors(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
 }

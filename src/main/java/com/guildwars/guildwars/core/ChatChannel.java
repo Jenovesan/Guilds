@@ -1,11 +1,11 @@
 package com.guildwars.guildwars.core;
 
-import com.guildwars.guildwars.core.files.Config;
+import com.guildwars.guildwars.GuildWars;
 
 public enum ChatChannel {
     GUILD;
 
     public static String getRawChannelFormat(ChatChannel channel) {
-        return Config.get().getString("chat channels." + channel.name());
+        return GuildWars.getCoreFM().getConfFile().getString("chat channels." + channel.name());
     }
 }
