@@ -11,16 +11,12 @@ public class gPromote extends gCommand{
 
     public gPromote() {
         super("promote");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
     }
 
     @Override
     public void perform(gPlayer promoter, String[] args) {
-        // Checks
-        if (!promoter.isInGuild()) {
-            promoter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
 
         gPlayer promotee = gPlayersIndex.get().getByName(args[0]);
 

@@ -11,16 +11,12 @@ public class gDemote extends gCommand{
 
     public gDemote() {
         super("demote");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
     }
 
     @Override
     public void perform(gPlayer demoter, String[] args) {
-        // Checks
-        if (!demoter.isInGuild()) {
-            demoter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
 
         gPlayer demotee = gPlayersIndex.get().getByName(args[0]);
 

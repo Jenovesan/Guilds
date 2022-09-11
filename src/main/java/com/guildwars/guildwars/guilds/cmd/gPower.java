@@ -3,12 +3,14 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gPower extends gCommand{
 
     public gPower() {
         super("power");
+        mustBeInGuild(true);
     }
 
     @Override

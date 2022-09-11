@@ -11,26 +11,18 @@ public class gInvite extends gCommand{
 
     public gInvite() {
         super("invite");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.INVITE);
     }
 
     @Override
     public void perform(gPlayer inviter, String[] args) {
 
-        // Checks
-        if (!inviter.isInGuild()) {
-            inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
         gPlayer invitee = gPlayersIndex.get().getByName(args[0]);
 
         if (invitee == null) {
             inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
-            return;
-        }
-
-        if (!gUtil.checkPermission(inviter, GuildPermission.INVITE, true)) {
             return;
         }
 

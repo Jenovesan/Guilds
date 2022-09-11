@@ -78,38 +78,27 @@ public class GuildsCommandManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
-            if (args.length < 1 || args[0].equalsIgnoreCase("help")) {
-                helpCommand.perform(sender, gCommands.values());
-                return true;
-            }
-
-            String gCommandName;
-            String[] modifiedArgs;
-            if (args.length > 1 && gCommandNames.contains(args[0] + " " + args[1])) {
-                gCommandName = (args[0] + " " + args[1]).toLowerCase();
-                modifiedArgs = Arrays.copyOfRange(args, 2, args.length);
-            } else if (gCommandNames.contains(args[0])) {
-                gCommandName = args[0].toLowerCase();
-                modifiedArgs = Arrays.copyOfRange(args, 1, args.length);
-            } else {
-                sender.sendMessage(Messages.get(Plugin.GUILDS).get("commands.command does not exist"));
-                return true;
-            }
-
-            gCommand guildCommand = getgCommands().get(gCommandName);
-
-            if (modifiedArgs.length < guildCommand.getMinArgs()) {
-                sender.sendMessage(Messages.get(Plugin.GUILDS).get("commands.too few arguments given"));
-                return true;
-            }
-            gPlayer gPlayer = gPlayersIndex.get().getByPlayer(player);
-
-            guildCommand.perform(gPlayer, modifiedArgs);
+        if (args.length < 1 || args[0].equalsIgnoreCase("help")) {
+            helpCommand.perform(sender, gCommands.values());
             return true;
         }
+
+        String gCommandName;
+        String[] modifiedArgs;
+        if (args.length > 1 && gCommandNames.contains(args[0] + " " + args[1])) {
+            gCommandName = (args[0] + " " + args[1]).toLowerCase();
+            modifiedArgs = Arrays.copyOfRange(args, 2, args.length);
+        } else if (gCommandNames.contains(args[0])) {
+            gCommandName = args[0].toLowerCase();
+            modifiedArgs = Arrays.copyOfRange(args, 1, args.length);
+        } else {
+            sender.sendMessage(Messages.get(Plugin.GUILDS).get("commands.command does not exist"));
+            return true;
+        }
+
+        gCommand guildCommand = getgCommands().get(gCommandName);
+
+        guildCommand.perform(sender, modifiedArgs);
 
 
 

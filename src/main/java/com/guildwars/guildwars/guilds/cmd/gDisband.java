@@ -11,16 +11,12 @@ public class gDisband extends gCommand{
 
     public gDisband() {
         super("disband");
+        mustBeInGuild(true);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
         // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
         if (player.getGuildRank() != GuildRank.LEADER) {
             player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.guild rank too low", util.formatEnum(GuildRank.LEADER)));
             return;

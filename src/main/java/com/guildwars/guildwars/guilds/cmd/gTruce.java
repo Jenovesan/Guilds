@@ -12,20 +12,13 @@ public class gTruce extends gCommand{
 
     public gTruce() {
         super("truce");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.RELATIONS);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(player, GuildPermission.RELATIONS, true)) {
-            return;
-        }
 
         Guild guildToTruce;
         gPlayer possiblePlayerToTruce = gPlayersIndex.get().getByName(args[0]);

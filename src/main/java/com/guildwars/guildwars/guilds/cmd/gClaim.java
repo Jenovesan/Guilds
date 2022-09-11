@@ -1,7 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
@@ -10,21 +9,12 @@ public class gClaim extends gCommand{
 
     public gClaim() {
         super("claim");
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.CLAIM);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-
-
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(player, GuildPermission.CHAT, true)) {
-            return;
-        }
 
         if (!gUtil.isInMainWorld(player)) {
             player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.cannot claim in world"));

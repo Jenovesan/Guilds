@@ -11,16 +11,12 @@ public class gJoin extends gCommand{
 
     public gJoin() {
         super("join");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(false);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.join.in guild"));
-            return;
-        }
 
         Guild guildToJoin;
         gPlayer possiblePlayerToJoin = gPlayersIndex.get().getByName(args[0]);

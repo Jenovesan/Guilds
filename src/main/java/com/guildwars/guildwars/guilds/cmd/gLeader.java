@@ -11,17 +11,13 @@ public class gLeader extends gCommand{
 
     public gLeader() {
         super("leader");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
     }
 
     @Override
     public void perform(gPlayer oldLeader, String[] args) {
         // Checks
-        if (!oldLeader.isInGuild()) {
-            oldLeader.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
         if (oldLeader.getGuildRank() != GuildRank.LEADER) {
             oldLeader.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.guild rank too low"));
             return;

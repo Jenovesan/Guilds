@@ -13,7 +13,9 @@ public class gDesc extends gCommand{
 
     public gDesc() {
         super("desc");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.SET_DESC);
     }
 
     @Override

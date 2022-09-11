@@ -11,17 +11,13 @@ public class gKick extends gCommand{
 
     public gKick() {
         super("kick");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.INVITE);
     }
 
     @Override
     public void perform(gPlayer kicker, String[] args) {
-
-        // Checks
-        if (!kicker.isInGuild()) {
-            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee not found"));
-            return;
-        }
 
         Guild guild = kicker.getGuild();
 
@@ -29,10 +25,6 @@ public class gKick extends gCommand{
 
         if (kickee == null) {
             kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
-            return;
-        }
-
-        if (!gUtil.checkPermission(kicker, GuildPermission.INVITE, true)) {
             return;
         }
 

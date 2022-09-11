@@ -12,16 +12,12 @@ public class gSetHome extends gCommand{
 
     public gSetHome() {
         super("sethome");
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.SETHOME);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(player, GuildPermission.SETHOME, true)) return;
 
         Location playerLocation = player.getPlayer().getLocation();
 

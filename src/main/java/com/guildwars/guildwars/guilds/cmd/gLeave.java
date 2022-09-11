@@ -4,6 +4,7 @@ import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;

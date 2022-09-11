@@ -1,6 +1,5 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
@@ -9,22 +8,15 @@ public class gDeInvite extends gCommand{
 
     public gDeInvite() {
         super("deinvite");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.INVITE);
     }
 
     @Override
     public void perform(gPlayer deInviter, String[] args) {
 
-        // Checks
-        if (!deInviter.isInGuild()) {
-            deInviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
         Guild deInviterGuild = deInviter.getGuild();
-
-        if (!gUtil.checkPermission(deInviter, GuildPermission.INVITE, true)) {
-            return;
-        }
 
         gPlayer deInvitee = gPlayersIndex.get().getByName(args[0]);
 

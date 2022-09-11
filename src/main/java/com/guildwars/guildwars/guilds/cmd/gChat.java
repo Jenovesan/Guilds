@@ -14,20 +14,12 @@ public class gChat extends gCommand {
 
     public gChat() {
         super("chat");
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.CHAT);
     }
 
     @Override
     public void perform(gPlayer gPlayer, String[] args) {
-
-        // Checks
-        if (!gPlayer.isInGuild()) {
-            gPlayer.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(gPlayer, GuildPermission.CHAT, true)) {
-            return;
-        }
 
         Player player = gPlayer.getPlayer();
         ChatChannel playerChatChannel = ChatChannels.getPlayerChatChannel(player);

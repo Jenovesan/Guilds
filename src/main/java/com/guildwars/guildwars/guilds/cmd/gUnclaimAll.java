@@ -11,19 +11,12 @@ public class gUnclaimAll extends gCommand{
 
     public gUnclaimAll() {
         super("unclaimall");
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.UNCLAIM_ALL);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(player, GuildPermission.UNCLAIM_ALL, true)) {
-            return;
-        }
 
         // Unclaim all
         Guild guild = player.getGuild();

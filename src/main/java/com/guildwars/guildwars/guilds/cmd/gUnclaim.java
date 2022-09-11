@@ -10,19 +10,12 @@ public class gUnclaim extends gCommand{
 
     public gUnclaim() {
         super("unclaim");
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.UNCLAIM);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(player, GuildPermission.UNCLAIM, true)) {
-            return;
-        }
 
         if (!gUtil.isInMainWorld(player)) {
             player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.unclaim.cannot claim in world"));

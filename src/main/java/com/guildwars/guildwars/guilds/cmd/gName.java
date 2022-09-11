@@ -10,20 +10,13 @@ public class gName extends gCommand{
 
     public gName() {
         super("name");
-        this.setMinArgs(1);
+        setMinArgs(1);
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.SET_NAME);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(player, GuildPermission.SET_NAME, true)) {
-            return;
-        }
 
         String newGuildName = args[0];
         // Command return messages are handled in this method

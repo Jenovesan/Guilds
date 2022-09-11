@@ -7,23 +7,18 @@ import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
 import org.bukkit.Location;
 
 public class gHome extends gCommand {
 
     public gHome() {
         super("home");
+        mustBeInGuild(true);
+        setMinPermission(GuildPermission.HOME);
     }
 
     @Override
     public void perform(gPlayer player, String[] args) {
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
-
-        if (!gUtil.checkPermission(player, GuildPermission.HOME, true)) return;
 
         Guild guild = player.getGuild();
 

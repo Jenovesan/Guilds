@@ -13,7 +13,7 @@ public class gCreate extends gCommand {
 
     public gCreate() {
         super("create");
-        this.setMinArgs(1);
+        setMinArgs(1);
     }
 
     @Override
