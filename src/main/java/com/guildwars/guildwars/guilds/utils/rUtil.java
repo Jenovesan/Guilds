@@ -1,7 +1,9 @@
-package com.guildwars.guildwars.utils;
+package com.guildwars.guildwars.guilds.utils;
 
+import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.Relation;
 import com.guildwars.guildwars.guilds.RelationParticipator;
@@ -27,9 +29,22 @@ public class rUtil {
     }
 
     public static String describe(RelationParticipator from, RelationParticipator to) {
-        String name = to instanceof Guild ? ((Guild) to).getName() : ((GPlayer) to).getName();
         Relation relation = from.getRelationTo(to);
-        return Messages.get(Plugin.GUILDS).get("relations.prefix." + relation.name()) + name;
+        String msg = Messages.get(Plugin.GUILDS).get("relations.prefix." + relation.name());
+        if (to instanceof Guild guild) {
+            return msg + guild.getName();
+        }
+        else {
+            Guild fromGuild = getGuild(from);
+            GPlayer toGPlayer = ((GPlayer) to);
+            // If the players are in the same guild, add the GuildRank prefix to the player being described
+            if (fromGuild != null && toGPlayer.getGuild() == fromGuild) {
+                GuildRank toGPlayerRank = toGPlayer.getGuildRank();
+                String guildRankPrefix = Config.get(Plugin.GUILDS).getString("GuildRank prefixes." + toGPlayerRank.name());
+                msg = msg.concat(guildRankPrefix);
+            }
+            return msg.concat(toGPlayer.getName());
+        }
     }
 
     public static String describeBold(RelationParticipator from, RelationParticipator to) {

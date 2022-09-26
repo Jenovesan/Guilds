@@ -5,7 +5,7 @@ import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.cmd.CmdException;
 import com.guildwars.guildwars.guilds.entity.GPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
+import com.guildwars.guildwars.guilds.utils.gUtil;
 import com.guildwars.guildwars.utils.util;
 
 public class GuildPermissionReq extends Req {

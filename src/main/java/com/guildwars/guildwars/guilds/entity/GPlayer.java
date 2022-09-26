@@ -7,7 +7,7 @@ import com.guildwars.guildwars.core.CorePlayer;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.utils.rUtil;
+import com.guildwars.guildwars.guilds.utils.rUtil;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;

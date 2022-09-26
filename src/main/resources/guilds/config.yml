@@ -128,3 +128,9 @@ command booleans:
     - 'no'
 guilds per page in gList: 10
 delete chunk data in outlands: false
+GuildRank prefixes:
+  RECRUIT: '-'
+  MEMBER: '+'
+  MOD: '*'
+  COLEADER: '**'
+  LEADER: '***'

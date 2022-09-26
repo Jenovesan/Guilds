@@ -1,13 +1,8 @@
 package com.guildwars.guildwars.core;
 
-import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
-import com.guildwars.guildwars.Messages;
-import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.utils.pUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -16,6 +11,7 @@ public class CorePlayer {
     private Player player;
     private final UUID uuid;
     private String name;
+    private String displayName;
 
     public Player getPlayer() {
         return player;
@@ -79,5 +75,9 @@ public class CorePlayer {
     public void teleport(float chargeUp, Location to) {
         Teleport teleport = new Teleport(player, chargeUp, to);
         teleport.teleport();
+    }
+
+    public String getDisplayName() {
+        return isOnline() ? player.getDisplayName() : name;
     }
 }

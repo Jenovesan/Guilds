@@ -1,8 +1,11 @@
-package com.guildwars.guildwars.guilds;
+package com.guildwars.guildwars.guilds.utils;
 
 import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.guilds.GuildPermission;
+import com.guildwars.guildwars.guilds.GuildRank;
+import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.entity.Guild;
 

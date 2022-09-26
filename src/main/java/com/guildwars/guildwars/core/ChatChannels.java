@@ -4,6 +4,7 @@ import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;
+import com.guildwars.guildwars.guilds.utils.gUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

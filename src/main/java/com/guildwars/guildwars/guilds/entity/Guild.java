@@ -5,7 +5,8 @@ import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.utils.rUtil;
+import com.guildwars.guildwars.guilds.utils.gUtil;
+import com.guildwars.guildwars.guilds.utils.rUtil;
 import org.bukkit.Location;
 
 import java.util.*;

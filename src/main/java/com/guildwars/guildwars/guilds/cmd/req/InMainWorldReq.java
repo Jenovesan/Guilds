@@ -4,7 +4,7 @@ import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.cmd.CmdException;
 import com.guildwars.guildwars.guilds.entity.GPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
+import com.guildwars.guildwars.guilds.utils.gUtil;
 
 public class InMainWorldReq extends Req {
     @Override
