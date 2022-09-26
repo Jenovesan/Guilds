@@ -4,6 +4,7 @@ import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.entity.BoardCord;
 import com.guildwars.guildwars.guilds.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.GuildChunk;
 import com.guildwars.guildwars.guilds.files.BoardData;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -45,6 +46,13 @@ public class Board extends Coll<GuildChunk>{
 
             // Create GuildChunk
             GuildChunk newChunk = new GuildChunk(Guilds.get().getById(guildId), boardCord);
+
+            // Make sure chunk still fits in board.
+            // It will not fit in the board if the board was shrunken in config.
+            if (newChunk.getBoardLocation().isOutOfBounds()) {
+                if (Config.get(Plugin.GUILDS).getBoolean("delete data in outlands")) BoardData.get().remove(newChunk);
+                continue;
+            }
 
             // Add GuildChunk
             getAll().add(newChunk);

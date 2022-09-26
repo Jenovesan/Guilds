@@ -21,10 +21,6 @@ public abstract class ObjectDataManager<T> {
         return dataFolder;
     }
 
-    protected String getDataFolderPath() {
-        return dataFolderPath;
-    }
-
     public ObjectDataManager(String folderName) {
 
         this.folderName = folderName;

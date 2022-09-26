@@ -1,8 +1,9 @@
 package com.guildwars.guildwars.guilds.files;
 
-import com.guildwars.guildwars.guilds.GuildChunk;
+import com.guildwars.guildwars.guilds.entity.GuildChunk;
 import com.guildwars.guildwars.guilds.ObjectDataManager;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class BoardData extends ObjectDataManager<GuildChunk> {
@@ -21,12 +22,24 @@ public class BoardData extends ObjectDataManager<GuildChunk> {
 
         HashMap<String, Object> chunkData = new HashMap<>();
 
-        String boardLocation = chunk.getBoardLocation().getX() + "," + chunk.getBoardLocation().getZ();
+        String boardLocation = getBoardLocationString(chunk);
 
         chunkData.put("boardLocation", boardLocation);
 
         chunkData.put("guildId", chunk.getGuild().getId());
 
         saveRaw(boardLocation, chunkData);
+    }
+
+    private String getBoardLocationString(GuildChunk chunk) {
+        return chunk.getBoardLocation().getX() + "," + chunk.getBoardLocation().getZ();
+    }
+
+    public void remove(GuildChunk chunk) {
+        String fileName = getBoardLocationString(chunk);
+        File rawFile = new File(getDataFolder() + "/" + fileName + ".yml");
+        if (!rawFile.delete()) {
+            System.out.println("Unable to delete " + fileName + ".yml");
+        }
     }
 }

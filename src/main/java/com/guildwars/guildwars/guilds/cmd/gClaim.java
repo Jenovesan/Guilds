@@ -8,8 +8,7 @@ import com.guildwars.guildwars.guilds.cmd.arg.IntArg;
 import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
 import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
 import com.guildwars.guildwars.guilds.cmd.req.InMainWorldReq;
-
-import java.util.Arrays;
+import com.guildwars.guildwars.guilds.entity.GuildChunk;
 
 public class gClaim extends gCommand{
 

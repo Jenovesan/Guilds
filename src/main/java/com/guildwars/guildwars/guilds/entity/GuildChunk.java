@@ -1,7 +1,6 @@
-package com.guildwars.guildwars.guilds;
+package com.guildwars.guildwars.guilds.entity;
 
-import com.guildwars.guildwars.guilds.entity.BoardCord;
-import com.guildwars.guildwars.guilds.entity.Guild;
+import com.guildwars.guildwars.guilds.Board;
 import com.guildwars.guildwars.guilds.files.BoardData;
 import org.bukkit.Chunk;
 
@@ -69,7 +68,13 @@ public class GuildChunk {
 
     private void changed() {
         // If the chunk is no longer claimed, remove its data
-        if (isWilderness()) Board.get().remove(this);
+        if (isWilderness()) {
+            // Remove from board
+            Board.get().remove(this);
+
+            // Remove data
+            Board.get().remove(this);
+        }
         // If the chunk is claimed, save its data and add it to  board
         else {
             // Add to Board

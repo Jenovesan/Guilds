@@ -5,6 +5,7 @@ import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
 import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
+import com.guildwars.guildwars.guilds.entity.GuildChunk;
 
 public class gUnclaimAll extends gCommand{
 

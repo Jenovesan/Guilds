@@ -2,6 +2,7 @@ package com.guildwars.guildwars.guilds.event;
 
 import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.entity.GuildChunk;
 import org.bukkit.Chunk;
 import org.bukkit.event.Cancellable;
 

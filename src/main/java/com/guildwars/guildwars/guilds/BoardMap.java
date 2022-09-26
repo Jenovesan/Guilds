@@ -6,6 +6,7 @@ import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.GuildChunk;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

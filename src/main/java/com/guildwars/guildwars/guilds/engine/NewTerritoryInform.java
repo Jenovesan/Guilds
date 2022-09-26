@@ -4,7 +4,7 @@ import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.entity.Guild;
-import com.guildwars.guildwars.guilds.GuildChunk;
+import com.guildwars.guildwars.guilds.entity.GuildChunk;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.entity.GPlayer;
 import org.bukkit.entity.Player;

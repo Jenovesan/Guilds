@@ -45,6 +45,10 @@ public class Config extends GuildWarsFile<Object> {
         return Long.valueOf((Integer) get(path));
     }
 
+    public Boolean getBoolean(String path) {
+        return (Boolean) get(path);
+    }
+
     public Map<String, Object> getMap(String path) {
         return getConfiguration().getConfigurationSection(path).getValues(false);
     }
