@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;

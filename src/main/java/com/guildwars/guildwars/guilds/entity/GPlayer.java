@@ -1,4 +1,4 @@
-package com.guildwars.guildwars.entity;
+package com.guildwars.guildwars.guilds.entity;
 
 import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Messages;
@@ -6,7 +6,6 @@ import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.core.CorePlayer;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
-import com.guildwars.guildwars.guilds.files.BoardData;
 import com.guildwars.guildwars.guilds.files.PlayerData;
 import com.guildwars.guildwars.utils.rUtil;
 import org.bukkit.entity.Player;
@@ -77,6 +76,8 @@ public class GPlayer extends CorePlayer implements RelationParticipator {
         int playerMaxPower = Config.get(Plugin.GUILDS).getInt("player max power");
         int playerMinPower = Config.get(Plugin.GUILDS).getInt("player min power");
         this.power = Math.min(Math.max(this.power + changeBy, playerMinPower), playerMaxPower);
+
+        changed();
     }
 
     // For loading gPlayer from data

@@ -16,7 +16,7 @@ public class gPower extends gCommand{
     @Override
     public void perform() {
         // Args
-        float playerPower = gPlayer.getPower();
+        float playerPower = (float) Math.round(gPlayer.getPower() * 1000) / 1000;
         int playerMaxPower = gPlayer.getMaxPower();
         String powerMsg = Messages.get(Plugin.GUILDS).get("commands.power.player power", playerPower + "/" + playerMaxPower);
 

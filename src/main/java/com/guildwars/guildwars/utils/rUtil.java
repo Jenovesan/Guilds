@@ -2,10 +2,10 @@ package com.guildwars.guildwars.utils;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.Relation;
 import com.guildwars.guildwars.guilds.RelationParticipator;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import org.bukkit.ChatColor;
 
 public class rUtil {

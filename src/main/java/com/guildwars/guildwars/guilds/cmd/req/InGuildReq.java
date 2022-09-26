@@ -3,7 +3,7 @@ package com.guildwars.guildwars.guilds.cmd.req;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.cmd.CmdException;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 
 public class InGuildReq extends Req {
     @Override

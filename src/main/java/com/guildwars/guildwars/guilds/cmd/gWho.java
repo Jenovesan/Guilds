@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 
 public class gWho extends gCommand{
 

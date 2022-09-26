@@ -2,7 +2,7 @@ package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.GuildUnclaimEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;

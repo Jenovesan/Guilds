@@ -2,11 +2,11 @@ package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.event.GPlayerQuitEvent;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

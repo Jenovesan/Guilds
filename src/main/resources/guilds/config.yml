@@ -126,4 +126,4 @@ command booleans:
     - 'off'
     - 'false'
     - 'no'
-
+guilds per page in gList: 10

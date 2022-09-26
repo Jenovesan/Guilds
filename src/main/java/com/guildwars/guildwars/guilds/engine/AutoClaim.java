@@ -3,7 +3,7 @@ package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.*;
 import org.bukkit.Chunk;

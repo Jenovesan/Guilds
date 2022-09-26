@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.event;
 
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.GuildRank;
 

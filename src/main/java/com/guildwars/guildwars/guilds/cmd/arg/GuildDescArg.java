@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd.arg;
 
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 
 public class GuildDescArg extends Arg<String>{
     public GuildDescArg(boolean required) {

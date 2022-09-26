@@ -3,9 +3,9 @@ package com.guildwars.guildwars.guilds.engine;
 import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.GPlayer;
-import com.guildwars.guildwars.entity.Guild;
-import com.guildwars.guildwars.entity.Invitation;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Invitation;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.Indexing;
 

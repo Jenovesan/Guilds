@@ -2,8 +2,8 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.GPlayer;
-import com.guildwars.guildwars.entity.Invitation;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.Invitation;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.cmd.arg.GPlayerArg;
 import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;

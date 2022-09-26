@@ -3,8 +3,8 @@ package com.guildwars.guildwars.guilds;
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.GPlayer;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;

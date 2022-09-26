@@ -1,7 +1,7 @@
 package com.guildwars.guildwars.guilds.files;
 
 import com.guildwars.guildwars.guilds.ObjectDataManager;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 
 import java.util.HashMap;
 

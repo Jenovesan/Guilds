@@ -1,4 +1,4 @@
-package com.guildwars.guildwars.entity;
+package com.guildwars.guildwars.guilds.entity;
 
 import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Plugin;
@@ -223,6 +223,9 @@ public class Guild implements RelationParticipator {
 
         // Remove Guild from Guilds
         Guilds.get().remove(this);
+
+        // Remove Guild from Indexes
+        Indexing.get().remove(this);
     }
 
     public void setHome(Location home) {

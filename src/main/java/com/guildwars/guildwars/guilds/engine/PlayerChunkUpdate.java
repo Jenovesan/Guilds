@@ -5,7 +5,7 @@ import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.event.GPlayerQuitEvent;
 import com.guildwars.guildwars.guilds.event.GPlayerLoginEvent;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

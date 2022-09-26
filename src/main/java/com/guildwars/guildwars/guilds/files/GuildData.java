@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.files;
 
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.ObjectDataManager;
 import com.guildwars.guildwars.guilds.Relation;
 import com.guildwars.guildwars.utils.util;

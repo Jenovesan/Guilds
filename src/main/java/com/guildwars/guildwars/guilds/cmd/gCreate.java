@@ -2,7 +2,7 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.cmd.arg.GuildDescArg;
 import com.guildwars.guildwars.guilds.cmd.arg.GuildNameArg;
 import com.guildwars.guildwars.guilds.cmd.req.NotInGuildReq;
@@ -29,7 +29,6 @@ public class gCreate extends gCommand {
 
     @Override
     public void perform() throws CmdException {
-
         // Args
         String guildName = readNextArg();
         String guildDesc = readNextArg("None");

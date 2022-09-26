@@ -1,7 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.entity.GPlayer;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -31,14 +31,15 @@ public class Indexing {
 
     // Initialize
 
-    Map<String, Guild> name2Guild = new WeakHashMap<>();
-    Map<Guild, HashSet<GPlayer>> guild2Players = new WeakHashMap<>();
-    Map<Player, Guild> player2Guild = new HashMap<>();
+    private final HashMap<String, Guild> name2Guild = new HashMap<>();
+    private final HashMap<Guild, HashSet<GPlayer>> guild2Players = new HashMap<>();
+    private final HashMap<Player, Guild> player2Guild = new HashMap<>();
 
     // Getters
 
     public Guild getGuildByName(String name) {
         name = formatName(name);
+        System.out.println(Indexing.get().name2Guild);
         return name2Guild.get(name);
     }
 
@@ -74,6 +75,12 @@ public class Indexing {
         HashSet<GPlayer> gPlayers = guild2Players.get(guild);
         gPlayers.remove(gPlayer);
         guild2Players.replace(guild, gPlayers);
+    }
+
+    // Remove from index
+    public void remove(Guild guild) {
+        name2Guild.remove(guild.getName());
+        guild2Players.remove(guild);
     }
 
     // -------------------------------------------- //

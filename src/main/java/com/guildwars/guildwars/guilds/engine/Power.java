@@ -5,7 +5,7 @@ import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.Indexing;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.GPlayers;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

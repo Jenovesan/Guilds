@@ -2,34 +2,31 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.Guild;
-import com.guildwars.guildwars.guilds.Guilds;
-
-import java.util.List;
+import com.guildwars.guildwars.guilds.cmd.arg.IntArg;
+import com.guildwars.guildwars.guilds.entity.GuildsList;
 
 public class gList extends gCommand {
     public gList() {
         // Name
         super("list");
+
+        // Args
+        addArg(new IntArg(false));
     }
 
     @Override
-    void perform() {
-        String fList = Messages.get(Plugin.GUILDS).get("commands.list.list construction.header") + "\n";
-        
-        List<Guild> onlineGuilds = Guilds.get().getAll().stream().filter(Guild::hasOnlinePlayer).toList();
+    void perform() throws CmdException {
+        // Args
+        int page = readNextArg(1);
 
-        for (Guild guild : onlineGuilds) {
-            int onlinePlayers = guild.getNumberOfOnlinePlayers();
-            int playerCount = guild.getPlayerCount();
-            int claims = guild.getNumberOfClaims();
-            int power = guild.getPower();
-            int maxPower = guild.getMaxPower();
-            fList = fList.concat(Messages.get(Plugin.GUILDS).get("commands.list.list construction.data", guild, onlinePlayers, playerCount, claims, power, maxPower)) + "\n";
-        }
+        // Prepare
 
-        fList = fList.concat(Messages.get(Plugin.GUILDS).get("commands.list.list construction.footer"));
+        GuildsList guildsList = new GuildsList(gPlayer);
 
-        player.sendMessage(fList);
+        // Check if page is valid
+        if (!guildsList.isPage(page)) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.list.page not exist"));
+
+        // Apply
+        player.sendMessage(guildsList.getPage(page));
     }
 }

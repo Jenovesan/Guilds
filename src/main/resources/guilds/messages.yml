@@ -161,10 +161,14 @@ commands:
     description: 'Teleports you to your guild''s home'
   list:
     description: 'Displays the top online guilds'
+    page not exist: '&cPage &2%S% &cdoes not exist'
     list construction:
       header: '&2&m----------&6[ &aOnline Guilds&6 ]&2&m---------'
-      data: '&a%S% &6> &e%I%/%I% &aonline &6| &apower &e%I%/%I%%I%'
+      data: '&a%S% &6> &e%I%/%I% &aonline &6|| &apower &e%I%/%I%'
       footer: '&2&m----------&6[&a Page %I%/%I%&6 ]&2&m----------'
+      safety:
+        pillaged: '&a'
+        safe: '&'
   enemy:
     description: 'Enemy a guild'
   truce:

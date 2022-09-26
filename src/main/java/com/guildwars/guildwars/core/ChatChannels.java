@@ -1,7 +1,7 @@
 package com.guildwars.guildwars.core;
 
-import com.guildwars.guildwars.entity.GPlayer;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.*;
 import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;
 import org.bukkit.ChatColor;

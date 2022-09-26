@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.cmd.arg;
 
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.cmd.CmdException;
 
 public abstract class Arg<T> {

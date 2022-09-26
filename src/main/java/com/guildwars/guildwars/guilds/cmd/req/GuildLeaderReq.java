@@ -4,7 +4,7 @@ import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.GuildRank;
 import com.guildwars.guildwars.guilds.cmd.CmdException;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.utils.util;
 
 public class GuildLeaderReq extends Req {

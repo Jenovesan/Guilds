@@ -2,7 +2,7 @@ package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.guilds.BoardMap;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 

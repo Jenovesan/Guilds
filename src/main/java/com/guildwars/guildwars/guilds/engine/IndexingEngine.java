@@ -1,7 +1,7 @@
 package com.guildwars.guildwars.guilds.engine;
 
-import com.guildwars.guildwars.entity.GPlayer;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.Indexing;
 import com.guildwars.guildwars.guilds.event.*;
 import org.bukkit.entity.Player;

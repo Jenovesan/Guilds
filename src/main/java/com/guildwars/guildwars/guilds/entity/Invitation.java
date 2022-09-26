@@ -1,4 +1,4 @@
-package com.guildwars.guildwars.entity;
+package com.guildwars.guildwars.guilds.entity;
 
 import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Plugin;

@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.event;
 
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 
 public class PlayerLosePowerEvent extends GuildsEvent {
 

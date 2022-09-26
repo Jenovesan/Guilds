@@ -2,8 +2,8 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.Guild;
-import com.guildwars.guildwars.entity.Invitation;
+import com.guildwars.guildwars.guilds.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.Invitation;
 import com.guildwars.guildwars.guilds.cmd.arg.GuildArg;
 import com.guildwars.guildwars.guilds.cmd.req.NotInGuildReq;
 import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;

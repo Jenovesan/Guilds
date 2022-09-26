@@ -3,7 +3,7 @@ package com.guildwars.guildwars.guilds.cmd.arg;
 import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.entity.GPlayer;
 import com.guildwars.guildwars.guilds.cmd.CmdException;
 import com.guildwars.guildwars.utils.fUtil;
 

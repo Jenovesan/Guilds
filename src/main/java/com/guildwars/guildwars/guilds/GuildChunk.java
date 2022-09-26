@@ -1,7 +1,7 @@
 package com.guildwars.guildwars.guilds;
 
-import com.guildwars.guildwars.entity.BoardCord;
-import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.entity.BoardCord;
+import com.guildwars.guildwars.guilds.entity.Guild;
 import com.guildwars.guildwars.guilds.files.BoardData;
 import org.bukkit.Chunk;
 
