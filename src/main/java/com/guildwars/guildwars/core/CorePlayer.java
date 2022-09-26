@@ -9,17 +9,19 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.UUID;
+
 public class CorePlayer {
 
     private Player player;
-    private final String uuid;
+    private final UUID uuid;
     private String name;
 
     public Player getPlayer() {
         return player;
     }
 
-    public String getUUID() {
+    public UUID getUUID() {
         return uuid;
     }
 
@@ -38,12 +40,12 @@ public class CorePlayer {
     // For creating CorePlayer from player / new player
     public CorePlayer(Player player) {
         this.player = player;
-        this.uuid = String.valueOf(player.getUniqueId());
+        this.uuid = player.getUniqueId();
         this.name = player.getName();
     }
 
     // For loading CorePlayer from file
-    public CorePlayer(String uuid, String name) {
+    public CorePlayer(UUID uuid, String name) {
         this.uuid = uuid;
         this.name = name;
     }
@@ -74,65 +76,8 @@ public class CorePlayer {
         }
     }
 
-    int FADE_IN = Config.get(Plugin.CORE).getInt("teleporting title.fadeIn");
-    int STAY = Config.get(Plugin.CORE).getInt("teleporting title.stay");
-    int FADE_OUT = Config.get(Plugin.CORE).getInt("teleporting title.fadeOut");
-    int BAR_LEN = Config.get(Plugin.CORE).getInt("teleporting title.bar length");
-    String BAR_CHARGED_PREFIX = Messages.get(Plugin.CORE).get("teleporting.title.bar charged prefix");
-    String BAR_UNCHARGED_PREFIX = Messages.get(Plugin.CORE).get("teleporting.title.bar uncharged prefix");
-    String BAR = Messages.get(Plugin.CORE).get("teleporting.title.bar");
-
     public void teleport(float chargeUp, Location to) {
-
-        double startLocationX = getPlayer().getLocation().getX();
-        double startLocationZ = getPlayer().getLocation().getZ();
-
-        // Inform
-        sendMessage(Messages.get(Plugin.CORE).get("teleporting.message.teleporting"));
-
-        new BukkitRunnable() {
-            int d = 0;
-            @Override
-            public void run() {
-                // Check if player has moved
-                if (getPlayer().getLocation().getX() != startLocationX || getPlayer().getLocation().getZ() != startLocationZ) {
-                    // Inform
-                    sendMessage(Messages.get(Plugin.CORE).get("teleporting.message.cancelled"));
-
-                    this.cancel();
-                }
-
-                // Charge-up is complete
-                if (d >= chargeUp) {
-                    // Done with charge-up
-                    player.teleport(to);
-
-                    // Inform
-                    sendMessage(Messages.get(Plugin.CORE).get("teleporting.message.teleported"));
-
-                    this.cancel();
-                }
-
-                // Construct bar
-                String bar = BAR_CHARGED_PREFIX;
-                int currentChargedBars = Math.round((BAR_LEN * (d / chargeUp)));
-                for (int j = 0; j < currentChargedBars; j++) {
-                    bar = bar.concat(BAR);
-                }
-                bar = bar.concat(BAR_UNCHARGED_PREFIX);
-                for (int j = currentChargedBars; j < BAR_LEN; j++) {
-                    bar = bar.concat(BAR);
-                }
-
-                // Send title
-                getPlayer().sendTitle(
-                    Messages.get(Plugin.CORE).get("teleporting.title.title"),
-                    bar,
-                    FADE_IN, STAY, FADE_OUT
-                );
-
-                d++;
-            }
-        }.runTaskTimer(GuildWars.getInstance(), 0, 1);
+        Teleport teleport = new Teleport(player, chargeUp, to);
+        teleport.teleport();
     }
 }

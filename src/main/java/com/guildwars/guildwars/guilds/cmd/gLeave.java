@@ -1,53 +1,42 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.GuildPermission;
 import com.guildwars.guildwars.guilds.GuildRank;
-import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
+import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;
 
 public class gLeave extends gCommand{
 
     public gLeave() {
+        // Name
         super("leave");
+
+        // Reqs
+        addReq(new InGuildReq());
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
+    public void perform() throws CmdException {
 
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
+        // Prepare
 
-        if (player.getGuildRank() == GuildRank.LEADER) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.leave.is leader"));
-            return;
-        }
+        // Req is not used here so specific message can be sent to player.
+        // Leader cannot leave the guild. They must either give away leadership or disband the guild.
+        if (gPlayer.getGuildRank() == GuildRank.LEADER) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.leave.is leader"));
 
-        //Leave guild
-        Guild guild = player.getGuild();
-        guild.removePlayer(player);
+        // Send guild announcement
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player leave", guild.describe(gPlayer)), gPlayer);
 
-        // Save data
-        GuildData.get().save(guild);
+        // Apply
 
-        // Update gPlayer
-        player.leftGuild();
-
-        // Send Guild Announcement
-        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player leave", player));
+        gPlayer.leftGuild();
 
         // Call event
-        PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(player, null, PlayerGuildChangeEvent.Reason.LEAVE);
-        playerGuildChangeEvent.run();
+        GPlayerGuildChangedEvent gPlayerGuildChangedEvent = new GPlayerGuildChangedEvent(gPlayer, guild, null, GPlayerGuildChangedEvent.Reason.LEAVE);
+        gPlayerGuildChangedEvent.run();
 
-        // Inform player
-        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.leave.successfully left", guild));
+        // Inform
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.leave.successfully left", gPlayer.describe(guild)));
     }
 }

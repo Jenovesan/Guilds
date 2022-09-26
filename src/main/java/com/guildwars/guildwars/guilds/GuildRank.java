@@ -9,20 +9,25 @@ public enum GuildRank {
     COLEADER(4),
     LEADER(5);
 
-    public final int level;
+    private final int level;
+
+    public int getLevel() {
+        return level;
+    }
+
     GuildRank (int level) {
         this.level = level;
     }
 
     public static int higherByAmount(GuildRank rank1, GuildRank rank2) {
-        return rank1.level - rank2.level;
+        return rank1.getLevel() - rank2.getLevel();
     }
 
     // Used to get GuildRanks by level
     private final static HashMap<Integer, GuildRank> levelsWithGuildRanks = new HashMap<>();
     static {
         for (GuildRank rank : GuildRank.values()) {
-            levelsWithGuildRanks.put(rank.level, rank);
+            levelsWithGuildRanks.put(rank.getLevel(), rank);
         }
     }
 

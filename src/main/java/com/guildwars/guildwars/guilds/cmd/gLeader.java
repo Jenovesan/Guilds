@@ -1,67 +1,65 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.entity.GPlayer;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
-import com.guildwars.guildwars.guilds.files.PlayerData;
+import com.guildwars.guildwars.guilds.cmd.arg.GPlayerArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildLeaderReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
+import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangedEvent;
 
 public class gLeader extends gCommand{
 
     public gLeader() {
+        // Name
         super("leader");
-        setMinArgs(1);
-        mustBeInGuild(true);
+
+        // Aliases
+        addAlias("owner");
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildLeaderReq());
+
+        // Args
+        addArg(new GPlayerArg(true, false));
     }
 
     @Override
-    public void perform(gPlayer oldLeader, String[] args) {
-        // Checks
-        if (oldLeader.getGuildRank() != GuildRank.LEADER) {
-            oldLeader.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.guild rank too low"));
-            return;
-        }
+    public void perform() throws CmdException {
+        // Args
+        GPlayer newLeader = readNextArg();
 
-        Guild guild = oldLeader.getGuild();
-        gPlayer newLeader = gPlayersIndex.get().getByName(args[0]);
+        // Prepare
 
-        if (newLeader == null) {
-            oldLeader.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.promote.promotee not found", args[0]));
-            return;
-        }
+        // Cannot make yourself leader
+        if (gPlayer == newLeader) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.player is sender"));
 
-        if (newLeader == oldLeader) {
-            oldLeader.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.leader.new leader is sender"));
-            return;
-        }
+        // Can only make someone in your guild leader
+        if (newLeader.getGuild() != guild) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.player not in your guild", gPlayer.describe(newLeader)));
 
-        if (newLeader.getGuild() != guild) {
-            oldLeader.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not in your guild", newLeader));
-            return;
-        }
+        // Send guild announcement
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.gave leadership", guild.describe(gPlayer), guild.describe(newLeader)));
 
-        // Change GuildRanks
+        // Apply
+
         newLeader.setGuildRank(GuildRank.LEADER);
-        oldLeader.setGuildRank(GuildRank.COLEADER);
-
-        // Save data
-        PlayerData.get().save(newLeader);
-        PlayerData.get().save(oldLeader);
+        gPlayer.setGuildRank(GuildRank.COLEADER);
 
         // Call Events
-        PlayerGuildRankChangeEvent newLeaderGuildRankChangeEvent = new PlayerGuildRankChangeEvent(newLeader, GuildRank.LEADER);
+        PlayerGuildRankChangedEvent newLeaderGuildRankChangeEvent = new PlayerGuildRankChangedEvent(newLeader, GuildRank.LEADER);
         newLeaderGuildRankChangeEvent.run();
-        PlayerGuildRankChangeEvent oldLeaderGuildRankChangeEvent = new PlayerGuildRankChangeEvent(oldLeader, GuildRank.COLEADER);
+
+        PlayerGuildRankChangedEvent oldLeaderGuildRankChangeEvent = new PlayerGuildRankChangedEvent(gPlayer, GuildRank.COLEADER);
         oldLeaderGuildRankChangeEvent.run();
 
-        // Inform guild
-        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.gave leadership", oldLeader, newLeader));
+        // Inform
 
         // Inform newLeader
-        newLeader.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.leader.new leader success msg", guild));
+        newLeader.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.leader.success to new leader", newLeader.describe(guild)));
 
-        // Inform
-        oldLeader.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.leader.old leader success msg", newLeader, guild));
+        // Inform oldLeader
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.leader.success", gPlayer.describe(newLeader), gPlayer.describe(guild)));
     }
 }

@@ -1,13 +1,12 @@
 package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.guilds.Indexing;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
-import com.guildwars.guildwars.guilds.gPlayersIndex;
+import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.GPlayers;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -26,7 +25,7 @@ public class Power extends Engine{
 
     @Override
     public void run() {
-        for (gPlayer player : gPlayers.get().getAll()) {
+        for (GPlayer player : GPlayers.get().getAll()) {
 
             if (player.getPower() == MAX_POWER) continue;
 
@@ -39,7 +38,7 @@ public class Power extends Engine{
     }
 
     public void updatePower() {
-        for (gPlayer player : gPlayers.get().getAll()) {
+        for (GPlayer player : GPlayers.get().getAll()) {
             // Lower player power if above max power.
             // Will run if admin lowers max power
             if (player.getPower() > MAX_POWER) {
@@ -56,8 +55,8 @@ public class Power extends Engine{
 
         if (player == null) return;
 
-        gPlayer gPlayer = gPlayersIndex.get().getByPlayer(player);
-        gPlayer gKiller = killer != null ? gPlayersIndex.get().getByPlayer(killer) : null;
+        GPlayer gPlayer = Indexing.get().getGPlayerByUUID(player.getUniqueId());
+        GPlayer gKiller = killer != null ? Indexing.get().getGPlayerByUUID(killer.getUniqueId()) : null;
 
         int powerLossOnDeath = Config.get(Plugin.GUILDS).getInt("power change on death");
 

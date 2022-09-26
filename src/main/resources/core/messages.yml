@@ -8,3 +8,5 @@ teleporting:
     teleporting: '&aTeleporting...'
     teleported: '&aTeleported!'
     cancelled: '&cTeleport Cancelled'
+chat channels:
+  joined: '&aYou joined &2%S% &achat'

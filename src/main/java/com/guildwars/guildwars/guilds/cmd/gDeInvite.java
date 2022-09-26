@@ -2,41 +2,53 @@ package com.guildwars.guildwars.guilds.cmd;
 
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.entity.Invitation;
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.cmd.arg.GPlayerArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
 
 public class gDeInvite extends gCommand{
 
     public gDeInvite() {
+        // Name
         super("deinvite");
-        setMinArgs(1);
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.INVITE);
+
+        // Aliases
+        addAlias("deinv");
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.INVITE));
+
+        // Args
+        addArg(new GPlayerArg(true, false));
     }
 
     @Override
-    public void perform(gPlayer deInviter, String[] args) {
+    public void perform() throws CmdException {
+        // Args
+        GPlayer deInvitee = readNextArg();
 
-        Guild deInviterGuild = deInviter.getGuild();
+        // Prepare
 
-        gPlayer deInvitee = gPlayersIndex.get().getByName(args[0]);
+        Invitation invite = guild.getInvite(deInvitee);
 
-        if (deInvitee == null) {
-            deInviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
-            return;
-        }
+        // Cannot de-invite deInvitee if deInvitee is not invited to the guild
+        if (invite == null) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.deinvite.not invited", gPlayer.describe(deInvitee)));
 
-        if (deInviterGuild.isInvited(deInvitee)) {
-            deInviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not invited", deInvitee));
-            return;
-        }
+        // Apply
 
-        // Deinvite player
-        deInviterGuild.removeInvite(deInvitee);
+        guild.removeInvite(invite);
+
+        // Inform
 
         // Inform deinvitee
-        deInvitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.deinvite.deinvitee deinvited msg", deInviterGuild));
+        deInvitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.deinvite.success to deinvitee", deInvitee.describe(guild)));
 
         // Inform deinviter
-        deInviter.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.deinvite.successfully deinvited", deInvitee));
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.deinvite.success", gPlayer.describe(deInvitee)));
+
     }
 }

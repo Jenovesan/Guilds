@@ -3,7 +3,7 @@ package com.guildwars.guildwars;
 import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.core.Files;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.cmd.GuildsCommandManager;
+import com.guildwars.guildwars.guilds.cmd.gCommandBase;
 import com.guildwars.guildwars.guilds.engine.EngineIntegration;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,8 +17,10 @@ public final class GuildWars extends JavaPlugin {
         // Plugin startup logic
         GuildWars.instance = this;
 
+        System.out.println("Loading...");
         loadCore();
         loadGuilds();
+        System.out.println("Enabling...");
         activateEngines();
         registerListeners();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Guild Wars Successfully Enabled");
@@ -31,36 +33,24 @@ public final class GuildWars extends JavaPlugin {
         System.out.println("-setting up files");
         new Files(Plugin.GUILDS);
 
-        // Load gPlayers
-        System.out.println("-loading players");
-        gPlayers.get().loadAll();
-
-        // Load gPlayers Index
-        System.out.println("-loading players index");
-        gPlayersIndex.get().load();
-
         // Load Guilds
         System.out.println("-loading guilds");
-        Guilds.get().loadAll();
+        Guilds.get().load();
 
-        // Fill gPlayers guilds
-        System.out.println("-loading player guilds");
-        gPlayers.get().loadGuilds();
-
-        // Load Guilds Index
-        System.out.println("-loading guilds index");
-        GuildsIndex.get().load();
-
-        // Fill Guilds guilds
-        System.out.println("-loading guilds' guilds");
-        Guilds.get().loadGuilds();
+        // Load gPlayers
+        System.out.println("-loading players");
+        GPlayers.get().load();
 
         // Load Board
-        System.out.println("-filling board");
-        Board.fillBoard();
+        System.out.println("-loading board");
+        Board.get().load();
+
+        // Load Index
+        System.out.println("-loading indexes");
+        Indexing.get().load();
 
         // Load Guilds commands
-        getCommand("guild").setExecutor(new GuildsCommandManager());
+        getCommand("guild").setExecutor(gCommandBase.get());
     }
 
     public void loadCore() {

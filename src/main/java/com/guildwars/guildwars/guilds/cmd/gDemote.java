@@ -1,64 +1,61 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.entity.GPlayer;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangeEvent;
-import com.guildwars.guildwars.guilds.files.PlayerData;
+import com.guildwars.guildwars.guilds.cmd.arg.GPlayerArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
+import com.guildwars.guildwars.guilds.event.PlayerGuildRankChangedEvent;
+import com.guildwars.guildwars.utils.util;
 
-public class gDemote extends gCommand{
+public class gDemote extends gCommand {
 
     public gDemote() {
+        // Name
         super("demote");
-        setMinArgs(1);
-        mustBeInGuild(true);
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.PROMOTE));
+
+        // Args
+        addArg(new GPlayerArg(true, false));
     }
 
     @Override
-    public void perform(gPlayer demoter, String[] args) {
-
-        gPlayer demotee = gPlayersIndex.get().getByName(args[0]);
-
-        if (demotee == null) {
-            demoter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
-            return;
-        }
-
-        Guild guild = demoter.getGuild();
-
-        if (demotee.getGuild() != guild) {
-            demoter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not in your guild", demotee));
-            return;
-        }
-
-        GuildRank demoterGuildRank = demoter.getGuildRank();
+    public void perform() throws CmdException {
+        // Args
+        GPlayer demotee = readNextArg();
+        GuildRank demoterGuildRank = gPlayer.getGuildRank();
         GuildRank demoteeGuildRank = demotee.getGuildRank();
-        if (GuildRank.higherByAmount(demoterGuildRank, demoteeGuildRank) < 1) {
-            demoter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.demote.rank not high enough", demotee));
-            return;
-        }
 
-        if (demoteeGuildRank.level == 1) {
-            demoter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.demote.cannot demote any further", demotee));
-            return;
-        }
+        // Prepare
 
-        // demote demotee
-        GuildRank newGuildRank = GuildRank.getGuildRankByLevel(demoteeGuildRank.level - 1);
+        // Player cannot only demote demotee if they are a higher rank than demotee
+        if (GuildRank.higherByAmount(demoterGuildRank, demoteeGuildRank) < 1) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.demote.rank not high enough", gPlayer.describe(demotee)));
+
+        // Player cannot demote someone to a GuildRank lower than Recruit
+        if (demoteeGuildRank.getLevel() == 1) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.demote.cannot demote any further", gPlayer.describe(demotee)));
+
+        GuildRank newGuildRank = GuildRank.getGuildRankByLevel(demoteeGuildRank.getLevel() - 1);
+
+        // Apply
+
         demotee.setGuildRank(newGuildRank);
 
-        // Save data
-        PlayerData.get().save(demotee);
-
         // Call Event
-        PlayerGuildRankChangeEvent playerGuildRankChangeEvent = new PlayerGuildRankChangeEvent(demotee, newGuildRank);
-        playerGuildRankChangeEvent.run();
+        PlayerGuildRankChangedEvent playerGuildRankChangedEvent = new PlayerGuildRankChangedEvent(demotee, newGuildRank);
+        playerGuildRankChangedEvent.run();
 
-        // Inform demotee
-        demotee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.demote.demotee demoted msg", newGuildRank));
+        // Inform
 
         // Inform demoter
-        demoter.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.demote.successfully demoted", demotee, newGuildRank));
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.demote.success", gPlayer.describe(demotee), util.formatEnum(newGuildRank)));
+
+        // Inform demotee
+        demotee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.demote.success to demotee", util.formatEnum(newGuildRank)));
+
     }
 }

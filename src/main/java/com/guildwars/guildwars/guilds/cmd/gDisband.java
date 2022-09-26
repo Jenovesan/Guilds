@@ -1,41 +1,35 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.event.GuildDisbandEvent;
-import com.guildwars.guildwars.utils.util;
+import com.guildwars.guildwars.guilds.cmd.req.GuildLeaderReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
 
-public class gDisband extends gCommand{
+public class gDisband extends gCommand {
 
     public gDisband() {
+        // Name
         super("disband");
-        mustBeInGuild(true);
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildLeaderReq());
+
+        // Set async because many functions will run to clear the guild's data
+        setAsync(true);
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (player.getGuildRank() != GuildRank.LEADER) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.guild rank too low", util.formatEnum(GuildRank.LEADER)));
-            return;
-        }
-
-        // Disband Guild
-        Guild guild = player.getGuild();
-
+    public void perform() {
+        // Apply
         guild.disband();
 
-        // Send Guild Announcement
+        // Inform
+
+        // Send guild announcement
         guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.disband"));
 
-        // Call GuildDisbandEvent
-        GuildDisbandEvent guildDisbandEvent = new GuildDisbandEvent(guild);
-        guildDisbandEvent.run();
-
-        // Inform
-        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.disband.successfully disbanded", guild));
-
+        // Inform disbander
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.disband.success", gPlayer.describe(guild)));
     }
 }

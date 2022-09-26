@@ -1,73 +1,64 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.files.GuildData;
+import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.entity.Invitation;
+import com.guildwars.guildwars.guilds.cmd.arg.GuildArg;
+import com.guildwars.guildwars.guilds.cmd.req.NotInGuildReq;
+import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;
 
 public class gJoin extends gCommand{
 
     public gJoin() {
+        // Name
         super("join");
-        setMinArgs(1);
-        mustBeInGuild(false);
+
+        // Reqs
+        addReq(new NotInGuildReq());
+
+        // Args
+        addArg(new GuildArg(true));
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
+    public void perform() throws CmdException {
+        // Args
+        Guild guildToJoin = readNextArg();
 
-        Guild guildToJoin;
-        gPlayer possiblePlayerToJoin = gPlayersIndex.get().getByName(args[0]);
-        if (possiblePlayerToJoin != null) { // Player using player name to join guild
-            if (!possiblePlayerToJoin.isInGuild()) {
-                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.join.player not in guild", possiblePlayerToJoin));
-                return;
-            }
-            guildToJoin = possiblePlayerToJoin.getGuild();
-        } else { //Player using guild name to join guild
-            guildToJoin = GuildsIndex.get().getByName(args[0]);
-            if (guildToJoin == null) {
-                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not a guild or player", args[0]));
-                return;
-            }
-        }
+        // Prepare
 
-        if (!guildToJoin.isInvited(player)) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.join.not invited", guildToJoin));
-            return;
-        }
+        Invitation invite = guildToJoin.getInvite(gPlayer);
 
+        // Can only join the guild if gPlayer is invited
+        if (invite == null) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.join.not invited", gPlayer.describe(guildToJoin)));
+
+        // Cannot join the guild if the guild is full
         if (guildToJoin.isFull()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.join.guild is full", guildToJoin));
-            // Send guild announcement saying player tried to join, but guild was full
-            guildToJoin.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guilds announcements.guild was full", player));
-            return;
+            // Send guild announcement
+            guildToJoin.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.guild was full", guildToJoin.describe(gPlayer)));
+
+            throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.join.guild is full", gPlayer.describe(guildToJoin)));
         }
 
-        // Join guild
-
-        // Send Guild Announcement
-        // This is done first because if it was done after the player was added to the guild, the new player would receive this announcement
-        guildToJoin.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player join", player));
-
-        guildToJoin.addPlayer(player);
-
-        // Save data
-        GuildData.get().save(guildToJoin);
+        // Apply
 
         // Update gPlayer
-        player.joinedNewGuild(guildToJoin);
+        gPlayer.joinedNewGuild(guildToJoin);
 
         // Call event
-        PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(player, guildToJoin, PlayerGuildChangeEvent.Reason.JOIN);
-        playerGuildChangeEvent.run();
+        GPlayerGuildChangedEvent gPlayerGuildChangedEvent = new GPlayerGuildChangedEvent(gPlayer, null, guildToJoin, GPlayerGuildChangedEvent.Reason.JOIN);
+        gPlayerGuildChangedEvent.run();
 
         // Remove invite
-        guildToJoin.removeInvite(player);
+        guildToJoin.removeInvite(invite);
 
-        // Inform player
-        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.join.successfully joined", guildToJoin));
+        // Inform
+
+        // Send Guild Announcement
+        guildToJoin.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player join", guildToJoin.describe(gPlayer)), gPlayer);
+
+        // Inform joiner
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.join.success", gPlayer.describe(guildToJoin)));
     }
 }

@@ -1,42 +1,40 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
-
-import java.util.HashSet;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
 
 public class gUnclaimAll extends gCommand{
 
     public gUnclaimAll() {
+        // Name
         super("unclaimall");
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.UNCLAIM_ALL);
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.UNCLAIM_ALL));
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
+    public void perform() {
+        // Args
+        int unclaims = 0;
 
-        // Unclaim all
-        Guild guild = player.getGuild();
+        // Apply
 
-        // Update Board
-        HashSet<int[]> claimLocations = guild.getClaimLocations();
-        GuildChunk[] claims = new GuildChunk[claimLocations.size()];
-        int i = 0;
-        for (int[] boardLocation : claimLocations) {
-            claims[i] = Board.getBoard()[boardLocation[0]][boardLocation[1]];
-            i++;
+        for (GuildChunk chunk : Board.get().getGuildClaims(guild)) {
+            chunk.setWilderness();
+            unclaims++;
         }
-        int unclaims = player.tryUnclaim(claims);
 
-        if (unclaims > 0) {
-            // Send Guild announcement
-            guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.unclaimed all", player));
-        }
+        // Inform
+
+        // Inform guild
+        if (unclaims > 0) guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.unclaimed all", guild.describe(gPlayer)));
 
         // Inform player
-        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.unclaimall.successfully unclaimed all"));
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.unclaimall.success"));
     }
 }

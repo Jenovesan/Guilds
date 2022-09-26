@@ -1,11 +1,11 @@
 package com.guildwars.guildwars.guilds.engine;
 
+import com.guildwars.guildwars.guilds.Indexing;
 import com.guildwars.guildwars.guilds.event.GPlayerQuitEvent;
 import com.guildwars.guildwars.guilds.event.GPlayerLoginEvent;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gPlayers;
-import com.guildwars.guildwars.guilds.gPlayersIndex;
+import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.guilds.GPlayers;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -15,70 +15,64 @@ public class RegisterGPlayer extends Engine {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        Player playerPlayer = event.getPlayer();
-        gPlayer player = gPlayersIndex.get().getByUUID(playerPlayer.getUniqueId());
+        Player player = event.getPlayer();
+        GPlayer gPlayer = Indexing.get().getGPlayerByUUID(player.getUniqueId());
 
-        // gPlayer for player does not exist
-        if (player == null) {
-            player = createNewgPlayer(playerPlayer);
+        // gPlayer for gPlayer does not exist
+        if (gPlayer == null) {
+            gPlayer = createNewgPlayer(player);
         } else {
-            updategPlayer(playerPlayer, player);
+            updateGPlayer(player, gPlayer);
         }
 
         // Call event
-        GPlayerLoginEvent gPlayerLoginEvent = new GPlayerLoginEvent(playerPlayer, player);
+        GPlayerLoginEvent gPlayerLoginEvent = new GPlayerLoginEvent(player, gPlayer);
         gPlayerLoginEvent.run();
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        Player playerPlayer = event.getPlayer();
+        Player player = event.getPlayer();
 
         // Call event
-        gPlayer player = gPlayersIndex.get().getByPlayer(playerPlayer);
-        GPlayerQuitEvent gPlayerQuitEvent = new GPlayerQuitEvent(player);
+        GPlayer gPlayer = Indexing.get().getGPlayerByUUID(player.getUniqueId());
+        GPlayerQuitEvent gPlayerQuitEvent = new GPlayerQuitEvent(gPlayer, player);
         gPlayerQuitEvent.run();
-
-        // Remove from index
-        gPlayersIndex.get().getPlayer2Player().remove(playerPlayer);
     }
 
-    private gPlayer createNewgPlayer(Player playerPlayer) {
+    private GPlayer createNewgPlayer(Player player) {
         // Create new gPlayer
-        gPlayer player = new gPlayer(playerPlayer);
+        GPlayer gPlayer = new GPlayer(player);
 
         // Add new gPlayer to gPlayer collection
-        gPlayers.get().add(player);
+        GPlayers.get().add(gPlayer);
 
         // Save data
-        PlayerData.get().save(player);
+        PlayerData.get().save(gPlayer);
 
-        // Update index
-        gPlayersIndex.get().add(player);
+        // Add to index
+        Indexing.get().add(gPlayer);
 
-        return player;
+        return gPlayer;
     }
 
-    private static void updategPlayer(Player playerPlayer, gPlayer player) {
+    private void updateGPlayer(Player player, GPlayer gPlayer) {
         // Set their gPlayer's player
-        player.setPlayer(playerPlayer);
+        gPlayer.setPlayer(player);
 
-        String gPlayerName = player.getName();
-        String playerName = playerPlayer.getName();
+        String gPlayerName = gPlayer.getName();
+        String playerName = player.getName();
 
         // Update gPlayer name because player changed their name
         if (!gPlayerName.equals(playerName)) {
             // Set name
-            player.setName(playerPlayer.getName());
+            gPlayer.setName(playerName);
 
             // Save data
-            PlayerData.get().save(player);
+            PlayerData.get().save(gPlayer);
 
             // Update index
-            gPlayersIndex.get().updateName(player, gPlayerName, playerName);
+            Indexing.get().updateName(gPlayer, gPlayerName, playerName);
         }
-
-        // Update index
-        gPlayersIndex.get().update(player);
     }
 }

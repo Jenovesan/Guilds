@@ -1,14 +1,12 @@
 package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.entity.Guild;
 import com.guildwars.guildwars.guilds.GuildChunk;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
+import com.guildwars.guildwars.entity.GPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
@@ -51,10 +49,10 @@ public class NewTerritoryInform extends Engine {
             }
             // Player moved into other guild's territory
             else {
-                gPlayer player = event.getPlayer();
+                GPlayer player = event.getPlayer();
                 playerPlayer.sendTitle(
-                        Messages.get(Plugin.GUILDS).get("new territory titles.guild.title", gUtil.getGuildToName(player, newChunkGuild)),
-                        Messages.get(Plugin.GUILDS).get("new territory titles.guild.subtitle", gUtil.getGuildToDesc(player, newChunkGuild)),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.guild.title", "test"),
+                        Messages.get(Plugin.GUILDS).get("new territory titles.guild.subtitle", "test"),
                         FADE_IN, STAY, FADE_OUT
                 );
             }

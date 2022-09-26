@@ -1,11 +1,11 @@
 package com.guildwars.guildwars.guilds.files;
 
 import com.guildwars.guildwars.guilds.ObjectDataManager;
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.entity.GPlayer;
 
 import java.util.HashMap;
 
-public class PlayerData extends ObjectDataManager<gPlayer> {
+public class PlayerData extends ObjectDataManager<GPlayer> {
 
     public static PlayerData instance = new PlayerData();
     public static PlayerData get() {
@@ -17,22 +17,24 @@ public class PlayerData extends ObjectDataManager<gPlayer> {
     }
 
     @Override
-    public void save(gPlayer player) {
+    public void save(GPlayer gPlayer) {
         HashMap<String, Object> playerData = new HashMap<>();
 
         // uuid
-        playerData.put("uuid", String.valueOf(player.getUUID()));
-        // guild rank
-        if (player.getGuildRank() != null) {
-            playerData.put("guildRank", player.getGuildRank().name());
-        } else {
-            playerData.put("guildRank", "null");
-        }
-        // name
-        playerData.put("name", player.getName());
-        // power
-        playerData.put("power", player.getPower());
+        playerData.put("uuid", String.valueOf(gPlayer.getUUID()));
 
-        super.saveRaw(player.getUUID(), playerData);
+        // guildId
+        playerData.put("guildId", gPlayer.isInGuild() ? gPlayer.getGuild().getId() : null);
+
+        // guild rank
+        playerData.put("guildRank", gPlayer.getGuildRank() != null ? gPlayer.getGuildRank().name() : null);
+
+        // name
+        playerData.put("name", gPlayer.getName());
+
+        // power
+        playerData.put("power", gPlayer.getPower());
+
+        super.saveRaw(String.valueOf(gPlayer.getUUID()), playerData);
     }
 }

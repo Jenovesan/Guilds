@@ -6,6 +6,7 @@ import com.guildwars.guildwars.utils.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Config extends GuildWarsFile<Object> {
 
@@ -20,47 +21,51 @@ public class Config extends GuildWarsFile<Object> {
         configFiles.put(plugin, this);
     }
 
-    public int getInt(String string) {
-        return (int) get(string);
+    public int getInt(String path) {
+        return (int) get(path);
     }
 
-    public float getFloat(String string) {
-        return ((Double) get(string)).floatValue();
+    public float getFloat(String path) {
+        return ((Double) get(path)).floatValue();
     }
 
-    public String getString(String string) {
-        return util.translateColors((String) get(string));
+    public String getString(String path) {
+        return util.translateColors((String) get(path));
     }
 
-    public Character getChar(String string) {
-        return (Character) get(string);
+    public Character getChar(String path) {
+        return (Character) get(path);
     }
 
-    public GuildRank getGuildRank(String string) {
-        return GuildRank.valueOf((String) get(string));
+    public GuildRank getGuildRank(String path) {
+        return GuildRank.valueOf((String) get(path));
     }
 
-    public Long getLong(String string) {
-        return Long.valueOf((Integer) get(string));
+    public Long getLong(String path) {
+        return Long.valueOf((Integer) get(path));
     }
 
-    public List<Character> getCharacterList(String string) {
+    public Map<String, Object> getMap(String path) {
+        return getConfiguration().getConfigurationSection(path).getValues(false);
+    }
+
+    public List<Character> getCharacterList(String path) {
         List<Character> characterList = new ArrayList<>();
-        for (String stringChar : getStringList(string)) {
+        for (String stringChar : getStringList(path)) {
             characterList.add(stringChar.charAt(0));
         }
         return characterList;
     }
 
-    public List<String> getStringList(String string) {
-        return (List<String>) get(string);
+    public List<String> getStringList(String path) {
+        return (List<String>) get(path);
     }
 
-    private Object get(String string) {
-        Object obj = messagesCache.get(string);
+    private Object get(String path) {
+        Object obj = messagesCache.get(path);
         if (obj == null) {
-            obj = getConfiguration().get(string);
-            messagesCache.put(string, obj);
+            obj = getConfiguration().get(path);
+            messagesCache.put(path, obj);
         }
         return obj;
     }

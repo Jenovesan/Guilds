@@ -1,64 +1,46 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.core.ChatChannel;
 import com.guildwars.guildwars.core.ChatChannels;
 import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
-import org.bukkit.entity.Player;
+import com.guildwars.guildwars.guilds.cmd.arg.BoolArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
+import com.guildwars.guildwars.utils.util;
 
 public class gChat extends gCommand {
 
     public gChat() {
+        // Name
         super("chat");
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.CHAT);
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.CHAT));
+
+        // Args
+        addArg(new BoolArg(false));
     }
 
     @Override
-    public void perform(gPlayer gPlayer, String[] args) {
+    public void perform() throws CmdException {
+        // Args
+        Boolean enable = readNextArg();
 
-        Player player = gPlayer.getPlayer();
-        ChatChannel playerChatChannel = ChatChannels.getPlayerChatChannel(player);
+        // Prepare
 
-        // Join a chat channel
-        if (args.length == 0) {
-            // Join Guild chat
-            if (playerChatChannel != ChatChannel.GUILD) {
-                joinGuildChat(gPlayer, player);
-            }
-            // Leave Guild chat
-            else {
-                leaveGuildChat(gPlayer, player);
-            }
-        }
-        else if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("g")) {
-            joinGuildChat(gPlayer, player);
-        }
-        else if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("p")) {
-            leaveGuildChat(gPlayer, player);
-        }
-        // Send a message in guild chat
-        else {
-            String chatMsg = String.join(" ", args);
-            ChatChannels.setPlayerChatChannel(player, ChatChannel.GUILD);
-            player.chat(chatMsg);
-            ChatChannels.setPlayerChatChannel(player, playerChatChannel);
-        }
-    }
+        ChatChannel newChatChannel;
+        if (enable != null) newChatChannel = enable ? ChatChannel.GUILD : ChatChannel.PUBLIC;
+        else newChatChannel = ChatChannels.getPlayerChatChannel(player) != ChatChannel.GUILD ? ChatChannel.GUILD : ChatChannel.PUBLIC;
 
-    private void joinGuildChat(gPlayer gPlayer, Player player) {
-        ChatChannels.setPlayerChatChannel(player, ChatChannel.GUILD);
+        // Apply
+
+        ChatChannels.setPlayerChatChannel(player, newChatChannel);
+
         // Inform
-        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.chat.joined guild chat"));
-    }
 
-    private void leaveGuildChat(gPlayer gPlayer, Player player) {
-        ChatChannels.setPlayerChatChannel(player, null);
-        // Inform
-        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.chat.left guild chat"));
+        gPlayer.sendNotifyMsg(Messages.get(Plugin.CORE).get("chat channels.joined", util.formatEnum(newChatChannel)));
     }
 }

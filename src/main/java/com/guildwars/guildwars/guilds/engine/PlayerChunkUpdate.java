@@ -1,12 +1,11 @@
 package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.event.GPlayerQuitEvent;
 import com.guildwars.guildwars.guilds.event.GPlayerLoginEvent;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.entity.GPlayer;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -21,12 +20,12 @@ public class PlayerChunkUpdate extends Engine {
         super(Config.get(Plugin.GUILDS).getLong("player chunk update (ticks)"));
     }
 
-    HashMap<gPlayer, Location> playerLastLocations = new HashMap<>();
+    HashMap<GPlayer, Location> playerLastLocations = new HashMap<>();
 
     @Override
     public void run() {
-        for (Map.Entry<gPlayer, Location> playerLastChunks : this.playerLastLocations.entrySet()) {
-            gPlayer player = playerLastChunks.getKey();
+        for (Map.Entry<GPlayer, Location> playerLastChunks : this.playerLastLocations.entrySet()) {
+            GPlayer player = playerLastChunks.getKey();
             Player playerPlayer = player.getPlayer();
             Location lastLocation = playerLastChunks.getValue();
             Location newLocation = playerPlayer.getLocation();
@@ -52,14 +51,14 @@ public class PlayerChunkUpdate extends Engine {
 
     @EventHandler
     public void addPlayerOnLogin(GPlayerLoginEvent event) {
-        gPlayer gPlayer = event.getGPlayer();
+        GPlayer gPlayer = event.getGPlayer();
         Player player = event.getPlayer();
         this.playerLastLocations.put(gPlayer, player.getLocation());
     }
 
     @EventHandler
     public void removePlayerOnLogout(GPlayerQuitEvent event) {
-        gPlayer player = event.getGPlayer();
+        GPlayer player = event.getGPlayer();
         this.playerLastLocations.remove(player);
     }
 }

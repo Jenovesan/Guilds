@@ -1,65 +1,66 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.entity.GPlayer;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
-import com.guildwars.guildwars.guilds.files.GuildData;
+import com.guildwars.guildwars.guilds.cmd.arg.GPlayerArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
+import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;
+import com.guildwars.guildwars.utils.util;
 
 public class gKick extends gCommand{
 
     public gKick() {
+        // Name
         super("kick");
-        setMinArgs(1);
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.INVITE);
+
+        // Aliases
+        addAlias("remove");
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.INVITE));
+
+        // Args
+        addArg(new GPlayerArg(true, false));
     }
 
     @Override
-    public void perform(gPlayer kicker, String[] args) {
+    public void perform() throws CmdException {
 
-        Guild guild = kicker.getGuild();
+        // Args
+        GPlayer kickee = readNextArg();
 
-        gPlayer kickee = gPlayersIndex.get().getByName(args[0]);
+        // Prepare
 
-        if (kickee == null) {
-            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
-            return;
-        }
+        // Can only kick a player from your guild
+        if (kickee.getGuild() != guild) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.player not in sender guild", gPlayer.describe(kickee)));
 
-        if (kickee.getGuild() != guild) {
-            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not in your guild", kickee));
-            return;
-        }
+        // Can only kick the player if you are a higher rank than them
+        GuildRank rankToKick = GuildRank.getGuildRankByLevel(Math.min(kickee.getGuildRank().getLevel() + 1, GuildRank.LEADER.getLevel()));
+        if (gPlayer.getGuildRank().getLevel() < rankToKick.getLevel()) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.kick.rank not higher", util.formatEnum(rankToKick), gPlayer.describe(kickee)));
 
-        GuildRank kickerRank = kicker.getGuildRank();
-        GuildRank kickeeRank = kickee.getGuildRank();
-        if (kickerRank.level <= kickeeRank.level) {
-            kicker.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.kick.guild rank not higher"));
-            return;
-        }
+        // Send Guild Announcement
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player kicked", guild.describe(gPlayer), guild.describe(kickee)), kickee);
 
-        // Kick player
-        guild.removePlayer(kickee);
-
-        // Save data
-        GuildData.get().save(guild);
+        // Apply
 
         // Update gPlayer
         kickee.leftGuild();
 
-        // Send Guild Announcement
-        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.player kicked", kicker, kickee));
-
         // Call event
-        PlayerGuildChangeEvent playerGuildChangeEvent = new PlayerGuildChangeEvent(kickee, null, PlayerGuildChangeEvent.Reason.KICKED);
-        playerGuildChangeEvent.run();
+        GPlayerGuildChangedEvent gPlayerGuildChangedEvent = new GPlayerGuildChangedEvent(kickee, guild, null, GPlayerGuildChangedEvent.Reason.KICKED);
+        gPlayerGuildChangedEvent.run();
+
+        // Inform
 
         // Inform kickee
-        kickee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.kick.kickee kicked msg", guild));
+        kickee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.kick.success to kickee", kickee.describe(guild)));
 
         // Inform kicker
-        kicker.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.kick.successfully kicked", kickee));
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.kick.success", gPlayer.describe(kickee)));
+
     }
 }

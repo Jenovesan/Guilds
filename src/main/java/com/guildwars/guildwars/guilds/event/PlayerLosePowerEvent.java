@@ -1,21 +1,21 @@
 package com.guildwars.guildwars.guilds.event;
 
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.entity.GPlayer;
 
 public class PlayerLosePowerEvent extends GuildsEvent {
 
-    private final gPlayer player;
-    private final gPlayer killer;
+    private final GPlayer player;
+    private final GPlayer killer;
 
-    public gPlayer getKiller() {
+    public GPlayer getKiller() {
         return killer;
     }
 
-    public gPlayer getPlayer() {
+    public GPlayer getPlayer() {
         return player;
     }
 
-    public PlayerLosePowerEvent(gPlayer player, gPlayer killer) {
+    public PlayerLosePowerEvent(GPlayer player, GPlayer killer) {
         this.player = player;
         this.killer = killer;
     }

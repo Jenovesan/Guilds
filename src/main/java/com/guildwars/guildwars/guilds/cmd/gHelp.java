@@ -1,29 +1,36 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
-import java.util.Collection;
+import java.util.List;
 
-public class gHelp {
-    public void perform(CommandSender sender, Collection<gCommand> gCommands) {
-        String help_msg = constructHelpMsg(gCommands);
-        sender.sendMessage(help_msg);
+public class gHelp extends gCommand {
+    public gHelp() {
+        // Name
+        super("help");
     }
 
-    private String constructHelpMsg(Collection<gCommand> gCommands) {
-        String help_command = Messages.get(Plugin.GUILDS).get("commands.help.title") + "\n";
-        for (gCommand gCommand : gCommands) {
-            help_command = help_command.concat(
-                    Messages.get(Plugin.GUILDS).get("commands.help.color") +
-                            ChatColor.stripColor(gCommand.getUsage()) +
-                            " - " +
-                            ChatColor.stripColor(gCommand.getDescription()) +
-                            "\n");
+    @Override
+    void perform() throws CmdException {
+        // Args
+        gCommand[] gCommands = gCommandBase.get().getCommands();
+        String help_msg = Messages.get(Plugin.GUILDS).get("commands.help.title") + "\n";
+
+        // Prepare
+
+        for (gCommand cmd : gCommands) {
+            List<String> descriptions = cmd.getDescriptions();
+            List<String> usages = cmd.getUsages();
+
+            for (int i = 0; i < descriptions.size(); i++) {
+                help_msg = help_msg.concat(Messages.get(Plugin.GUILDS).get("commands.help.format",
+                        usages.get(i), descriptions.get(i)) + "\n");
+            }
         }
-        return help_command;
+
+        // Apply
+
+        player.sendMessage(help_msg);
     }
 }

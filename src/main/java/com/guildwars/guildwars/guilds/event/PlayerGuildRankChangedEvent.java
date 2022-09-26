@@ -1,14 +1,14 @@
 package com.guildwars.guildwars.guilds.event;
 
 import com.guildwars.guildwars.guilds.GuildRank;
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.entity.GPlayer;
 
-public class PlayerGuildRankChangeEvent extends GuildsEvent {
+public class PlayerGuildRankChangedEvent extends GuildsEvent {
 
-    private final gPlayer player;
+    private final GPlayer player;
     private final GuildRank newRank;
 
-    public gPlayer getPlayer() {
+    public GPlayer getPlayer() {
         return player;
     }
 
@@ -16,7 +16,7 @@ public class PlayerGuildRankChangeEvent extends GuildsEvent {
         return newRank;
     }
 
-    public PlayerGuildRankChangeEvent(gPlayer player, GuildRank newRank) {
+    public PlayerGuildRankChangedEvent(GPlayer player, GuildRank newRank) {
         this.player = player;
         this.newRank = newRank;
     }

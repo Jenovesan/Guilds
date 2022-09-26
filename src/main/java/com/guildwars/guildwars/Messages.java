@@ -1,8 +1,5 @@
 package com.guildwars.guildwars;
 
-import com.guildwars.guildwars.guilds.Guild;
-import com.guildwars.guildwars.guilds.GuildRank;
-import com.guildwars.guildwars.guilds.gPlayer;
 import com.guildwars.guildwars.utils.util;
 
 import java.util.HashMap;
@@ -52,22 +49,13 @@ public class Messages extends GuildWarsFile<String> {
     private String format(String string, Object... objects) {
         for (Object object : objects) {
             if (object instanceof String) {
-                string = string.replace("%S%", (String) object);
+                string = string.replaceFirst("%S%", (String) object);
             }
             else if (object instanceof Integer) {
-                string = string.replace("%I%", String.valueOf(object));
-            }
-            else if (object instanceof Guild) {
-                string = string.replace("%GUILD%", ((Guild) object).getName());
-            }
-            else if (object instanceof gPlayer) {
-                string = string.replace("%GPLAYER%", ((gPlayer) object).getName());
-            }
-            else if (object instanceof GuildRank) {
-                string = string.replace("%GUILDRANK", ((GuildRank) object).name());
+                string = string.replaceFirst("%I%", String.valueOf(object));
             }
             else if (object instanceof Character) {
-                string = string.replace("%C%", String.valueOf(object));
+                string = string.replaceFirst("%C%", String.valueOf(object));
             }
         }
         return string;

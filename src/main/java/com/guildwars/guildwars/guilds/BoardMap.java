@@ -4,6 +4,8 @@ import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.entity.Guild;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,14 +39,14 @@ public class BoardMap implements Runnable {
     // FIELDS
     // -------------------------------------------- //
 
-    private final gPlayer player;
+    private final GPlayer player;
     private final Guild playerGuild;
     private final int playerChunkX;
     private final int playerChunkZ;
 
     HashMap<Guild, String> guildsOnMap = new HashMap<>();
 
-    public BoardMap(gPlayer player) {
+    public BoardMap(GPlayer player) {
         this.player = player;
         this.playerGuild = player.getGuild();
         this.playerChunkX = player.getPlayer().getLocation().getChunk().getX();
@@ -79,7 +81,7 @@ public class BoardMap implements Runnable {
 
             for (int x = -mapSize; x <= mapSize; x++) {
 
-                GuildChunk chunk = Board.getGuildChunkAt(playerChunkX + x, playerChunkZ + z);
+                GuildChunk chunk = Board.get().getGuildChunkAt(playerChunkX + x, playerChunkZ + z);
                 // Add player symbol at center of map
                 if (x == 0 && z == 0) {
                     map = map.concat(Messages.get(Plugin.GUILDS).get("commands.map.map construction.player symbol"));

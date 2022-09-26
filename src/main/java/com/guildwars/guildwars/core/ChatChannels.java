@@ -1,7 +1,9 @@
 package com.guildwars.guildwars.core;
 
+import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.entity.Guild;
 import com.guildwars.guildwars.guilds.*;
-import com.guildwars.guildwars.guilds.event.PlayerGuildChangeEvent;
+import com.guildwars.guildwars.guilds.event.GPlayerGuildChangedEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -66,10 +68,9 @@ public class ChatChannels implements Listener {
         HashSet<Player> recipients = new HashSet<>();
         switch (channel) {
             case GUILD:
-                gPlayer gSender = gPlayersIndex.get().getByPlayer(sender);
-                Guild senderGuild = gSender.getGuild();
-                for (gPlayer player : senderGuild.getOnlinePlayers()) {
-                    if (gUtil.checkPermission(player, GuildPermission.CHAT, false)) {
+                Guild senderGuild = Indexing.get().getGuildByPlayer(sender);
+                for (GPlayer player : senderGuild.getOnlinePlayers()) {
+                    if (gUtil.checkPermission(player, GuildPermission.CHAT)) {
                         recipients.add(player.getPlayer());
                     }
                 }
@@ -78,8 +79,8 @@ public class ChatChannels implements Listener {
     }
 
     @EventHandler
-    public void updateChannelOnGuildChange(PlayerGuildChangeEvent event) {
-        Player player = event.getPlayer().getPlayer();
+    public void updateChannelOnGuildChange(GPlayerGuildChangedEvent event) {
+        Player player = event.getGPlayer().getPlayer();
 
         // Player was in guild chat
         if (getPlayersChatChannel().get(player) == ChatChannel.GUILD) {

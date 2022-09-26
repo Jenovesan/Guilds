@@ -1,15 +1,22 @@
 package com.guildwars.guildwars.guilds.event;
 
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.entity.GPlayer;
+import org.bukkit.entity.Player;
 
 public class GPlayerQuitEvent extends GuildsEvent {
-    private final gPlayer gPlayer;
+    private final GPlayer gPlayer;
+    private final Player player;
 
-    public gPlayer getGPlayer() {
+    public GPlayer getGPlayer() {
         return gPlayer;
     }
 
-    public GPlayerQuitEvent(gPlayer gPlayer) {
+    public Player getPlayer() {
+        return player;
+    }
+
+    public GPlayerQuitEvent(GPlayer gPlayer, Player player) {
         this.gPlayer = gPlayer;
+        this.player = player;
     }
 }

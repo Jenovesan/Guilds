@@ -1,17 +1,16 @@
 package com.guildwars.guildwars.guilds.engine;
 
 import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.entity.Guild;
 import com.guildwars.guildwars.guilds.GuildChunk;
 import com.guildwars.guildwars.guilds.Guilds;
 import com.guildwars.guildwars.guilds.event.PlayerChunkUpdateEvent;
 import com.guildwars.guildwars.guilds.event.PlayerLosePowerEvent;
 import com.guildwars.guildwars.guilds.files.GuildData;
 import com.guildwars.guildwars.guilds.files.PlayerData;
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.entity.GPlayer;
 import com.guildwars.guildwars.utils.util;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,8 +26,8 @@ public class Raiding extends Engine {
 
         if (event.getKiller() == null) return;
 
-        gPlayer player = event.getPlayer();
-        gPlayer killer = event.getKiller();
+        GPlayer player = event.getPlayer();
+        GPlayer killer = event.getKiller();
         Guild playerGuild = player.getGuild();
         Guild killerGuild = killer.getGuild();
 
@@ -69,7 +68,7 @@ public class Raiding extends Engine {
 
                 // Reset power
                 int playerMaxPower = Config.get(Plugin.GUILDS).getInt("player max power");
-                for (gPlayer player : guild.getPlayers()) {
+                for (GPlayer player : guild.getPlayers()) {
                     player.setPower(playerMaxPower);
                     PlayerData.get().save(player);
                 }
@@ -88,7 +87,7 @@ public class Raiding extends Engine {
 
         if (chunk == null) return;
 
-        gPlayer player = event.getPlayer();
+        GPlayer player = event.getPlayer();
         Guild chunkHost = chunk.getGuild();
 
         if (chunkHost == null) return;

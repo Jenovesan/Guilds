@@ -1,6 +1,6 @@
 package com.guildwars.guildwars.guilds.event;
 
-import com.guildwars.guildwars.guilds.Guild;
+import com.guildwars.guildwars.entity.Guild;
 import com.guildwars.guildwars.guilds.GuildChunk;
 
 public class GuildUnclaimEvent extends GuildsEvent {

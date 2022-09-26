@@ -1,47 +1,43 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.guilds.Guild;
 import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.files.GuildData;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
+import com.guildwars.guildwars.guilds.cmd.arg.GuildDescArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
 
 public class gDesc extends gCommand{
 
     public gDesc() {
+        // Name
         super("desc");
-        setMinArgs(1);
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.SET_DESC);
+
+        // Alliases
+        addAlias("description");
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.SET_DESC));
+
+        // Args
+        addArg(new GuildDescArg(true));
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
-        }
+    public void perform() throws CmdException {
+        // Args
+        String description = readNextArg();
 
-        if (!gUtil.checkPermission(player, GuildPermission.SET_DESC, true)) {
-            return;
-        }
-
-        // Set Guild Description
-        String description = String.join(" ", args);
-        Guild guild = player.getGuild();
+        // Apply
         guild.setDescription(description);
 
-        // Save data
-        GuildData.get().save(guild);
+        // Inform
 
-        // Send Guild announcement
-        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.description changed", player, description));
+        // Send guild announcement
+        guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.description set", guild.describe(gPlayer), description));
 
         // Inform
-        player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.desc.successfully set desc", String.join(" ", args)));
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.desc.success", description));
     }
 }

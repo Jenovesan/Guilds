@@ -4,83 +4,102 @@ import com.guildwars.guildwars.Config;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.*;
+import com.guildwars.guildwars.guilds.cmd.arg.IntArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
+import com.guildwars.guildwars.guilds.cmd.req.InMainWorldReq;
+
+import java.util.Arrays;
 
 public class gClaim extends gCommand{
 
     public gClaim() {
-        super("claim");
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.CLAIM);
+        // Name
+        super("claim", "unclaim");
+
+        // Aliases
+        addAlias("uclaim");
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.CLAIM));
+        addReq(new InMainWorldReq());
+
+        // Args
+        addArg(new IntArg(false));
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
+    public void perform() throws CmdException {
+        // Args
+        boolean claim = getCmd().equalsIgnoreCase("claim");
+        int radius = readNextArg(0);
 
-        if (!gUtil.isInMainWorld(player)) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.cannot claim in world"));
-            return;
+        // Prepare
+
+        // Check if radius is valid
+        if (radius < 0) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.claim.invalid radius", String.valueOf(radius)));
+
+        // Check if radius is too big
+        if (radius > Config.get(Plugin.GUILDS).getInt("max claim radius (chunks)")) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.claim.radius too big", radius));
+
+        // Apply
+
+        int successes = gPlayer.tryClaim(getSquareChunks(radius), claim, radius == 0);
+
+        // Inform
+
+        // Inform Guild
+        // Player claimed single chunk
+        if (successes == 1) {
+            // Inform guild
+            if (claim) guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.claimed one", guild.describe(gPlayer), successes));
+            else guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.unclaimed one", guild.describe(gPlayer), successes));
+
+            // Inform player
+            gPlayer.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.claim.success one", successes));
         }
+        // Player gained multiple chunks
+        else if (successes > 1) {
+            // Inform guild
+            if (claim) guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.claimed many", guild.describe(gPlayer), successes));
+            else guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.unclaimed many", guild.describe(gPlayer), successes));
 
-        // Claim chunk(s)
-        // Player is claiming a radius
-        if (args.length > 0) {
-            try {
-                // Subtracting by 1 because that is how the original factions-plugin did it.
-                // Want to keep it familiar for players.
-                // Also makes it so g claim 1 claims just 1 chunk.
-                int radius = Integer.parseInt(args[0]) - 1;
-
-                // Check if radius is too big
-                if (radius > Config.get(Plugin.GUILDS).getInt("max claim radius (chunks)")) {
-                    player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.radius too big", args[0]));
-                    return;
-                }
-
-                if (radius < 0) {
-                    player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.invalid radius", args[0]));
-                    return;
-                }
-
-                GuildChunk[] guildChunksToClaim = Board.getNearbyChunks(player.getPlayer().getLocation(), radius);
-
-                // Try claiming
-                int successfulClaims = player.tryClaim(guildChunksToClaim);
-
-
-                // Inform
-                if (successfulClaims > 0) {
-                    // Inform guild
-                    player.getGuild().sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.claimed many land", player, successfulClaims));
-                    // Inform player
-                    player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.claim.successfully claimed multiple chunks", successfulClaims));
-                }
-                // Player did not claim any chunks
-                else {
-                    player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.claim.successfully claimed multiple chunks", successfulClaims));
-                }
-
-            } catch (NumberFormatException e) {
-                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.claim.invalid radius", args[0]));
-            }
+            // Inform player
+            gPlayer.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.claim.success many", successes));
         }
-        // Player is claiming a single chunk
-        else {
-            // Get chunk
-            GuildChunk chunk = Board.getGuildChunkAt(player.getPlayer().getLocation());
+    }
 
-            // Claiming in outlands
-            if (chunk == null) {
-                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("claiming.claiming in outlands"));
-                return;
+    private GuildChunk[] getSquareChunks(int radius) {
+        // Uses a reverse-spiral matrix algorithm so claims will be connected while claiming in a radius
+
+        // Get starting position
+        int x = player.getLocation().getChunk().getX();
+        int z = player.getLocation().getChunk().getZ();
+
+        // Create variables
+        int diameter = (radius * 2) + 1;
+        int size = diameter * diameter;
+        GuildChunk[] nearbyChunks = new GuildChunk[size];
+
+        // Create variables for reverse-spiral
+        int len = 0;
+        int d = 0;
+        int[] directions = new int[]{0, 1, 0, -1, 0};
+
+        // Reverse-spiral
+        for (int i = 0; i < size;) {
+            if (d == 0 || d == 2) {
+                len++;
+            }
+            for (int k = 0; k < len; k++) {
+                nearbyChunks[i++] = Board.get().getGuildChunkAt(x, z);
+                x += directions[d];
+                z += directions[d + 1];
             }
 
-            // Try to claim
-            boolean claimed = player.tryClaim(chunk);
-
-            if (claimed) {
-                // Inform plauer
-                player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.claim.successfully claimed single chunk"));
-            }
+            d = ++d % 4;
         }
+        return nearbyChunks;
     }
 }

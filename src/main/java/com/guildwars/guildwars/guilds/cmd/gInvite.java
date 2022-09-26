@@ -1,79 +1,60 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
+import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.entity.Invitation;
 import com.guildwars.guildwars.guilds.*;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.guildwars.guildwars.guilds.cmd.arg.GPlayerArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
 
 public class gInvite extends gCommand{
 
     public gInvite() {
+        // Name
         super("invite");
-        setMinArgs(1);
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.INVITE);
+
+        // Aliases
+        addAlias("inv");
+        addAlias("add");
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.INVITE));
+
+        // Args
+        addArg(new GPlayerArg(true, false));
     }
 
     @Override
-    public void perform(gPlayer inviter, String[] args) {
+    public void perform() throws CmdException {
+        // Args
+        GPlayer invitee = readNextArg();
 
-        gPlayer invitee = gPlayersIndex.get().getByName(args[0]);
+        // Prepare
 
-        if (invitee == null) {
-            inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.player not found", args[0]));
-            return;
-        }
+        // Cannot invite a player if they are already invited to guild
+        if (guild.isInvited(invitee)) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.invite.already invited", gPlayer.describe(invitee)));
 
-        Guild inviterGuild = inviter.getGuild();
-
-        if (inviterGuild.isInvited(invitee)) {
-            inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.already invited", invitee));
-            return;
-        }
-
-
+        // Cannot invite player who is in a guild
         if (invitee.isInGuild()) {
-            // Invitee is already a member of the inviter's Guild
-            if (invitee.getGuild() == inviterGuild) {
-                inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee in inviter guild", invitee));
-                return;
-            }
-            // Invitee not in Guild
-            else {
-                inviter.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee in guild", invitee));
-                return;
-            }
+            // If invitee is already a member of the gPlayer's Guild...
+            if (invitee.getGuild() == guild) throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.invite.invitee in inviter guild", gPlayer.describe(invitee)));
+            else throw new CmdException(Messages.get(Plugin.GUILDS).get("commands.invite.invitee in guild", gPlayer.describe(invitee)));
         }
 
-        // Invite player
-        inviterGuild.invite(invitee);
+        // Apply
 
-        // Remove player invitation later
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                // Check if invitee still has an invitation
-                if (!inviterGuild.isInvited(invitee)) {
-                    return;
-                }
+        Invitation invite = new Invitation(invitee);
+        guild.addInvite(invite);
 
-                // Remove player invitation
-                inviterGuild.removeInvite(invitee);
-
-                // Notify player if they're online
-                if (invitee.getPlayer() != null) {
-                    invitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invite expired", inviterGuild));
-                }
-            }
-        }.runTaskLaterAsynchronously(GuildWars.getInstance(), Config.get(Plugin.GUILDS).getInt("invite expire time (s)") * 20L);
+        // Inform
 
         // Inform invitee
-        invitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.invite.invitee invite msg", inviterGuild));
+        invitee.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.invite.success to invitee", invitee.describe(guild)));
 
         // Inform inviter
-        inviter.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.invite.successfully invited", invitee));
-
+        gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.invite.success", gPlayer.describe(invitee)));
     }
 }

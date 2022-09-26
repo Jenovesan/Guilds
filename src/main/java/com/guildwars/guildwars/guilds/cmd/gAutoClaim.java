@@ -3,38 +3,41 @@ package com.guildwars.guildwars.guilds.cmd;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.gPlayer;
-import com.guildwars.guildwars.guilds.gUtil;
+import com.guildwars.guildwars.guilds.cmd.arg.BoolArg;
+import com.guildwars.guildwars.guilds.cmd.req.GuildPermissionReq;
+import com.guildwars.guildwars.guilds.cmd.req.InGuildReq;
 
 public class gAutoClaim extends gCommand {
 
     public gAutoClaim() {
+        // Name
         super("autoclaim");
-        mustBeInGuild(true);
-        setMinPermission(GuildPermission.CLAIM);
+
+        // Aliases
+        addAlias("aclaim");
+
+        // Reqs
+        addReq(new InGuildReq());
+        addReq(new GuildPermissionReq(GuildPermission.CLAIM));
+
+        // Args
+        addArg(new BoolArg(false));
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (!gUtil.isInMainWorld(player)) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("autoclaim.cannot claim in world"));
-            return;
-        }
+    public void perform() throws CmdException {
+        // Args
+        Boolean enable = readNextArg();
 
-        // Add play to autoclaim set
-        // Player is already auto-claiming.
-        // Remove them from autoclaiming
-        if (player.isAutoClaiming()) {
-            player.setAutoClaiming(false);
-            player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("autoclaiming.disabled"));
-        }
-        // Player is not auto-claiming.
-        // Add them to autoclaiming
-        else {
-            player.setAutoClaiming(true);
-            player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("autoclaiming.enabled"));
-        }
-        // Informing the player is handled in AutoClaim
+        // Prepare
+
+        // Establish whether autoclaiming will be enabled or disabled
+        if (enable == null) enable = !gPlayer.isAutoClaiming();
+
+        // Apply
+        gPlayer.setAutoClaiming(enable);
+
+        // Inform
+        gPlayer.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.autoclaim." + enable));
     }
 }

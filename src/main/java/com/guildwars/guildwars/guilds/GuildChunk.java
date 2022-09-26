@@ -1,42 +1,37 @@
 package com.guildwars.guildwars.guilds;
 
+import com.guildwars.guildwars.entity.BoardCord;
+import com.guildwars.guildwars.entity.Guild;
+import com.guildwars.guildwars.guilds.files.BoardData;
 import org.bukkit.Chunk;
 
 public class GuildChunk {
 
     private Guild guild;
-    private String guildId;
-    private final int[] boardLocation;
+    private final BoardCord boardCord;
     private final Chunk chunk;
 
     public void claim(Guild hostGuild) {
-        this.guild = hostGuild;
-        this.guildId = hostGuild != null ? hostGuild.getId() : null;
+        guild = hostGuild;
+        changed();
     }
 
     public Guild getGuild() {
         return guild;
     }
 
-    public String getGuildId() {
-        return guildId;
-    }
-
-    public int[] getBoardLocation() {
-        return this.boardLocation;
+    public BoardCord getBoardLocation() {
+        return boardCord;
     }
 
     public Chunk getChunk() {
         return this.chunk;
     }
 
-    public GuildChunk(Guild hostGuild, int[] boardLocation, Chunk chunk) {
-        this.guild = hostGuild;
-        if (hostGuild != null) {
-            this.guildId = hostGuild.getId();
-        }
-        this.boardLocation = boardLocation;
-        this.chunk = chunk;
+    public GuildChunk(Guild guild, BoardCord boardCord) {
+        this.guild = guild;
+        this.boardCord = boardCord;
+        this.chunk = boardCord.getBukkitChunk();
     }
 
     public boolean isClaimable() {
@@ -44,38 +39,44 @@ public class GuildChunk {
     }
 
     public boolean hasConnectingClaim(Guild guild) {
-        int x = boardLocation[0];
-        int z = boardLocation[1];
+        int x = chunk.getX();
+        int z = chunk.getZ();
         // North chunk
-        GuildChunk chunkNorth = Board.getGuildChunkAt(new int[]{x, z+1});
-        if (chunkNorth != null && chunkNorth.getGuild() == guild) {
-            return true;
-        }
+        GuildChunk chunkNorth = Board.get().getGuildChunkAt(x, z + 1);
+        if (chunkNorth != null && chunkNorth.getGuild() == guild) return true;
+
         // South chunk
-        GuildChunk chunkSouth = Board.getGuildChunkAt(new int[]{x, z-1});
-        if (chunkSouth != null && chunkSouth.getGuild() == guild) {
-            return true;
-        }
+        GuildChunk chunkSouth = Board.get().getGuildChunkAt(x, z - 1);
+        if (chunkSouth != null && chunkSouth.getGuild() == guild) return true;
+
         // East chunk
-        GuildChunk chunkEast = Board.getGuildChunkAt(new int[]{x+1, z});
-        if (chunkEast != null && chunkEast.getGuild() == guild) {
-            return true;
-        }
+        GuildChunk chunkEast = Board.get().getGuildChunkAt(x + 1, z);
+        if (chunkEast != null && chunkEast.getGuild() == guild) return true;
+
         // West chunk
-        GuildChunk chunkWest = Board.getGuildChunkAt(new int[]{x-1, z});
-        if (chunkWest != null && chunkWest.getGuild() == guild) {
-            return true;
-        }
-        return false;
+        GuildChunk chunkWest = Board.get().getGuildChunkAt(x - 1, z);
+        return chunkWest != null && chunkWest.getGuild() == guild;
     }
 
     public boolean isWilderness() {
-        return this.getGuildId() == null;
+        return guild == null;
     }
 
     public void setWilderness() {
-        this.guild = null;
-        this.guildId = null;
+        guild = null;
+        changed();
     }
 
+    private void changed() {
+        // If the chunk is no longer claimed, remove its data
+        if (isWilderness()) Board.get().remove(this);
+        // If the chunk is claimed, save its data and add it to  board
+        else {
+            // Add to Board
+            Board.get().add(this);
+
+            // Save data
+            BoardData.get().save(this);
+        }
+    }
 }

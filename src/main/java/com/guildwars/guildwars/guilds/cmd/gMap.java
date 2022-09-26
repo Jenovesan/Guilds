@@ -1,42 +1,49 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
 import com.guildwars.guildwars.guilds.BoardMap;
-import com.guildwars.guildwars.guilds.gPlayer;
+import com.guildwars.guildwars.guilds.cmd.arg.BoolArg;
 
 public class gMap extends gCommand {
 
     public gMap() {
-        super("map");
+        // Name
+        super("map", "automap");
+
+        // Aliases
+        addAlias("mapauto");
+
+        // Args
+        addArg(new BoolArg(false));
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
-        if (args.length == 0) {
-            BoardMap map = new BoardMap(player);
-            map.sendMap();
-        } else if (args[0].equalsIgnoreCase("auto")){
-            // Has gMap auto enabled, disable gMap auto
-            if (player.isAutoMapping()) {
-                player.setAutoMapping(false);
-                player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("map auto.disabled"));
-            }
-            // Has gMap auto disabled, enable gMap auto
-            else {
-                player.setAutoMapping(true);
-                player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("map auto.enabled"));
-            }
+    public void perform() throws CmdException {
+        // Args
+        Boolean enableMapAuto = readNextArg();
 
-        } else if (args[0].equalsIgnoreCase("on")) {
-            player.setAutoMapping(true);
-            player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("map auto.enabled"));
-        } else if (args[0].equalsIgnoreCase("off")) {
-            player.setAutoMapping(false);
-            player.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("map auto.disabled"));
-        } else {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.map.invalid syntax"));
+        // Player did not try to enable nor disable map-auto-update
+        if (getCmd().equalsIgnoreCase("map") && enableMapAuto == null) {
+
+            // Prepare
+
+            BoardMap map = new BoardMap(gPlayer);
+
+            // Apply
+
+            map.sendMap();
+        }
+        // Player tried to enable or disable map-auto-update
+        else {
+
+            // Apply
+
+            gPlayer.setAutoMapping(enableMapAuto);
+
+            // Inform
+            System.out.println("map.auto " + enableMapAuto);
+            gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.map.auto " + enableMapAuto));
         }
     }
 }

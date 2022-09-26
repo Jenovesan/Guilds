@@ -1,30 +1,23 @@
 package com.guildwars.guildwars.guilds;
 
 import com.guildwars.guildwars.Config;
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import org.bukkit.ChatColor;
+import com.guildwars.guildwars.entity.GPlayer;
+import com.guildwars.guildwars.entity.Guild;
 
 import java.util.List;
 import java.util.UUID;
 
 public class gUtil {
 
-    public static boolean checkPermission(gPlayer player, GuildPermission permission, boolean sendReturnMsg) {
+    public static boolean checkPermission(GPlayer player, GuildPermission permission) {
         GuildRank guildRank = player.getGuildRank();
         GuildRank permMinRank = player.getGuild().getPermissions().get(permission);
-        if (guildRank.level >= permMinRank.level) {
-            return true;
-        } else { // Guild rank too low
-            if (sendReturnMsg) {
-                player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.guild rank too low", permMinRank));
-            }
-            return false;
-        }
+        return guildRank.getLevel() >= permMinRank.getLevel();
     }
 
-    public static boolean guildNameLegal(gPlayer player, String guildName) {
+    public static boolean guildNameLegal(GPlayer player, String guildName) {
         // Check if guild name is too long
         int guildNameCharacterLimit = Config.get(Plugin.GUILDS).getInt("max characters in guild name");
         if (guildName.toCharArray().length > guildNameCharacterLimit) {
@@ -61,37 +54,11 @@ public class gUtil {
         return true;
     }
 
-    public static boolean isInMainWorld(gPlayer player) {
+    public static boolean isInMainWorld(GPlayer player) {
         return player.getPlayer().getWorld().getName().equals(Config.get(Plugin.GUILDS).getString("world name"));
     }
 
     public static String getNewUUID() {
         return UUID.randomUUID().toString();
-    }
-
-    public static String getGuildToName(gPlayer player, Guild guild) {
-        Guild playerGuild = player.getGuild();
-        if (playerGuild == guild) {
-            return ChatColor.translateAlternateColorCodes('&', Config.get(Plugin.GUILDS).getString("own guild name prefix")) + guild.getName();
-        }
-        else if (playerGuild.isEnemied(guild)) {
-            return ChatColor.translateAlternateColorCodes('&', Config.get(Plugin.GUILDS).getString("enemy guild name prefix")) + guild.getName();
-        }
-        else {
-            return ChatColor.translateAlternateColorCodes('&', Config.get(Plugin.GUILDS).getString("other guild name prefix")) + guild.getName();
-        }
-    }
-
-    public static String getGuildToDesc(gPlayer player, Guild guild) {
-        Guild playerGuild = player.getGuild();
-        if (playerGuild == guild) {
-            return ChatColor.translateAlternateColorCodes('&', Config.get(Plugin.GUILDS).getString("own guild desc prefix")) + guild.getName();
-        }
-        else if (playerGuild.isEnemied(guild)) {
-            return ChatColor.translateAlternateColorCodes('&', Config.get(Plugin.GUILDS).getString("enemy guild desc prefix")) + guild.getName();
-        }
-        else {
-            return ChatColor.translateAlternateColorCodes('&', Config.get(Plugin.GUILDS).getString("other guild desc prefix")) + guild.getName();
-        }
     }
 }

@@ -1,30 +1,38 @@
 package com.guildwars.guildwars.guilds.cmd;
 
-import com.guildwars.guildwars.GuildWars;
 import com.guildwars.guildwars.Messages;
 import com.guildwars.guildwars.Plugin;
-import com.guildwars.guildwars.guilds.GuildPermission;
-import com.guildwars.guildwars.guilds.gPlayer;
 
 public class gPower extends gCommand{
 
     public gPower() {
+        // Name
         super("power");
-        mustBeInGuild(true);
+
+        // Aliases
+        addAlias("pow");
     }
 
     @Override
-    public void perform(gPlayer player, String[] args) {
-        // Checks
-        if (!player.isInGuild()) {
-            player.sendFailMsg(Messages.get(Plugin.GUILDS).get("commands.not in guild"));
-            return;
+    public void perform() {
+        // Args
+        float playerPower = gPlayer.getPower();
+        int playerMaxPower = gPlayer.getMaxPower();
+        String powerMsg = Messages.get(Plugin.GUILDS).get("commands.power.player power", playerPower + "/" + playerMaxPower);
+
+        // Send gPlayer their guild's power
+        // Only do this if they are in a guild
+        if (gPlayer.isInGuild()) {
+            // Args
+            int guildPower = guild.getPower();
+            int maxGuildPower = guild.getMaxPower();
+
+            // Prepare
+            powerMsg = powerMsg.concat("\n" + Messages.get(Plugin.GUILDS).get("commands.power.guild power", guildPower + "/" + maxGuildPower));
         }
 
-        // Check power
-        int guildPower = player.getGuild().getPower();
-        int maxGuildPower = player.getGuild().getMaxPower();
+        // Apply
 
-        player.sendNotifyMsg(Messages.get(Plugin.GUILDS).get("commands.power.power msg", guildPower + "/" + maxGuildPower));
+        gPlayer.sendNotifyMsg(powerMsg);
     }
 }

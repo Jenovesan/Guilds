@@ -1,7 +1,10 @@
 chat channels:
-  GUILD: '&2[G] <display name> &a<msg>'
+  joined chat: '&aYou joined &2%S% &achat'
+  left chat: '&cYou left  &2%S% &achat'
+  formats:
+    GUILD: '&2[G] <display name> &a<msg>'
 teleporting title:
   bar length: 40
   fadeIn: 0
-  stay: 2
+  stay: 3
   fadeOut: 0
