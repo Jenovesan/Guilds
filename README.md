@@ -59,8 +59,8 @@
 
 --- 
 
-## Cool things  
-### The event system is very good. Very easy to add new commands with aliases, arguments, and player requirements  
+## What Makes this Plugin Stand Out
+### The event system allows developers to easily add new commands with aliases, arguments, and player requirements  
 Example: Command that renames a player's guild's description  
 
     public class gDesc extends gCommand {
@@ -90,18 +90,18 @@ Example: Command that renames a player's guild's description
   
           // Inform
   
-          // Send guild announcement
+          // Inform guild
           guild.sendAnnouncement(Messages.get(Plugin.GUILDS).get("guild announcements.description set", guild.describe(gPlayer), description));
   
-          // Inform
+          // Inform player
           gPlayer.sendSuccessMsg(Messages.get(Plugin.GUILDS).get("commands.desc.success", description));
       }
     }
 
   
-### Guild claims were mapped to a 3d array for a low-memory, pre-filled, instant-access, and asyncable claiming system   
-Similar plugins utilize a hashmap system for mapping guild plugins, so this plugin using a 3d array makes this plugin much faster since
-getting the guild at a location is called very frequently.  
+### Guild claims were mapped to a 2d array for a low-memory, pre-filled, and instant-access land claiming system   
+Similar plugins utilize a hashmap system for land claims, so this plugin using a 2d array makes it more performant since
+accessing the guild at a location is called frequently.  
     
     public class Board extends Coll<GuildChunk>{
         ...  
@@ -110,7 +110,7 @@ getting the guild at a location is called very frequently.
     }
  
 ### Reverse Spiral claiming system
-When claiming a square of chunks, claiming occurs in a reverse spiral incase the guild runs out of power mid-claiming and to keep claims connected
+When claiming a square of chunks, claiming occurs in a reverse spiral incase the guild runs out of power mid-claiming and to keep claims connected when claiming around other guilds' claims
 
     private GuildChunk[] getSquareChunks(int radius) {
         // Uses a reverse-spiral matrix algorithm so claims will be connected while claiming in a radius
